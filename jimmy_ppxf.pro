@@ -1,3 +1,67 @@
+;#############################################################################
+;
+; Based initially off code written by Michele Cappellari
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   JIMMY_PPXF
+;
+; PURPOSE:
+;   This code calls the Cappellari PPXF fitting program.  It's used for 
+;	calculating velocity and velocity dispersions on bins from voronoi tesselaton.
+;	It also performs a monte carlo routine with noise added.
+;
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	    infile1: Stacked and masked data cube.
+;		infile2: voronoi_2d_binning_output.txt or equivalent.
+;		infile3: MILES_library directory.
+;		infile4: voronoi_2d_bins.txt or equivalent.
+;		outfile: ppxf_v_bin_output or equivalent.
+;		start_range: Starting range in pixels for the fit, if you want to set manually.
+;		end_range: Ending range of fit, used to isolate absorbtion features to fit to.
+;		template_list: Used to pick a subset of the library for the fitting.
+;		monte_iterations: Number of monte carlo iterations.
+;		redshift: Initial redshift guess.
+;
+; NOTES:
+;	If run directly from IDL, edit everything within an 'if (testing ne 1)'
+;		statement to have the proper directories.
+;	Also of note, PPXF.pro has been edited to allow printing out of the PPXF fitting results.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	None written yet.
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;		PPXF from Michele Cappellari: http://www-astro.physics.ox.ac.uk/~mxc/idl/
+;
+; MODIFICATION HISTORY:
+;   V1.0 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
+
 ;sb version for plotting velocities binned using voronoi tesselaton
 ;modified by Jimmy
 

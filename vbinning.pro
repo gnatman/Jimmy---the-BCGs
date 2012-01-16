@@ -1,3 +1,56 @@
+;#############################################################################
+;
+; Based initially off code written by Michele Cappellari
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   VBINNING
+;
+; PURPOSE:
+;   This code bins up the fibers using the Voronoi 2D binning method developed by
+;	Cappellari.  
+;
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile: List of bins, already run through the signal/noise cut
+;	targetsn: The target signal/noise to bin up to
+;	outfile1: The list of 2D bins after binning to the target signal/noise
+;
+; NOTES:
+;	If run directly from IDL, edit everything within an 'if (testing ne 1)'
+;		statement to have the proper directories.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	None
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;
+; MODIFICATION HISTORY:
+;   V1.0 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro vbinning
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.

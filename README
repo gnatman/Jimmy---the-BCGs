@@ -1,2 +1,4 @@
 This code was written in IDL to analyze IFU data from the VIMOS Spectrograph.
 Better readme to come.
+Will describe what each file does.
+Basically, vimos_data_reduction.sh is used to call all the idl files, and most of them pull their inputs from that script.

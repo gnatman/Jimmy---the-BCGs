@@ -1,3 +1,75 @@
+;#############################################################################
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   FINAL_MASK
+;
+; PURPOSE:
+;   This code reads in the final stacked cube and masks it to focus only on
+;	either the BCG or it's companion.  Can also be used to block out bright 
+;	objects in the field of view that screw up our results.
+;
+;
+; CALLING SEQUENCE:
+;   final_mask,'target','mask'
+;	eg final_mask,'1050','all'
+;
+; INPUT PARAMETERS:
+;   Target: Name of the galaxy to be masked.
+;   Mask: Chooses the mask file to be read in.  File format is two columns, x & y,
+;		each row is the x and y coordinates of the fibers to be masked.  I use 
+;		ds9 to identify which fibers need to be masked.
+;
+; MASKS:
+;   all: Neither the galaxy or the companion is masked out, only bad fibers.
+;   main: Focus on the BCG, and mask out all companions.
+;   comp: Focus on the 1st companion, and mask everything else.
+;	2ndcomp: If a 2nd companion exists, focus on it, and mask everything else.
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile1: The directory containing the spectra files produced by the pipeline.
+;	final_mask: The location of the mask file.
+;
+; OUTPUT:
+;   One data cube, same as input, but now masked.
+;
+; NOTES:
+;	If run directly from IDL, edit everything within an 'if (testing ne 1)'
+;		statement to have the proper directories.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	1.Read in the data cube, and mask file.
+;	2.Mask the data.
+;	3.Write cube back out.
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;
+; MODIFICATION HISTORY:
+;   V1.0 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro final_mask,target,mask
 
 ;By reading in a list of fibers to set to zero, we can mask one portion of the final data cube.

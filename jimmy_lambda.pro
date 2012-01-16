@@ -1,3 +1,47 @@
+;#############################################################################
+;
+; Based initially off code written by Sarah Brough, Australian Astronomical Observatory
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   JIMMY_LAMBDA_V_M
+;
+; PURPOSE:
+;   This code calculates the lambda parameter for a given galaxy.
+;
+;
+; NOTES:
+;	Still based very heavily off of Sarah's code, plan on completely rewriting
+;	this before writing my paper.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	None
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       None
+;
+; MODIFICATION HISTORY:
+;   V0.1 -- Created by Sarah, 2010
+;	V0.2 -- Edited by Jimmy, mostly formatting and commenting.
+;
+;----------------------------------------------------------------------------
 pro jimmy_lambda, gal, obj
 
 ;

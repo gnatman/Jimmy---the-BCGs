@@ -1,3 +1,45 @@
+;#############################################################################
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   SDSS_CROP
+;
+; PURPOSE:
+;   This code pulls in SDSS files containing the galaxy of interest and then 
+;	crops them down so that they are much easier to work with
+;
+;
+; NOTES:
+;	Still very ugly, not ready for prime time.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	None
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       None
+;
+; MODIFICATION HISTORY:
+;   V0.1 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro sdss_crop,target
 
 ;This directory contains other directories, named by target, which contain the actual SDSS image files, in all 5 grisms

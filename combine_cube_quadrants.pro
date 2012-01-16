@@ -1,16 +1,79 @@
+;#############################################################################
+;
+; Based initially off code written by Sarah Brough, Australian Astronomical Observatory
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   COMBINE_CUBE_QUADRANTS
+;
+; PURPOSE:
+;	This code pulls each individual cube quadrant created by
+;		"spectra_to_cube_quadrant" and combines them into one cube
+;
+;
+; CALLING SEQUENCE:
+;   combine_cube_quadrants,'observation','flag'
+;	eg combine_cube_quadrants,'a','180'
+;
+; INPUT PARAMETERS:
+;   Observation: Galaxies have multiple pointings, this identifies which
+;		pointing the data is from, identified chronologically by letter
+;   Flag: To identify special treatment that the data needs.
+;
+; FLAGS:
+;   180: Identifies pointings which are rotated by 180 degrees from the initial
+;		pontings
+;   STD: For standard star flux calibrated data, to be removed as it doesn't help
+;		improve the quality of the results.
+;   PT2: For data with another pointing on a different day.  Needed because sky
+;		fibers calibration files can vary from day to day
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile1: The directory containing the spectra files produced by the pipeline.
+;
+; OUTPUT:
+;   One data cube with 3 extentions.
+;
+; NOTES:
+;	If run directly from IDL, edit everything within an 'if (testing ne 1)'
+;		statement to have the proper directories.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	1.Read in the individual quadrants
+;	2.Combine them.
+;	3.Renormalize fiber transmission over the whole cube
+;	4.Write Cube
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;		Hitme.pro Written by Rob Sharp Australian Astronomical Observatory
+;
+; MODIFICATION HISTORY:
+;   V1.0 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro combine_cube_quadrants, obs,flag
-
-;Execute this program using the following syntax, combine_cube_quadrants,'obs' letter' eg'a'
-;The flag parameter is used to identify whether we're working with weird data, such as 180 degree rotated (180) or Standard Photometry corrected (std).
-
-;This code pulls each individual cube quadrant from "spectra_to_cube_quadrant" and combines them into one cube
-
-;;;Logical Progression of IDL code
-;1.Read in the individual quadrants
-;2.Combine them.
-;3.Renormalize fiber transmission over the whole cube
-;4.Write Cube
-
 
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.

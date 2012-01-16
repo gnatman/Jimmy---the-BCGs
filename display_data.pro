@@ -1,3 +1,79 @@
+;#############################################################################
+;
+; Based initially off code written by Sarah Brough, Australian Astronomical Observatory
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   DISPLAY_DATA
+;
+; PURPOSE:
+;	This code makes pretty plots to display results after data has been binned
+;	and run through PPXF.  It also creates a text file containing important
+;	kinematic data for each bin, and the galaxy as a whole.
+;
+;
+; CALLING SEQUENCE:
+;   display_data,'type','galaxy'
+;	eg display_data,'vbinned','1050'
+;
+; INPUT PARAMETERS:
+;   Type: The method by which the data was binned.
+;   Galaxy: Identifies the name of the galaxy to be plotted.
+;
+; TYPES:
+;   vbinned: Binned by Voronoi Method
+;   one: Everything binned together into one bin.
+;   rad: Data is binned radially, currently not very useful.
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile1: Voronoi 2d bins text file
+;	infile2: PPXF output file
+;	infile3: Voronoi 2d Binning Output text file
+;
+; OUTPUT:
+;   Encapsulated Postscript files and a text file with important parameters.
+;
+; NOTES:
+;	Currently all screwed up because of huge edits I had to make to create plots for my AAS poster.
+;	I run set_colours.pro (Rob Sharp) before running this routine, to properly set the colors used.
+;	Come to think of it, not sure that's it's actually necessary, just been doing it for a long time.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	1.Read in the files containing velocities and dispersions.
+;	2.Compute important kinematic properties and write to file.
+;	3.Make pretty plots using other people's routines.
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;		Voronoi Binning optional file by Michele Cappellari http://www-astro.physics.ox.ac.uk/~mxc/idl/
+;		set_colours.pro Written by Rob Sharp, Australian Astronomical Observatory
+;		wmean.pro by Chris Beaumont, http://www.ifa.hawaii.edu/~beaumont/code/
+;
+; MODIFICATION HISTORY:
+;   V0.5 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro display_data,type,galaxy
 
 sauron_colormap

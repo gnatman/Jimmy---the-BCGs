@@ -1,32 +1,100 @@
+;#############################################################################
+;
+; Based initially off code written by Sarah Brough, Australian Astronomical Observatory
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   SPECTRA_TO_CUBE_QUADRANT
+;
+; PURPOSE:
+;   This code creates a data cube for each quadrant containing the spectra.
+;   Variance data and spectra with skylines are added as seperate extensions.
+;	During the proces it scales for differences in fiber transmission and
+;	subtracts the sky
+;
+;
+; CALLING SEQUENCE:
+;   spectra_to_cube_quadrant,'quadrant number','observation','flag'
+;	eg spectra_to_cube_quadrant,'1','a','dummy'
+;
+; INPUT PARAMETERS:
+;   Quadrant Number: A number 1-4 identifying the Quadrant, starting with 1 in the 
+;		upper right corner and going counter-clockwise.
+;   Observation: Galaxies have multiple pointings, this identifies which
+;		pointing the data is from, identified chronologically by letter
+;   Flag: To identify special treatment that the data needs.
+;
+; FLAGS:
+;   180: Identifies pointings which are rotated by 180 degrees from the initial
+;		pontings
+;   STD: For standard star flux calibrated data, to be removed as it doesn't help
+;		improve the quality of the results.
+;   PT2: For data with another pointing on a different day.  Needed because sky
+;		fibers calibration files can vary from day to day
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile1: The directory containing the spectra files produced by the pipeline.
+;	infile2: The calibration files directory.
+;	fiber_mask: Filename of the list of bad fibers.
+;	'skyfiber'+Quad+obs+'start': The first fiber that defines the sky fiber region
+;	'skyfiber'+Quad+obs+'end': The last fiber that defines the sky fiber region
+;
+; OUTPUT:
+;   One data cube with 3 extentions.  Skylines are kept in one extention to be
+;		used later when normalizing transmission across the whole cube.
+;
+; NOTES:
+;	If run directly from IDL, edit everything within an 'if (testing ne 1)'
+;		statement to have the proper directories.
+;	May need to edit wave_pix1 & wave_pix2 depending on instrument and pipeline.
+;		These parameters determine the pixels used for background noise
+;		determination and should be taken from a quiet part of the spectrum near
+;		the beginning. Currently set for the VIMOS pipeline.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	1.Read in the data, and reference files.
+;	2.Set Bad fibers to zero
+;	3.Determine Variance
+;	4.Determine Sky Fibers (Sky fibers are also used for noise determination)
+;	5.Determine Noise
+;	6.Calculate and Subtract Noise
+;	7.Determine Gaussian Fit to Sky Fibers
+;	8.Normalize Transmission
+;	9.Remove Sky
+;	10.Create Cubes
+;	11.Write Cubes
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;		Heirarch.pro http://www.astro.uu.se/~piskunov/RESEARCH/REDUCE/reduce.html
+;		Hitme.pro Written by Rob Sharp Australian Astronomical Observatory
+;
+; MODIFICATION HISTORY:
+;   V1.0 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro spectra_to_cube_quadrant,quad,obs,flag
-
-;Execute this program using the following syntax:
-;spectra_to_cube_quadrant,'quadrant number','observation','flag' letter' eg; '1','a','dummy'
-;The flag parameter is used to identify whether we're working with weird data.
-;Current flags: 180 degree rotated (180) or Standard Photometry corrected (std), or a 2nd set of data observed at a different time, but not rotated (pt2).
-;If run from a bash script, the following environmental variables must be defined in the bash script that calls this program:
-;infile1 which is the project files directory, holding the spectra files
-;infile2 which is the calibration files directory
-;fiber_mask which contains the list of bad fibers
-;'skyfiber'+Quad+obs+'start' or 'skyfiber'+Quad+obs+'end' is the starting or ending sky fiber for that quadrant and observation
-;If run directly from IDL, edit everything within an 'if (testing ne 1)' statement to have the proper directories.
-;May need to edit wave_pix1 & wave_pix2 depending on instrument and pipeline
-
-;This code creates a cube for each quadrant containing the spectral data and variance data as a seperate extension
-;During the proces it scales for differences in fibre transmission and subtracts the sky
-
-;;;Logical Progression of IDL code
-;1.Read in the data, and reference files.
-;2.Set Bad fibers to zero
-;3.Determine Variance
-;4.Determine Sky Fibers (Sky fibers are also used for noise determination)
-;5.Determine Noise
-;6.Calculate and Subtract Noise
-;7.Determine Gaussian Fit to Sky Fibers
-;8.Normalize Transmission
-;9.Remove Sky
-;10.Create Cubes
-;11.Write Cubes
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
 testing_string=getenv('not_testing') ;if called from a bash script, these two lines pull it out of testing mode

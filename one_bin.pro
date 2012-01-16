@@ -1,3 +1,54 @@
+;#############################################################################
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   ONE_BIN
+;
+; PURPOSE:
+;   This code pulls in all the fibers for the galaxy or companion and throws
+;	them into one bin.
+;
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile: The Voronoi 2d binned data
+;	outfile1: X and Y positions of bins
+;	outfile2: X and Y bins
+;
+; NOTES:
+;	If run directly from IDL, edit everything within an 'if (testing ne 1)'
+;	statement to have the proper directories. At least when those statements
+;	actually get added.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	None
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       None
+;
+; MODIFICATION HISTORY:
+;   V0.5 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
 pro one_bin
 
 rdfloat, getenv('infile'), x, y, xpix, ypix, signal, noise,SKIPLINE=1

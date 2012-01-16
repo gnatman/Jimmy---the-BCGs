@@ -1,3 +1,57 @@
+;#############################################################################
+;
+; Based initially off code written by Sarah Brough, Australian Astronomical Observatory
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   SIGNAL_NOISE_CUT
+;
+; PURPOSE:
+;   This code calculates the signal to noise for each bin, and then performs a
+;	signal to noise cut.
+;
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile: The fully stacked fits file to be run through the procedure
+;	sncut: The signal to noise cutoff level
+;	outfile1: The ouput text file that lists the bins that pass the cut
+;
+;
+; NOTES:
+;	If run directly from IDL, edit everything within an 'if (testing ne 1)'
+;	statement to have the proper directories. (Not implimented yet)
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	None
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;
+; MODIFICATION HISTORY:
+;   V0.9 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro signal_noise_cut
 
 ;Location of test.fits file to be s/n cutted

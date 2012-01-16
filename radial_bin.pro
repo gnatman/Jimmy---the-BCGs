@@ -1,3 +1,63 @@
+;#############################################################################
+;
+; Last updated by Jimmy
+; E-mail: jimmy@physics.tamu.edu
+; 
+; Updated versions of the software are available from my web page
+; http://galaxies.physics.tamu.edu/jimmy/
+;
+; This software is provided as is without any warranty whatsoever.
+; Permission to use, for non-commercial purposes is granted.
+; Permission to modify for personal or internal use is granted,
+; provided this copyright and disclaimer are included unchanged
+; at the beginning of the file. All other rights are reserved.
+;
+;#############################################################################
+;
+; NAME:
+;   RADIAL_BIN
+;
+; PURPOSE:
+;   This code is used to create radial bins.  It calls jimmy_circle to draw
+;	draw the circles, and then pulls in the ppxf data to bin it all together.
+;
+;
+; CALLING SEQUENCE:
+;   jimmy_circle, radius, xout, yout, h
+;
+; INPUT PARAMETERS:
+;   None
+;
+; OUTPUT PARAMETERS:
+;   None
+;
+; ENVIRONMENTAL VARIABLES:
+;	If called by a bash script, the following variables must be defined in the bash
+;	script that called this program.
+;
+;	infile: The text file that describes the binning.
+;	outfile1: radial_2d_binning_output.txt
+;	outfile2: radial_2d_bins.txt
+;
+; NOTES:
+;	Currently not very well documented, and not very well written.  But may
+;	not use this code at all, so not going to fix right now.
+;
+;--------------------------------
+;
+; LOGICAL PROGRESSION OF IDL CODE:
+;	None
+;
+;--------------------------------
+;
+; REQUIRED ROUTINES:
+;       None
+;
+; MODIFICATION HISTORY:
+;   V1.0 -- Created by Jimmy, 2011
+;
+;----------------------------------------------------------------------------
+
 pro radial_bin
 
 rdfloat, getenv('infile'), x, y, xpix, ypix, signal, noise,SKIPLINE=1
