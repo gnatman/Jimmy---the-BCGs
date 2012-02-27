@@ -27,23 +27,17 @@
 ;
 ;
 ; CALLING SEQUENCE:
-;   spectra_to_cube_quadrant,'quadrant number','observation','flag'
-;	eg spectra_to_cube_quadrant,'1','a','dummy'
+;   spectra_to_cube_quadrant,'quadrant number','observation','pointing'
+;	eg spectra_to_cube_quadrant,'1','a','pt1'
 ;
 ; INPUT PARAMETERS:
 ;   Quadrant Number: A number 1-4 identifying the Quadrant, starting with 1 in the 
 ;		upper right corner and going counter-clockwise.
 ;   Observation: Galaxies have multiple pointings, this identifies which
 ;		pointing the data is from, identified chronologically by letter
-;   Flag: To identify special treatment that the data needs.
-;
-; FLAGS:
-;   180: Identifies pointings which are rotated by 180 degrees from the initial
-;		pontings
-;   STD: For standard star flux calibrated data, to be removed as it doesn't help
-;		improve the quality of the results.
-;   PT2: For data with another pointing on a different day.  Needed because sky
-;		fibers calibration files can vary from day to day
+;   Pointing: To identify which pointing we're reducing, different pointings
+;		need different calibration files, and may be rotated by 180 degrees
+;		which would be identified as pt180, pt181, etc.
 ;
 ; ENVIRONMENTAL VARIABLES:
 ;	If called by a bash script, the following variables must be defined in the bash
@@ -94,7 +88,7 @@
 ;
 ;----------------------------------------------------------------------------
 
-pro spectra_to_cube_quadrant,quad,obs,flag
+pro spectra_to_cube_quadrant,quad,obs,pointing
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
 testing_string=getenv('not_testing') ;if called from a bash script, these two lines pull it out of testing mode
@@ -102,9 +96,9 @@ testing=FIX(testing_string)
 
 ;Defined way ahead of time because these 3 lines are most edited when checking sky fibers
 if (testing ne 1) then begin
-    sky_fiber_1=203
-    sky_fiber_2=238
-    gal_name='1048'
+    sky_fiber_1=242
+    sky_fiber_2=278
+    gal_name='2039'
 endif
 
 ;READ IN THE DATA AND REFERENCE FILES
@@ -112,33 +106,12 @@ endif
 
 if (testing) then begin
 ;environmental variables are set with the export command in bash.
-    file=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'.fits'
-    if (flag eq '180') then begin
-        file=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_180.fits'
-    endif
-    if (flag eq 'pt2') then begin
-        file=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_pt2.fits'
-    endif
-    if (flag eq 'std') then begin
-        file=getenv('infile1')+'ifu_science_flux_reduced'+Quad+''+obs+'.fits'
-    endif
-    if (flag eq '180std') then begin
-        file=getenv('infile1')+'ifu_science_flux_reduced'+Quad+''+obs+'_180.fits'
-    endif
-    if (flag eq 'pt2std') then begin
-        file=getenv('infile1')+'ifu_science_flux_reduced'+Quad+''+obs+'_pt2.fits'
-    endif
+    file=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_'+pointing+'.fits'
     ifu_table_file=getenv('infile2')+'ifutableHR'+Quad+'.fits'
 endif
 
 if (testing ne 1) then begin
-        file='/Users/jimmy/Astro/reduced/'+gal_name+'pro/ifu_science_reduced'+Quad+''+obs+'.fits'
-        if (flag eq '180') then begin
-            file='/Users/jimmy/Astro/reduced/'+gal_name+'pro/ifu_science_reduced'+Quad+''+obs+'_180.fits'
-        endif
-        if (flag eq 'pt2') then begin
-            file='/Users/jimmy/Astro/reduced/'+gal_name+'pro/ifu_science_reduced'+Quad+''+obs+'_pt2.fits'
-        endif
+        file='/Users/jimmy/Astro/reduced/'+gal_name+'pro/ifu_science_reduced'+Quad+''+obs+'_'+pointing+'.fits'
         ifu_table_file='/Users/jimmy/Astro/reduced/cal/ifutableHR'+Quad+'.fits'
 endif
 
@@ -177,7 +150,7 @@ fiber_ident=fltarr(number_of_wave_pixels,number_of_fibers) ;used in the diagnost
 bad_fibers = findgen(number_of_fibers) ;stores the column list that gets read in
 
 if (testing ne 1) then begin
-    readcol,'/Users/jimmy/Astro/reduced/'+gal_name+'sof/bad_fibers_'+Quad+'.txt',bad_fibers, FORMAT='F'
+    readcol,'/Users/jimmy/Astro/reduced/'+gal_name+pointing+'sof/bad_fibers_'+Quad+'.txt',bad_fibers, FORMAT='F'
 endif
 
 if (testing) then begin
@@ -219,12 +192,8 @@ endif
 ;Sky fibers are pulled from the bash script or defined above if testing.
 
 if (testing) then begin
-    sky_fiber_1=FIX(getenv('skyfiber'+Quad+obs+'start'))
-    sky_fiber_2=FIX(getenv('skyfiber'+Quad+obs+'end'))
-    if (flag eq '180') or (flag eq 'pt2') then begin
-        sky_fiber_1=FIX(getenv('skyfiber'+Quad+obs+'start_180')) ;180 is also used for pt2 observations, I know it's messy to use the 180 keyword to define pt2, but it does make me have to edit less files
-        sky_fiber_2=FIX(getenv('skyfiber'+Quad+obs+'end_180'))
-    endif
+    sky_fiber_1=FIX(getenv('skyfiber'+'_'+Quad+obs+'_'+pointing+'_'+'start'))
+    sky_fiber_2=FIX(getenv('skyfiber'+'_'+Quad+obs+'_'+pointing+'_'+'end'))
 endif
 
 ;idl counts from zero whereas the VIMOS pipeline counts from 1.
@@ -383,7 +352,7 @@ for i=0,number_of_fibers-1 do begin
         var_trans[*,i]=(var1[*,i]/(scale[i])^2) ;as is multiplicative need to adjust variance too
     endif else begin
         im_trans[*,i]=0.0 ;if the flux is zero, then the the im_trans should also be zero
-        var_trans[*,i]=9.9e6^2 ;******why does the variance transmission get set to a very high number, and not to zero.******
+        var_trans[*,i]=9.9e6^2 ;zero variance would mean good data, so set it very high.
     endelse
 endfor
  
@@ -500,28 +469,8 @@ endfor
 ;WRITING INDIVIDUAL QUADRANT OUT AS CUBE
 
 if (testing) then begin
-    fileout=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_idl.fits'
-    diagout=getenv('infile1')+'diagnostic'+Quad+''+obs+'.fits'
-    if (flag eq '180') then begin
-        fileout=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_idl_180.fits'
-        diagout=getenv('infile1')+'diagnostic'+Quad+''+obs+'_180.fits'
-    endif
-    if (flag eq 'pt2') then begin
-        fileout=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_idl_pt2.fits'
-        diagout=getenv('infile1')+'diagnostic'+Quad+''+obs+'_pt2.fits'
-    endif
-    if (flag eq 'std') then begin
-        fileout=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_std_idl.fits'
-        diagout=getenv('infile1')+'diagnostic'+Quad+''+obs+'_std.fits'
-    endif
-    if (flag eq '180std') then begin
-        fileout=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_std_idl_180.fits'
-        diagout=getenv('infile1')+'diagnostic'+Quad+''+obs+'_std_180.fits'
-    endif
-    if (flag eq 'pt2std') then begin
-        fileout=getenv('infile1')+'ifu_science_reduced'+Quad+''+obs+'_std_idl_pt2.fits'
-        diagout=getenv('infile1')+'diagnostic'+Quad+''+obs+'_pt2.fits'
-    endif
+    fileout=getenv('infile1')+'ifu_science_reduced_'+Quad+obs+'_idl_'+pointing+'.fits'
+    diagout=getenv('infile1')+'diagnostic_'+Quad+obs+'_'+pointing+'.fits'
 endif
 
 if (testing ne 1) then begin

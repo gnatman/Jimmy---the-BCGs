@@ -31,15 +31,10 @@
 ; INPUT PARAMETERS:
 ;   Observation: Galaxies have multiple pointings, this identifies which
 ;		pointing the data is from, identified chronologically by letter
-;   Flag: To identify special treatment that the data needs.
+;   Pointing: To identify which pointing we're reducing, different pointings
+;		need different calibration files, and may be rotated by 180 degrees
+;		which would be identified as pt180, pt181, etc.
 ;
-; FLAGS:
-;   180: Identifies pointings which are rotated by 180 degrees from the initial
-;		pontings
-;   STD: For standard star flux calibrated data, to be removed as it doesn't help
-;		improve the quality of the results.
-;   PT2: For data with another pointing on a different day.  Needed because sky
-;		fibers calibration files can vary from day to day
 ;
 ; ENVIRONMENTAL VARIABLES:
 ;	If called by a bash script, the following variables must be defined in the bash
@@ -73,7 +68,7 @@
 ;
 ;----------------------------------------------------------------------------
 
-pro combine_cube_quadrants, obs,flag
+pro combine_cube_quadrants,obs,pointing
 
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
@@ -95,117 +90,22 @@ if (testing ne 1) then begin
 endif
 
 ;Read in all the files we'll be combining, as well as the extentions that we'll be combining.
-im1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl.fits',0,header0, /SILENT)
-im1_notsky=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl.fits',1,header0, /SILENT)
-var1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl.fits',2,header0, /SILENT)
-diag1=mrdfits(dir+'diagnostic1'+obs+'.fits',0,header0, /SILENT)
-im2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl.fits',0,header0, /SILENT)
-im2_notsky=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl.fits',1,header0, /SILENT)
-var2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl.fits',2,header0, /SILENT)
-diag2=mrdfits(dir+'diagnostic2'+obs+'.fits',0,header0, /SILENT)
-im3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl.fits',0,header0, /SILENT)
-im3_notsky=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl.fits',1,header0, /SILENT)
-var3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl.fits',2,header0, /SILENT)
-diag3=mrdfits(dir+'diagnostic3'+obs+'.fits',0,header0, /SILENT)
-im4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl.fits',0,header0, /SILENT)
-im4_notsky=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl.fits',1,header0, /SILENT)
-var4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl.fits',2,header0, /SILENT)
-diag4=mrdfits(dir+'diagnostic4'+obs+'.fits',0,header0, /SILENT)
-
-if (flag eq '180') then begin
-im1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl_180.fits',0,header0, /SILENT)
-im1_notsky=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl_180.fits',1,header0, /SILENT)
-var1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl_180.fits',2,header0, /SILENT)
-diag1=mrdfits(dir+'diagnostic1'+obs+'_180.fits',0,header0, /SILENT)
-im2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl_180.fits',0,header0, /SILENT)
-im2_notsky=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl_180.fits',1,header0, /SILENT)
-var2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl_180.fits',2,header0, /SILENT)
-diag2=mrdfits(dir+'diagnostic2'+obs+'_180.fits',0,header0, /SILENT)
-im3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl_180.fits',0,header0, /SILENT)
-im3_notsky=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl_180.fits',1,header0, /SILENT)
-var3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl_180.fits',2,header0, /SILENT)
-diag3=mrdfits(dir+'diagnostic3'+obs+'_180.fits',0,header0, /SILENT)
-im4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl_180.fits',0,header0, /SILENT)
-im4_notsky=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl_180.fits',1,header0, /SILENT)
-var4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl_180.fits',2,header0, /SILENT)
-diag4=mrdfits(dir+'diagnostic4'+obs+'_180.fits',0,header0, /SILENT)
-endif
-
-if (flag eq 'pt2') then begin
-im1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl_pt2.fits',0,header0, /SILENT)
-im1_notsky=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl_pt2.fits',1,header0, /SILENT)
-var1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_idl_pt2.fits',2,header0, /SILENT)
-diag1=mrdfits(dir+'diagnostic1'+obs+'_pt2.fits',0,header0, /SILENT)
-im2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl_pt2.fits',0,header0, /SILENT)
-im2_notsky=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl_pt2.fits',1,header0, /SILENT)
-var2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_idl_pt2.fits',2,header0, /SILENT)
-diag2=mrdfits(dir+'diagnostic2'+obs+'_pt2.fits',0,header0, /SILENT)
-im3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl_pt2.fits',0,header0, /SILENT)
-im3_notsky=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl_pt2.fits',1,header0, /SILENT)
-var3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_idl_pt2.fits',2,header0, /SILENT)
-diag3=mrdfits(dir+'diagnostic3'+obs+'_pt2.fits',0,header0, /SILENT)
-im4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl_pt2.fits',0,header0, /SILENT)
-im4_notsky=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl_pt2.fits',1,header0, /SILENT)
-var4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_idl_pt2.fits',2,header0, /SILENT)
-diag4=mrdfits(dir+'diagnostic4'+obs+'_pt2.fits',0,header0, /SILENT)
-endif
-
-if (flag eq 'std') then begin
-im1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl.fits',0,header0, /SILENT)
-im1_notsky=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl.fits',1,header0, /SILENT)
-var1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl.fits',2,header0, /SILENT)
-diag1=mrdfits(dir+'diagnostic1'+obs+'_std.fits',0,header0, /SILENT)
-im2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl.fits',0,header0, /SILENT)
-im2_notsky=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl.fits',1,header0, /SILENT)
-var2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl.fits',2,header0, /SILENT)
-diag2=mrdfits(dir+'diagnostic2'+obs+'_std.fits',0,header0, /SILENT)
-im3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl.fits',0,header0, /SILENT)
-im3_notsky=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl.fits',1,header0, /SILENT)
-var3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl.fits',2,header0, /SILENT)
-diag3=mrdfits(dir+'diagnostic3'+obs+'_std.fits',0,header0, /SILENT)
-im4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl.fits',0,header0, /SILENT)
-im4_notsky=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl.fits',1,header0, /SILENT)
-var4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl.fits',2,header0, /SILENT)
-diag4=mrdfits(dir+'diagnostic4'+obs+'_std.fits',0,header0, /SILENT)
-endif
-
-if (flag eq '180std') then begin
-im1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl_180.fits',0,header0, /SILENT)
-im1_notsky=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl_180.fits',1,header0, /SILENT)
-var1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl_180.fits',2,header0, /SILENT)
-diag1=mrdfits(dir+'diagnostic1'+obs+'_std_180.fits',0,header0, /SILENT)
-im2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl_180.fits',0,header0, /SILENT)
-im2_notsky=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl_180.fits',1,header0, /SILENT)
-var2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl_180.fits',2,header0, /SILENT)
-diag2=mrdfits(dir+'diagnostic2'+obs+'_std_180.fits',0,header0, /SILENT)
-im3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl_180.fits',0,header0, /SILENT)
-im3_notsky=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl_180.fits',1,header0, /SILENT)
-var3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl_180.fits',2,header0, /SILENT)
-diag3=mrdfits(dir+'diagnostic3'+obs+'_std_180.fits',0,header0, /SILENT)
-im4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl_180.fits',0,header0, /SILENT)
-im4_notsky=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl_180.fits',1,header0, /SILENT)
-var4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl_180.fits',2,header0, /SILENT)
-diag4=mrdfits(dir+'diagnostic4'+obs+'_std_180.fits',0,header0, /SILENT)
-endif
-
-if (flag eq 'pt2std') then begin
-im1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl_pt2.fits',0,header0, /SILENT)
-im1_notsky=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl_pt2.fits',1,header0, /SILENT)
-var1=mrdfits(dir+'/ifu_science_reduced1'+obs+'_std_idl_pt2.fits',2,header0, /SILENT)
-diag1=mrdfits(dir+'diagnostic1'+obs+'_std_pt2.fits',0,header0, /SILENT)
-im2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl_pt2.fits',0,header0, /SILENT)
-im2_notsky=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl_pt2.fits',1,header0, /SILENT)
-var2=mrdfits(dir+'/ifu_science_reduced2'+obs+'_std_idl_pt2.fits',2,header0, /SILENT)
-diag2=mrdfits(dir+'diagnostic2'+obs+'_std_pt2.fits',0,header0, /SILENT)
-im3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl_pt2.fits',0,header0, /SILENT)
-im3_notsky=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl_pt2.fits',1,header0, /SILENT)
-var3=mrdfits(dir+'/ifu_science_reduced3'+obs+'_std_idl_pt2.fits',2,header0, /SILENT)
-diag3=mrdfits(dir+'diagnostic3'+obs+'_std_pt2.fits',0,header0, /SILENT)
-im4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl_pt2.fits',0,header0, /SILENT)
-im4_notsky=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl_pt2.fits',1,header0, /SILENT)
-var4=mrdfits(dir+'/ifu_science_reduced4'+obs+'_std_idl_pt2.fits',2,header0, /SILENT)
-diag4=mrdfits(dir+'diagnostic4'+obs+'_std_pt2.fits',0,header0, /SILENT)
-endif
+im1=mrdfits(dir+'/ifu_science_reduced_1'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
+im1_notsky=mrdfits(dir+'/ifu_science_reduced_1'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
+var1=mrdfits(dir+'/ifu_science_reduced_1'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
+diag1=mrdfits(dir+'diagnostic_1'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+im2=mrdfits(dir+'/ifu_science_reduced_2'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
+im2_notsky=mrdfits(dir+'/ifu_science_reduced_2'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
+var2=mrdfits(dir+'/ifu_science_reduced_2'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
+diag2=mrdfits(dir+'diagnostic_2'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+im3=mrdfits(dir+'/ifu_science_reduced_3'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
+im3_notsky=mrdfits(dir+'/ifu_science_reduced_3'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
+var3=mrdfits(dir+'/ifu_science_reduced_3'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
+diag3=mrdfits(dir+'diagnostic_3'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+im4=mrdfits(dir+'/ifu_science_reduced_4'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
+im4_notsky=mrdfits(dir+'/ifu_science_reduced_4'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
+var4=mrdfits(dir+'/ifu_science_reduced_4'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
+diag4=mrdfits(dir+'diagnostic_4'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
 
 crval=fxpar(header0,'CRVAL3')
 crpix=fxpar(header0,'CRPIX3')
@@ -357,28 +257,8 @@ endfor
 ;Done using standard idl file writes
 
 if (testing) then begin
-    fileout=dir+'ifu_science_cube'+obs+'_idl.fits'
-    diagout=dir+'diag_cube'+obs+'.fits'
-    if (flag eq '180') then begin
-        fileout=dir+'ifu_science_cube'+obs+'_idl_180.fits'
-        diagout=dir+'diag_cube'+obs+'_180.fits'    
-    endif
-    if (flag eq 'pt2') then begin
-        fileout=dir+'ifu_science_cube'+obs+'_idl_pt2.fits'
-        diagout=dir+'diag_cube'+obs+'_pt2.fits'    
-    endif
-    if (flag eq 'std') then begin
-        fileout=dir+'ifu_science_cube'+obs+'_std_idl.fits'
-        diagout=dir+'diag_cube'+obs+'_std.fits'    
-    endif
-    if (flag eq '180std') then begin
-        fileout=dir+'ifu_science_cube'+obs+'_std_idl_180.fits'
-        diagout=dir+'diag_cube'+obs+'_std_180.fits'    
-    endif
-    if (flag eq 'pt2std') then begin
-        fileout=dir+'ifu_science_cube'+obs+'_std_idl_pt2.fits'
-        diagout=dir+'diag_cube'+obs+'_std_pt2.fits'    
-    endif
+    fileout=dir+'ifu_science_cube'+obs+'_idl_'+pointing+'.fits'
+    diagout=dir+'diag_cube'+obs+'_'+pointing+'.fits'
 endif
 if (testing ne 1) then begin
     fileout='/Users/jimmy/Downloads/ifu_science_cube'+obs+'_idl.fits'
@@ -397,21 +277,10 @@ sxaddpar,head,'CRVAL3',crval
 sxaddpar,head,'CRPIX3',crpix
 sxaddpar,head,'CDELT3',cdelt
 
-;write over former cube with new header
-mwrfits,cube_trans,fileout,head,create=1
-
-;add as new extension variance array
-mwrfits,var_trans,fileout,head,create=0
-
-mwrfits,diag,diagout,head,create=1
-
-if (flag eq '180') then begin
+if (pointing eq 'pt180') then begin ;rotate the cube back to normal so it can be stacked with everything else.
     cube_trans_180=fltarr(cube_x,cube_y,number_of_cube_wave_pixels)
     var_trans_180=fltarr(cube_x,cube_y,number_of_cube_wave_pixels)
     diag_180=fltarr(Nx-20,Ny-20,5)
-    
-    fileout_180=dir+'ifu_science_cube'+obs+'_idl_180.fits'
-    diagout_180=dir+'diag_cube'+obs+'_180.fits'
     
     cube_trans_180=cuberot(cube_trans,180)
     mwrfits,cube_trans_180,fileout_180,head,create=1
@@ -421,24 +290,14 @@ if (flag eq '180') then begin
     
     diag_180=cuberot(diag,180)
     mwrfits,diag_180,diagout,head,create=1
-endif
+endif else begin
+	;write over former cube with new header
+	mwrfits,cube_trans,fileout,head,create=1
 
-if (flag eq '180std') then begin
-    cube_trans_180=fltarr(cube_x,cube_y,number_of_cube_wave_pixels)
-    var_trans_180=fltarr(cube_x,cube_y,number_of_cube_wave_pixels)
-    diag_180=fltarr(Nx-20,Ny-20,5)
-    
-    fileout_180=dir+'ifu_science_cube'+obs+'_std_idl_180.fits'
-    diagout_180=dir+'diag_cube'+obs+'_std_180.fits'
-    
-    cube_trans_180=cuberot(cube_trans,180)
-    mwrfits,cube_trans_180,fileout_180,head,create=1
-    
-    var_trans_180=cuberot(var_trans,180)
-    mwrfits,var_trans_180,fileout_180,head,create=0
-    
-    diag_180=cuberot(diag,180)
-    mwrfits,diag_180,diagout,head,create=1
-endif
+	;add as new extension variance array
+	mwrfits,var_trans,fileout,head,create=0
+
+	mwrfits,diag,diagout,head,create=1
+endelse
 
 end

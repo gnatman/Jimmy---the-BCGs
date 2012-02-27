@@ -139,6 +139,17 @@ if type eq 'vbinned' then begin
 
 print,'min(xbin)',min(xbin),'max(ybin)',max(ybin)
 
+;default
+	xmod = 0
+	ymod = 0
+	bcg_center_x = 0
+	bcg_center_y = 0
+	companion = 'n'
+	xmin = -10
+	xmax = 10
+	ymin = -10
+	ymax = 10
+
 if galaxy eq '1050' then begin
 	xmod = -8
 	ymod = 0.5
@@ -221,9 +232,9 @@ title_y_position = max(ybin)+ymod
 set_plot, 'ps'
 device, filename='velocity.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Velocity'
-;color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=7
+color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
-xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
 endif
@@ -235,9 +246,9 @@ min_scale=-400
 set_plot, 'ps'
 device, filename='velocity_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Velocity'
-;color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=7
+color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
-xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
 endif
@@ -245,9 +256,9 @@ endif
 set_plot, 'ps'
 device, filename='sigma_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Dispersion'
-;color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s', CHARSIZE=2, CHARTHICK=7
+color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
-xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
 endif
@@ -255,9 +266,9 @@ endif
 set_plot, 'ps'
 device, filename='signal_noise.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, max(sn)*1.1], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Signal/Noise'
-;color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N', CHARSIZE=2, CHARTHICK=7
+color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
-xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
 endif 
@@ -267,7 +278,7 @@ device,/close
 endif
 
 ;spelled wrong to skip it until fixed
-if type eq 'radiall' then begin
+if type eq 'radial' then begin
 xin = fltarr(100)
 yin = fltarr(100)
 sigin = fltarr(100)

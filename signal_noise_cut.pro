@@ -71,7 +71,7 @@ cdelt=fxpar(header0,'CDELT3')
 ;wish to calc s/n in 5000A region
 wave_pix_4950 = (4950-crval)/cdelt
 wave_pix_5050 = (5050-crval)/cdelt
-sn_region = findgen(wave_pix_5050 - wave_pix_4950 + 2)
+sn_region = findgen(wave_pix_5050 - wave_pix_4950 + 1) ;+1 or +2 depending on what makes "POLY_FIT: X and Y must have same number of elements" disappear
 sn_wave_region = ((sn_region + wave_pix_4950)*cdelt)+crval ;;rename this variable, maybes
 
 imsize=size(im)

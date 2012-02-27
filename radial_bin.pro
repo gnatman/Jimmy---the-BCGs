@@ -118,7 +118,7 @@ tempnoise = [0]
         xarc = x*0.33
         yarc = y*0.33
         bin = i        
-        print, xpixold, xpix[0], ypixold, ypix[0]
+        ;print, xpixold, xpix[0], ypixold, ypix[0]
         chosen = where(xpixold eq xpix[0] AND ypixold eq ypix[0])
         ;print, 'signal: ',signal
         ;print, 'chosen: ',chosen
