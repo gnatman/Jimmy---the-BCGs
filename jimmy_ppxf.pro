@@ -61,10 +61,6 @@
 ;
 ;----------------------------------------------------------------------------
 
-
-;sb version for plotting velocities binned using voronoi tesselaton
-;modified by Jimmy
-
 function determine_goodPixels, logLam, lamRangeTemp, redshift, act_z
 
 ; Wavelengths of sky lines - correct for z as wavelength re-scaled below
@@ -101,11 +97,11 @@ if (testing) then begin
     openw, 9, getenv('outfile')
 endif
 if (testing ne 1) then begin
-    fits_read, '/Users/jimmy/idl/test.fits', datacube, h
-    var=mrdfits('/Users/jimmy/idl/test.fits',1,h) ;, /SILENT)
-    rdfloat, '/Users/jimmy/idl/voronoi_2d_binning/voronoi_2d_binning_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
-    rdfloat, '/Users/jimmy/idl/voronoi_2d_binning/voronoi_2d_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
-    openw, 9, '/Users/jimmy/idl/ppxf/ppxf_v_bin_output'
+    fits_read, '/Users/jimmy/Astro/reduced/1050pro/temp.fits', datacube, h
+    var=mrdfits('/Users/jimmy/Astro/reduced/1050pro/temp.fits',1,h) ;, /SILENT)
+    rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_binning_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
+    rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
+    openw, 9, '/Users/jimmy/Downloads/ppxf_v_bin_output'
 endif
 
 
@@ -120,8 +116,6 @@ initial_pixel_range = imsize[3]
 goodpix_safe1=fltarr(max(binNum)+1)
 goodpix_safe=fltarr(max(binNum)+1)
 ppxf_plot_number = 0 ;used for tracking file names in the printed plots
-;galaxy=fltarr(initial_pixel_range)
-;noise=fltarr(initial_pixel_range)
 
 
 ;for all the bins, number determined by the binning routines
@@ -129,8 +123,8 @@ for i = 0, max(binNum) do begin
     goodpix_safe[i]=0 ;initially start with our min of range being zero
     goodpix_safe1[i]=initial_pixel_range-1 ;high to the max pixel initially
 
-    noise_level = 100 ;Pull in the noise from binning procedure
-
+    noise_level = total_noise[i] ;Pull in the noise from binning procedure
+	
     ;go through each fiber and see if that pixel is in that bin, then find smallest goodpix range
     for j=0,n_elements(x)-1 do begin
         if binNum[j] eq i then begin
@@ -296,7 +290,7 @@ for i = 0, max(binNum) do begin
     if ( getenv('montecarlointoppxf') eq 'y' ) then begin
         galaxy_size = size(galaxy) ;size of logarithmically rebinned spectra
         for k=0,getenv('monte_iterations')-1 do begin
-            noisy = (RANDOMU(seed, galaxy_size[1])-0.5)*noise_level ;generate noisy for each pixel in the spectra
+            noisy = (RANDOMU(seed, galaxy_size[1])-0.5)*noise_level ;generate noise for each pixel in the spectra
             noisy_galaxy = galaxy + noisy ;make the galaxy noisy
             ;perform a ppxf fit on the noisy galaxy
             noise = galaxy*0 + 1

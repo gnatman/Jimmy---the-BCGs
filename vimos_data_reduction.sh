@@ -485,7 +485,7 @@ if [ $ppxf == y ]; then
     export outfile=$PRO_DIR/ppxf_one_bin_output
     export start_range=1600
     export end_range=2600
-    export template_list="/s025*.fits"
+    export template_list="/s*.fits"
     export monte_iterations=10
     
 idl << EOF
