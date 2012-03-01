@@ -48,10 +48,17 @@ dir='/Users/jimmy/Astro/sdss/'+target+'/'
 ;Use if statements to determine the proper bounds for the cropping.
 
 if (target eq 1027) then begin
-y_start = 0
-y_end = 0
-x_start = 0
-x_end = 0
+y_start = 1120
+y_end = 1250
+x_start = 650
+x_end = 800
+endif
+
+if (target eq 1042) then begin
+y_start = 600
+y_end = 1000
+x_start = 1200
+x_end = 1600
 endif
 
 if (target eq 1050) then begin
@@ -99,11 +106,19 @@ endif
 ;Use if statements to determine the proper filenames for each target.
 
 if (target eq 1027) then begin
-u_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-g_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-r_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-i_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-z_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+u_im=mrdfits(dir+'drC-000756-u3-0508.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-000756-g3-0508.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-000756-r3-0508.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-000756-i3-0508.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-000756-z3-0508.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+endif
+
+if (target eq 1042) then begin
+u_im=mrdfits(dir+'drC-002190-u5-0312.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-002190-g5-0312.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-002190-r5-0312.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-002190-i5-0312.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-002190-z5-0312.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
 endif
 
 if (target eq 1050) then begin

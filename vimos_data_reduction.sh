@@ -425,7 +425,7 @@ if [ $sncut == y ]; then
     #only input is the test.fits file   
     export infile=$PRO_DIR/$2/$1$2.fits
     export outfile1=$PRO_DIR/voronoi_2d_binning.txt
-    export sncut=5.0
+    export sncut=3.0
     # Using the com file allows you to stop and check the s/n cut, EOF requires no user intervention
 #    /Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/sncut.com
 idl <<EOF
@@ -447,7 +447,7 @@ if [ $bin == y ]; then
     export infile=$PRO_DIR/voronoi_2d_binning.txt
     export outfile1=$PRO_DIR/voronoi_2d_binning_output.txt
     export outfile2=$PRO_DIR/voronoi_2d_bins.txt
-    export targetsn=10.0
+    export targetsn=5.0
     #/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/vbinning.com
 idl <<EOF
 set_colours
@@ -485,7 +485,7 @@ if [ $ppxf == y ]; then
     export outfile=$PRO_DIR/ppxf_one_bin_output
     export start_range=1600
     export end_range=2600
-    export template_list="/s*.fits"
+    export template_list="/s025*.fits"
     export monte_iterations=10
     
 idl << EOF
