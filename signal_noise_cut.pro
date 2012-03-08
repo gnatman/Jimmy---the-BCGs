@@ -127,7 +127,10 @@ endfor
 
 ;checking integrated flux measurements
 fibers=findgen(x_fibers*y_fibers)
-plot,fibers,signal/noise,xtitle="fibre number",ytitle="Signal/Noise (4861)"
+
+if CanConnect() then begin
+	plot,fibers,signal/noise,xtitle="fibre number",ytitle="Signal/Noise (4861)"
+endif
 
 signal_clean=where((signal ne 0) and (signal/noise ge limit))
 
