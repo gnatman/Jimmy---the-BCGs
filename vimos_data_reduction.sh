@@ -508,8 +508,9 @@ idl << EOF
 jimmy_ppxf
 EOF
     rm -rf /$PRO_DIR/$2/ppxf_fit_one
-    mv ppxf_fits /$PRO_DIR/$2/ppxf_fit_one
-    
+    if [ -d ppxf_fits ]; then
+    	mv ppxf_fits /$PRO_DIR/$2/ppxf_fit_one
+    fi
     
     export infile2=$PRO_DIR/voronoi_2d_binning_output.txt
     export infile4=$PRO_DIR/voronoi_2d_bins.txt
@@ -520,7 +521,9 @@ idl << EOF
 jimmy_ppxf
 EOF
     rm -rf /$PRO_DIR/$2/ppxf_fits
-    mv ppxf_fits /$PRO_DIR/$2/
+    if [ -d ppxf_fits ]; then
+	    mv ppxf_fits /$PRO_DIR/$2/
+    fi
     
     export infile2=$PRO_DIR/radial_2d_binning_output.txt
     export infile4=$PRO_DIR/radial_2d_bins.txt
@@ -530,7 +533,9 @@ idl << EOF
 jimmy_ppxf
 EOF
     rm -rf /$PRO_DIR/$2/ppxf_fits_rad
-    mv ppxf_fits /$PRO_DIR/$2/ppxf_fits_rad
+    if [ -d ppxf_fits ]; then
+	    mv ppxf_fits /$PRO_DIR/$2/ppxf_fits_rad
+	fi
 fi
 
 if [ $plot == y ]; then

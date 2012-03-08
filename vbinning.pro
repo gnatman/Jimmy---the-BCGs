@@ -69,12 +69,12 @@ if (testing ne 1) then begin
     targetSN = 5.0
 endif
 
-
-; Load a colortable and open a graphic window so you can see the bins
-loadct, 13
-r = GET_SCREEN_SIZE()
-window, xsize=r[0]*0.4, ysize=r[1]*0.8
-
+if CanConnect() then begin
+	; Load a colortable and open a graphic window so you can see the bins
+	loadct, 13
+	r = GET_SCREEN_SIZE()
+	window, xsize=r[0]*0.4, ysize=r[1]*0.8
+endif
 
 ;Perform the binning procedure
 ;input x,y,signal,noise,targetSN
