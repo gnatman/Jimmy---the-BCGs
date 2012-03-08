@@ -46,6 +46,7 @@
 ;
 ; REQUIRED ROUTINES:
 ;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;		CanConnect http://www.idlcoyote.com/code_tips/hasdisplay.html
 ;
 ; MODIFICATION HISTORY:
 ;   V0.9 -- Created by Jimmy, 2011

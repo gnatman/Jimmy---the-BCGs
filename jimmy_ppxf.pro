@@ -55,6 +55,7 @@
 ; REQUIRED ROUTINES:
 ;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
 ;		PPXF from Michele Cappellari: http://www-astro.physics.ox.ac.uk/~mxc/idl/
+;		CanConnect http://www.idlcoyote.com/code_tips/hasdisplay.html
 ;
 ; MODIFICATION HISTORY:
 ;   V1.0 -- Created by Jimmy, 2011
@@ -294,7 +295,11 @@ for i = 0, max(binNum) do begin
             noisy_galaxy = galaxy + noisy ;make the galaxy noisy
             ;perform a ppxf fit on the noisy galaxy
             noise = galaxy*0 + 1
-            ppxf, templates, noisy_galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=4, DEGREE=6, VSYST=dv,BIAS=0, ERROR=error
+            if CanConnect() then begin
+	            ppxf, templates, noisy_galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=4, DEGREE=6, VSYST=dv,BIAS=0, ERROR=error
+	        endif else begin
+	        	ppxf, templates, noisy_galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, MOMENTS=4, DEGREE=6, VSYST=dv,BIAS=0, ERROR=error
+	        endelse
             monte_velocity[k]=sol[0] ;store to a vector of all the resulting velocities
             monte_sigma[k]=sol[1] ;store to a vector of all the resulting dispersions
         endfor
@@ -313,7 +318,11 @@ for i = 0, max(binNum) do begin
     noise = galaxy*0 + 1
 
     ;Perform the pPXF fit on the galaxy using the templates and 1 sigma errors on the spectra
-    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, /PRINT, MOMENTS=4, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error
+    if CanConnect() then begin
+	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, /PRINT, MOMENTS=4, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error
+	endif else begin
+	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, MOMENTS=4, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error
+	endelse
 
 
     ;if (testing ne 1) then begin
@@ -332,11 +341,12 @@ for i = 0, max(binNum) do begin
 
     printf, 9, i, sol[0], velocity_std_dev, sol[1], sigma_std_dev, sol[2], sol[3], sol[4], sol[5], sol[6],(z + 1)*(1 + sol[0]/c) - 1, FORMAT='(i6,2f10.1,7f10.3,f10.6,e12.5)'
 
-
-    ;make the directory that the plots are saved to, move the printed plot to the directory, and then directory will be moved with bash
-    file_mkdir,'ppxf_fits'
-    file_move,'ppxf_fit.eps','ppxf_fits/'+STRTRIM(ppxf_plot_number,2)+'.eps', /OVERWRITE
-    ppxf_plot_number = ppxf_plot_number+1 ;up the counter
+	if CanConnect() then begin ;only do this if we're printing things
+	    ;make the directory that the plots are saved to, move the printed plot to the directory, and then directory will be moved with bash
+    	file_mkdir,'ppxf_fits'
+	    file_move,'ppxf_fit.eps','ppxf_fits/'+STRTRIM(ppxf_plot_number,2)+'.eps', /OVERWRITE
+    	ppxf_plot_number = ppxf_plot_number+1 ;up the counter
+	endif
 
 endfor
 

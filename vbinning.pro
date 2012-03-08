@@ -45,6 +45,7 @@
 ;
 ; REQUIRED ROUTINES:
 ;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
+;		CanConnect http://www.idlcoyote.com/code_tips/hasdisplay.html
 ;
 ; MODIFICATION HISTORY:
 ;   V1.0 -- Created by Jimmy, 2011
@@ -77,7 +78,12 @@ window, xsize=r[0]*0.4, ysize=r[1]*0.8
 
 ;Perform the binning procedure
 ;input x,y,signal,noise,targetSN
-voronoi_2d_binning, x, y, signal, noise, targetSN, binNum, xNode, yNode, xBar, yBar, sn, nPixels, scale, total_noise, /PLOT
+if CanConnect() then begin
+	voronoi_2d_binning, x, y, signal, noise, targetSN, binNum, xNode, yNode, xBar, yBar, sn, nPixels, scale, total_noise, /PLOT
+endif else begin
+	voronoi_2d_binning, x, y, signal, noise, targetSN, binNum, xNode, yNode, xBar, yBar, sn, nPixels, scale, total_noise
+endelse
+
 ;output binNum, xNode, yNode, xBar, yBar, sn, nPixels, scale, total_noise
 ;total_noise is a customization by me, helps with the fitting later
 

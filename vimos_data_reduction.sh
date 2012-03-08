@@ -72,7 +72,7 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	sncut="y"
 	vbinning="y"
 	ppxf="y"
-	plot="y"
+	plot="n"
 	monte="y"
 	lambda="n"
 else
@@ -420,6 +420,8 @@ EOF
     mv test.fits /$PRO_DIR/temp.fits
 fi
 
+
+#MASK TO OBSERVE ONLY THE BCG OR COMPANION
 if [ $mask == y ]; then
     export infile1=$PRO_DIR/
     export final_mask=$SOF_DIR/$2_mask.txt
@@ -475,7 +477,7 @@ EOF
     export outfile1=$PRO_DIR/radial_2d_binning_output.txt
     export outfile2=$PRO_DIR/radial_2d_bins.txt
     export target=$1
-idl << EOF
+idl <<EOF
 .comp radial_bin.pro
 radial_bin
 EOF

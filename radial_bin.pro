@@ -51,7 +51,7 @@
 ;--------------------------------
 ;
 ; REQUIRED ROUTINES:
-;       None
+;		CanConnect http://www.idlcoyote.com/code_tips/hasdisplay.html
 ;
 ; MODIFICATION HISTORY:
 ;   V1.0 -- Created by Jimmy, 2011
@@ -99,7 +99,11 @@ target = getenv('target')
 print,'target: ',target
 
 fits_read, '/Users/jimmy/Astro/reduced/'+target+'pro/all/'+target+'all_fov.fits', img, h
-find_galaxy, img, majorAxis, eps, ang, xc, yc, /PLOT
+if CanConnect() then begin
+	find_galaxy, img, majorAxis, eps, ang, xc, yc, /PLOT
+endif else begin
+	find_galaxy, img, majorAxis, eps, ang, xc, yc
+endelse
 print,'x-center ',xc,'  y-center ',yc
 
 xcenter = xc
