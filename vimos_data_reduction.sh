@@ -466,7 +466,9 @@ if [ $bin == y ]; then
     export targetsn=5.0
     #/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/vbinning.com
 idl <<EOF
-set_colours
+if CanConnect() then begin
+	set_colours
+endif
 .comp vbinning.pro
 vbinning
 EOF
@@ -505,7 +507,9 @@ if [ $ppxf == y ]; then
     export monte_iterations=10
     
 idl << EOF
-set_colours
+if CanConnect() then begin
+	set_colours
+endif
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
@@ -518,7 +522,9 @@ EOF
     export outfile=$PRO_DIR/ppxf_v_bin_output
     
 idl << EOF
-set_colours
+if CanConnect() then begin
+	set_colours
+endif
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
@@ -529,7 +535,9 @@ EOF
     export infile4=$PRO_DIR/radial_2d_bins.txt
     export outfile=$PRO_DIR/ppxf_rad_bin_output
 idl << EOF
-set_colours
+if CanConnect() then begin
+	set_colours
+endif
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
@@ -544,7 +552,9 @@ if [ $plot == y ]; then
     export infile2=$PRO_DIR/ppxf_one_bin_output
     export infile3=$PRO_DIR/one_bin_output.txt
 idl << EOF
-set_colours
+if CanConnect() then begin
+	set_colours
+endif
 .comp display_data.pro
 display_data,'one','$1'
 EOF
@@ -553,7 +563,9 @@ EOF
     export infile2=$PRO_DIR/ppxf_v_bin_output
     export infile3=$PRO_DIR/voronoi_2d_binning_output.txt
 idl << EOF
-set_colours
+if CanConnect() then begin
+	set_colours
+endif
 .comp display_data.pro
 display_data,'vbinned','$1'
 EOF
@@ -562,7 +574,9 @@ EOF
     export infile2=$PRO_DIR/ppxf_rad_bin_output
     export infile3=$PRO_DIR/radial_2d_binning_output.txt
 idl << EOF
-set_colours
+if CanConnect() then begin
+	set_colours
+endif
 .comp display_data.pro
 display_data,'radial','$1'
 EOF
