@@ -70,7 +70,7 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	mosaic="n"
 	mask="y"
 	sncut="y"
-	vbinning="y"
+	bin="y"
 	ppxf="y"
 	plot="n"
 	monte="y"
@@ -143,7 +143,7 @@ else
 	if [ -n "$t1" ]; then
 		mask="$t1"
 		sncut="$t1"
-		vbinning="$t1"
+		bin="$t1"
 		ppxf="$t1"
 		plot="$t1"
 		monte="$t1"
