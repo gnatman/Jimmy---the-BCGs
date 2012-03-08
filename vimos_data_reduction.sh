@@ -62,91 +62,105 @@ fi
 
 export default="n"
 
-read -p "Create Master Bias and Calibration Files?: " -e t1
-if [ -n "$t1" ]; then
-  calibration="$t1"
+#This sets all the properties for running on the supercomputing cluster where everything runs better automatically.
+if [ $(whoami) == 'jimmyerickson' ]; then
+	calibration="n"
+	science="n"
+	idl_spectra_to_cube="n"
+	mosaic="n"
+	mask="y"
+	sncut="y"
+	vbinning="y"
+	ppxf="y"
+	plot="y"
+	monte="y"
+	lambda="n"
 else
-  calibration="$default"
+	read -p "Create Master Bias and Calibration Files?: " -e t1
+	if [ -n "$t1" ]; then
+		calibration="$t1"
+	else
+		calibration="$default"
+	fi
+
+	read -p "Extract Science Spectra and create cubes using VIMOS?: " -e t1
+	if [ -n "$t1" ]; then
+		science="$t1"
+	else
+		science="$default"
+	fi
+
+	read -p "Use IDL to create data cubes?: " -e t1
+	if [ -n "$t1" ]; then
+		idl_spectra_to_cube="$t1"
+	else
+		idl_spectra_to_cube="$default"
+	fi
+
+	read -p "Use make mosaic to stack cubes?: " -e t1
+	if [ -n "$t1" ]; then
+		mosaic="$t1"
+	else
+		mosaic="$default"
+	fi
+
+	read -p "Perform mask?: " -e t1
+	if [ -n "$t1" ]; then
+		mask="$t1"
+	else
+		mask="$default"
+	fi
+
+	read -p "Perform S/N cut?: " -e t1
+	if [ -n "$t1" ]; then
+		sncut="$t1"
+	else
+		sncut="$default"
+	fi
+
+	read -p "Bin the data?: " -e t1
+	if [ -n "$t1" ]; then
+		bin="$t1"
+	else
+		bin="$default"
+	fi
+
+	read -p "Perform PPXF?: " -e t1
+	if [ -n "$t1" ]; then
+		ppxf="$t1"
+	else
+		ppxf="$default"
+	fi
+
+	read -p "Plot Data?: " -e t1
+	if [ -n "$t1" ]; then
+		plot="$t1"
+	else
+		plot="$default"
+	fi
+
+	read -p "Perform Monte Carlo Simulation?: " -e t1
+	if [ -n "$t1" ]; then
+		mask="$t1"
+		sncut="$t1"
+		vbinning="$t1"
+		ppxf="$t1"
+		plot="$t1"
+		monte="$t1"
+	else
+		monte="$default"
+	fi
+
+	export montecarlointoppxf=$monte
+
+	read -p "Perform Lambda?: " -e t1
+	if [ -n "$t1" ]; then
+		lambda="$t1"
+	else
+		lambda="$default"
+	fi
+
 fi
-
-read -p "Extract Science Spectra and create cubes using VIMOS?: " -e t1
-if [ -n "$t1" ]; then
-  science="$t1"
-else
-  science="$default"
-fi
-
-read -p "Use IDL to create data cubes?: " -e t1
-if [ -n "$t1" ]; then
-  idl_spectra_to_cube="$t1"
-else
-  idl_spectra_to_cube="$default"
-fi
-
-read -p "Use make mosaic to stack cubes?: " -e t1
-if [ -n "$t1" ]; then
-  mosaic="$t1"
-else
-  mosaic="$default"
-fi
-
-read -p "Perform mask?: " -e t1
-if [ -n "$t1" ]; then
-  mask="$t1"
-else
-  mask="$default"
-fi
-
-read -p "Perform S/N cut?: " -e t1
-if [ -n "$t1" ]; then
-  sncut="$t1"
-else
-  sncut="$default"
-fi
-
-read -p "Bin the data?: " -e t1
-if [ -n "$t1" ]; then
-  bin="$t1"
-else
-  bin="$default"
-fi
-
-read -p "Perform PPXF?: " -e t1
-if [ -n "$t1" ]; then
-  ppxf="$t1"
-else
-  ppxf="$default"
-fi
-
-read -p "Plot Data?: " -e t1
-if [ -n "$t1" ]; then
-  plot="$t1"
-else
-  plot="$default"
-fi
-
-read -p "Perform Monte Carlo Simulation?: " -e t1
-if [ -n "$t1" ]; then
-  mask="$t1"
-  sncut="$t1"
-  vbinning="$t1"
-  ppxf="$t1"
-  plot="$t1"
-  monte="$t1"
-else
-  monte="$default"
-fi
-
-export montecarlointoppxf=$monte
-
-read -p "Perform Lambda?: " -e t1
-if [ -n "$t1" ]; then
-  lambda="$t1"
-else
-  lambda="$default"
-fi
-
-
 
 #Pull in environmental variables like redshift and sky fibers
 . $SOF_DIR/$1_env.sh
