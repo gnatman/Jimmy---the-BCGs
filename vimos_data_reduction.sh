@@ -1,5 +1,5 @@
 #!/bin/bash
-
+date
 #Data reduction script written by Jimmy.
 
 #This script takes two inputs, the SDSS-C4 target name of the galaxy, which will be used to create and identify the proper project folder.
@@ -592,3 +592,4 @@ fi
 #EOF
 #/Applications/itt/idl/bin/idl /Users/jimmy/Astro/coms/lambda.com
 #fi
+date
