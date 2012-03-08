@@ -472,7 +472,7 @@ EOF
 
     echo "Radial Binning and singular bin"
     export radius=$r_e
-    export infile=$PRO_DIR/radial_2d_binning.txt
+    export infile=$PRO_DIR
     export outfile1=$PRO_DIR/radial_2d_binning_output.txt
     export outfile2=$PRO_DIR/radial_2d_bins.txt
     export target=$1

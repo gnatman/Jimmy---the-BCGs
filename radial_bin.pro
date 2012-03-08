@@ -35,7 +35,7 @@
 ;	If called by a bash script, the following variables must be defined in the bash
 ;	script that called this program.
 ;
-;	infile: The text file that describes the binning.
+;	infile: The product files directory.
 ;	outfile1: radial_2d_binning_output.txt
 ;	outfile2: radial_2d_bins.txt
 ;
@@ -60,7 +60,7 @@
 
 pro radial_bin
 
-rdfloat, getenv('infile'), x, y, xpix, ypix, signal, noise,SKIPLINE=1
+rdfloat, getenv('infile')+'/radial_2d_binning.txt', x, y, xpix, ypix, signal, noise,SKIPLINE=1
 ;rdfloat, '/Users/jimmy/Astro/reduced/1050pro/radial_2d_binning.txt', x, y, xpix, ypix, signal, noise,SKIPLINE=1
 
 ;fname='/Users/jimmy/Downloads/radial_2d_binning_output.txt' 
@@ -98,7 +98,7 @@ target = '1050'
 target = getenv('target')
 print,'target: ',target
 
-fits_read, '/Users/jimmy/Astro/reduced/'+target+'pro/all/'+target+'all_fov.fits', img, h
+fits_read, getenv('infile')+'/all/'+target+'all_fov.fits', img, h
 if CanConnect() then begin
 	find_galaxy, img, majorAxis, eps, ang, xc, yc, /PLOT
 endif else begin
