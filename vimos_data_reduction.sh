@@ -1,5 +1,4 @@
 #!/bin/bash
-date
 #Data reduction script written by Jimmy.
 
 #This script takes two inputs, the SDSS-C4 target name of the galaxy, which will be used to create and identify the proper project folder.
@@ -7,6 +6,8 @@ date
 #Called like: vimos_data_reduction.sh 1050 all
 #Should only need to edit the directories for the following files, and then most scripts will work when called from here.
 #Of course that assumes you're following my naming scheme.
+
+date
 
 #Astro_Dir is the top level directory containing raw and reduced data.
 ASTRO_DIR=$HOME/Astro
@@ -17,10 +18,6 @@ PRO_DIR=$REDUCED_DIR/$1pro
 #SOF dir contains the "set of frames" files used by the VIMOS pipeline and is unique to each directory.
 SOF_DIR=$REDUCED_DIR/$1pt1sof
 #Cal Dir contains the calbration files used by both VIMOS Pipeline and IDL
-#####ROT_DIR=$REDUCED_DIR/$1-180sof
-#Rot Dir contains the 180 degree rotated data for the galaxies that have said data.
-#####PT2_DIR=$REDUCED_DIR/$1pt2sof
-#PT2 Dir contains the second set of data for the galaxies that have said data.
 CAL_DIR=$REDUCED_DIR/cal
 #Used to automatically pull the IDL scripts out of testing mode.
 export not_testing=1
