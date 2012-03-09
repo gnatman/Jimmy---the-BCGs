@@ -43,10 +43,12 @@ fi
 #symlinks are used because it's the easiest way of using one script to do everything without having to refer to a specific project or sof directory every time.
 
 if [ -d $SOF_DIR ]; then
-    rm -rf $REDUCED_DIR/pro
-    rm -rf $REDUCED_DIR/sof
-    ln -s $REDUCED_DIR/$1pro $REDUCED_DIR/pro
-    ln -s $REDUCED_DIR/$1sof $REDUCED_DIR/sof
+	if [ $(whoami) != 'jimmyerickson' ]; then
+    	rm -rf $REDUCED_DIR/pro
+    	rm -rf $REDUCED_DIR/sof
+    	ln -s $REDUCED_DIR/$1pro $REDUCED_DIR/pro
+    	ln -s $REDUCED_DIR/$1sof $REDUCED_DIR/sof
+    fi
 else
     echo "Target sof directory not found in reduced data folder."
     exit 1
