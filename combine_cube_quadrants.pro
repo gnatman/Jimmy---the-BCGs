@@ -62,6 +62,7 @@
 ; REQUIRED ROUTINES:
 ;       IDL Astronomy Users Library: http://idlastro.gsfc.nasa.gov/
 ;		Hitme.pro Written by Rob Sharp Australian Astronomical Observatory
+;		cuberot.pro Written by Erik Rosolowsky https://people.ok.ubc.ca/erosolo/www/Landing.html
 ;
 ; MODIFICATION HISTORY:
 ;   V1.0 -- Created by Jimmy, 2011

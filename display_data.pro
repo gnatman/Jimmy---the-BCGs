@@ -231,7 +231,7 @@ title_y_position = max(ybin)+ymod
 
 set_plot, 'ps'
 device, filename='velocity.eps', /encapsul, /color, BITS=8
-display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Velocity'
+display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
@@ -245,7 +245,7 @@ min_scale=-400
 
 set_plot, 'ps'
 device, filename='velocity_scale.eps', /encapsul, /color, BITS=8
-display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Velocity'
+display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
@@ -255,7 +255,7 @@ endif
 
 set_plot, 'ps'
 device, filename='sigma_scale.eps', /encapsul, /color, BITS=8
-display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Dispersion'
+display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Dispersion'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
@@ -265,7 +265,7 @@ endif
 
 set_plot, 'ps'
 device, filename='signal_noise.eps', /encapsul, /color, BITS=8
-display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, max(sn)*1.1], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Signal/Noise'
+display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, max(sn)*1.1], CHARSIZE=2.3, CHARTHICK=7, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Signal/Noise'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N', CHARSIZE=2, CHARTHICK=7
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=10
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12

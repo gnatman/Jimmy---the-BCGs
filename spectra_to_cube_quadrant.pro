@@ -172,6 +172,26 @@ for i=0,number_of_fibers-1 do begin
 endfor
 
 
+if pointing eq '1153' then begin 
+	;Smoothing used for testing, do not keep this around forever.
+	new_im = fltarr(number_of_wave_pixels,number_of_fibers)
+	for a=1, 10 do begin
+		for b=1, 20 do begin
+			print,(40*(a-1))+b-1,'+',(40*(a-1))+b,'+',(40*a)-b,'+',(40*a)-b-1
+			new_im[*,(40*(a-1))+b-1]=(im[*,(40*(a-1))+b-1]+im[*,(40*(a-1))+b]+im[*,(40*a)-b]+im[*,(40*a)-b-1])/4
+			new_im[*,(40*(a-1))+b]=(im[*,(40*(a-1))+b-1]+im[*,(40*(a-1))+b]+im[*,(40*a)-b]+im[*,(40*a)-b-1])/4
+			new_im[*,(40*a)-b]=(im[*,(40*(a-1))+b-1]+im[*,(40*(a-1))+b]+im[*,(40*a)-b]+im[*,(40*a)-b-1])/4
+			new_im[*,(40*a)-b-1]=(im[*,(40*(a-1))+b-1]+im[*,(40*(a-1))+b]+im[*,(40*a)-b]+im[*,(40*a)-b-1])/4
+			b=b+1
+		endfor
+		;print,'SMOOTHING IS DONE'
+	endfor
+	
+	for c=0, 399 do begin
+		im[*,c]=new_im[*,c]
+	endfor
+endif
+
 if (testing ne 1) then begin
     ;This is used to test what the image files look like when you black out the fibers from the bad fiber mask.
     image_out='/Users/jimmy/Downloads/fiber_lines.fits'
