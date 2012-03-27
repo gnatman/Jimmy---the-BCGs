@@ -439,7 +439,7 @@ if [ $sncut == y ]; then
     echo "S/N Cut"
     #only input is the test.fits file   
     export infile=$PRO_DIR/$2/$1$2.fits
-    export outfile1=$PRO_DIR/voronoi_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/voronoi_2d_binning.txt
     export sncut=3.0
     # Using the com file allows you to stop and check the s/n cut, EOF requires no user intervention
 #    /Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/sncut.com
@@ -447,7 +447,7 @@ idl <<EOF
 .comp signal_noise_cut.pro
 signal_noise_cut
 EOF
-    export outfile1=$PRO_DIR/radial_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/radial_2d_binning.txt
     export sncut=1.0
 idl <<EOF
 .comp signal_noise_cut.pro
@@ -459,9 +459,9 @@ fi
 if [ $bin == y ]; then
     #Perform the Binning
     echo "Voronoi Binning"
-    export infile=$PRO_DIR/voronoi_2d_binning.txt
-    export outfile1=$PRO_DIR/voronoi_2d_binning_output.txt
-    export outfile2=$PRO_DIR/voronoi_2d_bins.txt
+    export infile=$PRO_DIR/$2/voronoi_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/voronoi_2d_binning_output.txt
+    export outfile2=$PRO_DIR/$2/voronoi_2d_bins.txt
     export targetsn=5.0
     #/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/vbinning.com
 idl <<EOF
@@ -472,17 +472,17 @@ EOF
     echo "Radial Binning and singular bin"
     export radius=$r_e
     export infile=$PRO_DIR
-    export outfile1=$PRO_DIR/radial_2d_binning_output.txt
-    export outfile2=$PRO_DIR/radial_2d_bins.txt
+    export outfile1=$PRO_DIR/$2/radial_2d_binning_output.txt
+    export outfile2=$PRO_DIR/$2/radial_2d_bins.txt
     export target=$1
 idl <<EOF
 .comp radial_bin.pro
 radial_bin
 EOF
 
-    export infile=$PRO_DIR/voronoi_2d_binning.txt
-    export outfile1=$PRO_DIR/one_bin_output.txt
-    export outfile2=$PRO_DIR/one_bin_bins.txt
+    export infile=$PRO_DIR/$2/voronoi_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/one_bin_output.txt
+    export outfile2=$PRO_DIR/$2/one_bin_bins.txt
 idl <<EOF
 .comp one_bin.pro
 one_bin
@@ -493,10 +493,10 @@ if [ $ppxf == y ]; then
     #Find Velocities
     echo "PPXF Velocities"
     export infile1=$PRO_DIR/$2/$1$2.fits
-    export infile2=$PRO_DIR/one_bin_output.txt
+    export infile2=$PRO_DIR/$2/one_bin_output.txt
     export infile3=$ASTRO_DIR/MILES_library
-    export infile4=$PRO_DIR/one_bin_bins.txt
-    export outfile=$PRO_DIR/ppxf_one_bin_output
+    export infile4=$PRO_DIR/$2/one_bin_bins.txt
+    export outfile=$PRO_DIR/$2/ppxf_one_bin_output
     export start_range=1600
     export end_range=2600
     export template_list="/s025*.fits"
@@ -511,9 +511,9 @@ EOF
     	mv ppxf_fits /$PRO_DIR/$2/ppxf_fit_one
     fi
     
-    export infile2=$PRO_DIR/voronoi_2d_binning_output.txt
-    export infile4=$PRO_DIR/voronoi_2d_bins.txt
-    export outfile=$PRO_DIR/ppxf_v_bin_output
+    export infile2=$PRO_DIR/$2/voronoi_2d_binning_output.txt
+    export infile4=$PRO_DIR/$2/voronoi_2d_bins.txt
+    export outfile=$PRO_DIR/$2/ppxf_v_bin_output
     
 idl << EOF
 .comp jimmy_ppxf.pro
@@ -524,9 +524,9 @@ EOF
 	    mv ppxf_fits /$PRO_DIR/$2/
     fi
     
-    export infile2=$PRO_DIR/radial_2d_binning_output.txt
-    export infile4=$PRO_DIR/radial_2d_bins.txt
-    export outfile=$PRO_DIR/ppxf_rad_bin_output
+    export infile2=$PRO_DIR/$2/radial_2d_binning_output.txt
+    export infile4=$PRO_DIR/$2/radial_2d_bins.txt
+    export outfile=$PRO_DIR/$2/ppxf_rad_bin_output
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
@@ -540,25 +540,25 @@ fi
 if [ $plot == y ]; then
     #Make Pretty Plots
     echo "Plot Data"
-    export infile1=$PRO_DIR/one_bin_bins.txt
-    export infile2=$PRO_DIR/ppxf_one_bin_output
-    export infile3=$PRO_DIR/one_bin_output.txt
+    export infile1=$PRO_DIR/$2/one_bin_bins.txt
+    export infile2=$PRO_DIR/$2/ppxf_one_bin_output
+    export infile3=$PRO_DIR/$2/one_bin_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'one','$1'
 EOF
 
-    export infile1=$PRO_DIR/voronoi_2d_bins.txt
-    export infile2=$PRO_DIR/ppxf_v_bin_output
-    export infile3=$PRO_DIR/voronoi_2d_binning_output.txt
+    export infile1=$PRO_DIR/$2/voronoi_2d_bins.txt
+    export infile2=$PRO_DIR/$2/ppxf_v_bin_output
+    export infile3=$PRO_DIR/$2/voronoi_2d_binning_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'vbinned','$1'
 EOF
 
-    export infile1=$PRO_DIR/radial_2d_bins.txt
-    export infile2=$PRO_DIR/ppxf_rad_bin_output
-    export infile3=$PRO_DIR/radial_2d_binning_output.txt
+    export infile1=$PRO_DIR/$2/radial_2d_bins.txt
+    export infile2=$PRO_DIR/$2/ppxf_rad_bin_output
+    export infile3=$PRO_DIR/$2/radial_2d_binning_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'radial','$1'
