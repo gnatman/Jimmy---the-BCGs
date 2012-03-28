@@ -87,9 +87,9 @@ for i=0, n_elements(galaxy_names)-1 do begin
 
 	if (testing ne 1) then begin
 		;read in the requisite files, and expected redshift from the environmental variables.
-		rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/voronoi_2d_bins.txt', xbin, ybin,sn,NPix, SKIPLINE=1              ;2d_bins
-		rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/ppxf_v_bin_output', bin,V,v_sig,sigma,sigma_sig,h3,h4,h5,h6,Chi2,z ;bin_output
-		rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/voronoi_2d_binning_output.txt', x, y, xpix, ypix, binNum, SKIPLINE=1        ;2d_binning_output
+		rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/all/voronoi_2d_bins.txt', xbin, ybin,sn,NPix, SKIPLINE=1              ;2d_bins
+		rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/all/ppxf_v_bin_output', bin,V,v_sig,sigma,sigma_sig,h3,h4,h5,h6,Chi2,z ;bin_output
+		rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/all/voronoi_2d_binning_output.txt', x, y, xpix, ypix, binNum, SKIPLINE=1        ;2d_binning_output
 	endif
 
 	if (testing) then begin

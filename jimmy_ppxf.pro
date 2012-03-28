@@ -209,7 +209,10 @@ for i = 0, max(binNum) do begin
 
     ;Input the x and y coordinates, output logarithmically rebinned x and y coordinates
     log_rebin, shifted_wavelength_range, sum_spectra, galaxy, log_wavelength, VELSCALE=velScale
-    log_rebin, shifted_wavelength_range, var_sum, noise, log_var, VELSCALE=velScale
+    log_rebin, shifted_wavelength_range, var_sum, noise, log_var;, VELSCALE=velScale ;If you set velScale here, ppxf will ocasionally have the wrong array dimensions for the noise spectrum and totally panic, but only on the first run through.
+    
+    print,'size of galaxy: ',size(galaxy)
+    print,'size of noise: ',size(noise)
     
     ;Pull in the template file names
     if (testing) then begin
@@ -288,6 +291,7 @@ for i = 0, max(binNum) do begin
     print,'Proposed noise level: ',noise_level ;Good to check how much noise we're adding/subtracting from signal
     print,' '
     
+    
     if ( getenv('montecarlointoppxf') eq 'y' ) then begin
         galaxy_size = size(galaxy) ;size of logarithmically rebinned spectra
         for k=0,getenv('monte_iterations')-1 do begin
@@ -311,9 +315,6 @@ for i = 0, max(binNum) do begin
     print,'Error in Velocity: ',velocity_std_dev
     print,'Error in Dispersion: ',sigma_std_dev 
     print,' '
-
-    print,'size of galaxy: ',size(galaxy)
-    print,'size of noise: ',size(noise)
 
     ;noise = galaxy*0 + 1
 
