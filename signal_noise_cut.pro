@@ -139,7 +139,7 @@ signal_clean=where((signal ne 0) and (signal/noise ge limit))
 ;I believe spaxel scale should be 0.66 arcseconds and not cdelt, which is like 0.602
 galaxy = getenv('galaxy')
 spaxel_scale = 0.66
-if galaxy eq '1153' then do
+if galaxy eq '1153' then begin
 	spaxel_scale = 0.33
 endif
 
