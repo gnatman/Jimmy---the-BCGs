@@ -440,6 +440,7 @@ if [ $sncut == y ]; then
     #only input is the test.fits file   
     export infile=$PRO_DIR/$2/$1$2.fits
     export outfile1=$PRO_DIR/$2/voronoi_2d_binning.txt
+    export galaxy=$1
     export sncut=3.0
     # Using the com file allows you to stop and check the s/n cut, EOF requires no user intervention
 #    /Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/sncut.com

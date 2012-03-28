@@ -116,6 +116,7 @@ for i=0, n_elements(galaxy_names)-1 do begin
 		bottomAxisLoc = 0
 		rightAxesLoc = 0.5
 		topAxesLoc = 1
+		pixelsize=1
 
 	if galaxy eq '1027' then begin
 		xmod = -3
@@ -212,6 +213,7 @@ for i=0, n_elements(galaxy_names)-1 do begin
 		bottomAxisLoc = 0.8
 		rightAxesLoc = 0.85
 		topAxesLoc = 1.0
+		;pixelsize=0.5
 	endif
 	if galaxy eq '1261' then begin
 		xmod = -0.6
@@ -291,9 +293,11 @@ for i=0, n_elements(galaxy_names)-1 do begin
 
 	
 	;!P.REGION=[0,0,0.5,1]
-
+	!X.MARGIN=[0,100]
+	!X.OMARGIN=[10,50]
+	
 	if plot_names[j] eq 'velocity' then begin
-	display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, REGION=[leftAxisLoc, bottomAxisLoc, rightAxesLoc, topAxesLoc];, TITLE='Velocity', CHARSIZE=2.3, CHARTHICK=7
+	display_bins, xbin, ybin, V, x,y, PIXELSIZE=pixelsize, RANGE=[min_scale, max_scale], XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], XMARGIN=[0,0], XOMARGIN=[100,10];, REGION=[leftAxisLoc, bottomAxisLoc, rightAxesLoc, topAxesLoc];, TITLE='Velocity', CHARSIZE=2.3, CHARTHICK=7
 	;color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s';, CHARSIZE=2, CHARTHICK=7
 	if galaxy eq '1048' then begin
 		xyouts, xmin+0.5, ymin+20, galaxy;, CHARSIZE=2.3, CHARTHICK=10
@@ -307,7 +311,7 @@ for i=0, n_elements(galaxy_names)-1 do begin
 	endif
 	
 	if plot_names[j] eq 'dispersion' then begin
-	display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Dispersion', CHARSIZE=2.3, CHARTHICK=7
+	display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=pixelsize, RANGE=[0, 550], XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], XMARGIN=[0,0], XOMARGIN=[100,10];, TITLE='Dispersion', CHARSIZE=2.3, CHARTHICK=7
 	;color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s';, CHARSIZE=2, CHARTHICK=7
 	if galaxy eq '1048' then begin
 		xyouts, xmin+0.5, ymin+20, galaxy;, CHARSIZE=2.3, CHARTHICK=10
@@ -320,7 +324,7 @@ for i=0, n_elements(galaxy_names)-1 do begin
 	endif
 
 	if plot_names[j] eq 'sn' then begin
-	display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, max(sn)*1.1], XRANGE=[xmin,xmax], YRANGE=[ymin,ymax];, TITLE='Signal/Noise', CHARSIZE=2.3, CHARTHICK=7
+	display_bins, xbin, ybin, sn, x,y, PIXELSIZE=pixelsize, RANGE=[3, max(sn)*1.1], XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], XMARGIN=[0,0], XOMARGIN=[100,10];, TITLE='Signal/Noise', CHARSIZE=2.3, CHARTHICK=7
 	;color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N';, CHARSIZE=2, CHARTHICK=7
 	if galaxy eq '1048' then begin
 		xyouts, xmin+0.5, ymin+20, galaxy;, CHARSIZE=2.3, CHARTHICK=10
@@ -335,16 +339,16 @@ for i=0, n_elements(galaxy_names)-1 do begin
 	
 endfor
 loadct,0
-plot, [0,1], [0,1], /NODATA, color=255, xmargin=[10,25]
+plot, [0,1], [0,1], /NODATA, color=255, xmargin=[5,0]
 sauron_colormap
 if plot_names[j] eq 'velocity' then begin
-color_bar_y, 0.1, 0.3, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s';, CHARSIZE=2, CHARTHICK=7
+color_bar_y, 0, 0.1, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s';, CHARSIZE=2, CHARTHICK=7
 endif
 if plot_names[j] eq 'dispersion' then begin
-color_bar_y, 0.4, 0.6, !Y.crange[0],!y.crange[1],0,550,title='km/s';, CHARSIZE=2, CHARTHICK=7
+color_bar_y, 0, 0.1, !Y.crange[0],!y.crange[1],0,550,title='km/s';, CHARSIZE=2, CHARTHICK=7
 endif
 if plot_names[j] eq 'sn' then begin
-color_bar_y, 0.4, 0.6, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N';, CHARSIZE=2, CHARTHICK=7
+color_bar_y, 0, 0.1, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N';, CHARSIZE=2, CHARTHICK=7
 endif
 device,/close
 endfor

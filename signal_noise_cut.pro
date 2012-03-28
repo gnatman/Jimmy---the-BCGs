@@ -30,6 +30,7 @@
 ;
 ;	infile: The fully stacked fits file to be run through the procedure
 ;	sncut: The signal to noise cutoff level
+;	galaxy: The input galaxy, useful for defining proper spaxel scale.
 ;	outfile1: The ouput text file that lists the bins that pass the cut
 ;
 ;
@@ -91,7 +92,7 @@ noise=fltarr(x_fibers*y_fibers)
 
 k=0
 
-;used once to send a spakel to Karl G.  Can probaly be deleted.
+;used once to send a spaxel to Karl G.  Can probaly be deleted.
 ;print, 'im[20,21,*]',im[20,21,*]
 ;forprint,im[20,21,*],TEXTOUT='/Users/jimmy/kg.txt'
 
@@ -136,13 +137,17 @@ endif
 signal_clean=where((signal ne 0) and (signal/noise ge limit))
 
 ;I believe spaxel scale should be 0.66 arcseconds and not cdelt, which is like 0.602
-cdelt = 0.66
+galaxy = getenv('galaxy')
+spaxel_scale = 0.66
+if galaxy eq '1153' then do
+	spaxel_scale = 0.33
+endif
 
 ;WRITING OUT DATA FOR VORONOI TESSELATION
 ;voronoi tesselation requires as input x,y in arcseconds; pixels and
 ;the flux & noise in those fibres - can be output here:
 astrolib
-forprint, (x[signal_clean]-mean(x))*cdelt,(y[signal_clean]-mean(y))*cdelt,x[signal_clean],y[signal_clean],signal[signal_clean],noise[signal_clean], $
+forprint, (x[signal_clean]-mean(x))*spaxel_scale,(y[signal_clean]-mean(y))*spaxel_scale,x[signal_clean],y[signal_clean],signal[signal_clean],noise[signal_clean], $
 format='(2f10.4,2i6,2f20.4)',$
 TEXTOUT=getenv('outfile1'), $
 COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
