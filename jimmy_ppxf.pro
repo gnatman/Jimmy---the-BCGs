@@ -316,7 +316,7 @@ for i = 0, max(binNum) do begin
     print,'Error in Dispersion: ',sigma_std_dev 
     print,' '
 
-    ;noise = galaxy*0 + 1
+    noise = galaxy*0 + 1
 
     ;Perform the pPXF fit on the galaxy using the templates and 1 sigma errors on the spectra
     if CanConnect() then begin
