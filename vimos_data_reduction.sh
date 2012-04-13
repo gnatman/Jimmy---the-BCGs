@@ -577,19 +577,24 @@ EOF
         mv signal_noise_rad.eps /$PRO_DIR/$2/signal_noise_rad.eps
 fi
 
-#not ready to use lambda yet.
-#export lambda="n"
-
-#if [ $lambda == y ]
-#then
-#Lambda still needs lots of work.
-#echo "Lambda"
-#export infile=$PRO_DIR
-#export galaxy=$1
-#idl << EOF
-#.comp SAURON_lambda.pro
-#SAURON_lambda
-#EOF
-#/Applications/itt/idl/bin/idl /Users/jimmy/Astro/coms/lambda.com
-#fi
+if [ $lambda == y ]
+	then
+	echo "Running Lambda calculation"
+	export indir=$PRO_DIR/$2/
+	if [ $2 == 'main' ]; then
+	    export onetwo="1"
+	fi
+	if [ $2 == 'all' ]; then
+	    export onetwo="1"
+	fi
+	if [ $2 == 'comp' ]; then
+	    export onetwo="2"
+	fi
+	echo "$onetwo"
+idl << EOF
+.comp jimmy_lambda.pro
+jimmy_lambda,'$1','$onetwo'
+EOF
+	#/Applications/itt/idl/bin/idl /Users/jimmy/Astro/coms/lambda.com
+fi
 date

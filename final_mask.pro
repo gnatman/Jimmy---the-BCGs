@@ -83,7 +83,7 @@ if (testing) then begin
 endif
 
 if (testing ne 1) then begin
-    dir='/Users/jimmy/Astro/reduced/'+target+'pro/'+mask+'/'
+    dir='/Users/jimmy/Astro/reduced/'+target+'pro/'
 endif
 
 im=mrdfits(dir+'temp.fits',0,header0) ;, /SILENT)

@@ -51,7 +51,9 @@ pro jimmy_lambda, gal, obj
 ;
 
 ;loadct, 2
-;sauron_colormap
+sauron_colormap
+
+print,'obj: ',obj
 
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
@@ -61,19 +63,23 @@ testing=FIX(testing_string)
 
 if (testing ne 1) then begin
     dir='/Users/jimmy/Astro/reduced/'+gal+'pro/'
-    file1='voronoi_2d_bins.txt'
-    file2='ppxf_v_bin_output'
-    file3='voronoi_2d_binning_output.txt'
-    file4='voronoi_2d_binning.txt'
     if (strmatch(obj,'1') eq 1) then begin
-		openw, 9, dir+'lambda.txt'            
+		openw, 9, dir+'main/lambda.txt'            
     endif
     if (strmatch(obj,'2') eq 1) then begin
-		openw, 9, dir+'lambda_comp.txt'            
+		openw, 9, dir+'comp/lambda.txt'            
     endif
 endif
 
+if (testing) then begin
+    dir=getenv('indir')
+	openw, 9, dir+'lambda.txt'
+endif
 
+file1='voronoi_2d_bins.txt'
+file2='ppxf_v_bin_output'
+file3='voronoi_2d_binning_output.txt'
+file4='voronoi_2d_binning.txt'
 
 rdfloat, dir+file1, xbin, ybin,sn,NPix,total_noise, SKIPLINE=1, /SILENT
 rdfloat, dir+file2, bin,V,v_sig,sig,sig_sig,h3,h4,h5,h6,Chi2,z, /SILENT
@@ -177,6 +183,7 @@ endfor
 ;This is where our data is definitely good.
 clean=where(dispersion gt 120. and dispersion lt 500. and xarc gt xmin and xarc lt xmax)
 ;clean=where(dispersion gt 120. and dispersion lt 500.0)
+;clean=where(xarc gt xmin and xarc lt xmax)
 
 ;Print some diagnostic data to see how much gets cut
 print,'Number of elements: ',n_elements(dispersion)
@@ -232,6 +239,8 @@ for k=0,steps-1 do begin
     I_phote[k]=10^(I_phote[k])
 endfor
 
+print,'I_phote: ',I_phote
+
 ;Take the ring of pixels surrounding the central pixel
 central=where(xarc gt central_xarc-1.0 and xarc lt central_xarc+1.0 and yarc gt central_yarc-1. and yarc lt central_yarc+1.)
 
@@ -249,6 +258,9 @@ eps=fltarr(steps)
 theta=fltarr(steps)
 Lp=fltarr(steps)
 Lm=fltarr(steps)
+plotter = fltarr(n_elements(binNum))
+maxx = max(x, MIN=minx)
+maxy = max(y, MIN=miny)
 
 x_ell=fltarr(steps,200)
 y_1=fltarr(steps,200)
@@ -264,7 +276,9 @@ pix_area=!pi*(0.66^2) ;pi*r^2
 
 ;Title, print it now so it doesn't print 50 times.
 print, 'count_pix . . eps[k] . . theta[k] . . radius[k] . radius[k]/r_e . lambda[k] . I_phote[k]'
-    
+
+plot,[0,40],[0,40], color=255, /NODATA, /ISO
+
 for k=0,steps-1 do begin   
     count_pix = 0 ;the number of pixels being used.
     for j=0,n_elements(binNum)-1 do begin
@@ -288,6 +302,9 @@ for k=0,steps-1 do begin
 
     for j=0,n_elements(binNum)-1 do begin
         if (signal[j] gt I_phote[k]) then begin
+        	plotter[j] = plotter[j]+1
+        	;print,'xpix[j]: ',xpix[j],' ypix[j]: ',ypix[j],' plotter[j]: ',plotter[j]
+        	xyouts,xpix[j],ypix[j],'!9B!3',color=(plotter[j]*30)+0
             sum_upper_lam = (abs(velocity[j]) * signal[j] * radius[k]) + sum_upper_lam
             sum_lower_lam = (signal[j] * radius[k] * sqrt(velocity[j]^2 + dispersion[j]^2)) + sum_lower_lam
             sum_ix = (signal[j] * ((xarc[j] - central_xarc)^2)) + sum_ix
@@ -311,9 +328,9 @@ for k=0,steps-1 do begin
     
 
     print, count_pix, eps[k], theta[k], radius[k], radius[k]/r_e, lambda[k], I_phote[k]
-    if (testing ne 1) then begin
-		printf, 9, radius[k]/r_e, lambda[k], FORMAT='(2f10.6)'
-	endif
+    ;if (testing ne 1) then begin
+	;	printf, 9, radius[k]/r_e, lambda[k], FORMAT='(2f10.6)'
+	;endif
 
 
     ;radius=sqrt(a x b) and eps = b/a therefore:
@@ -406,13 +423,40 @@ for n=0,199 do begin
     y_re[n]=central_yarc+(a_re*cos(t[n])*sin(theta_re*(!pi/180.)))+(b_re*sin(t[n])*cos(theta_re*(!pi/180.)))
 endfor
 
+;print, xpix
+;print, ypix
+
+;plot, [minx-0, maxx-0], [miny-0,maxy-0], /NODATA
+;loadct,12
+;set_plot, 'ps'
+;device, filename='iphotes.eps', /encapsul, /color, BITS=8
+;display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1,RANGE=[0, 7]
+;color_bar_y, 10, 11, !Y.crange[0],!y.crange[1],0,8,title='S/N'
+;device,/close
+
+;help,xbin,ybin,plotter,xarc,yarc
+
+;plotbin,xbin,plotter
+
+;for k=0,steps-1 do begin   
+;	for j=0,n_elements(binNum)-1 do begin
+;    	if (signal[j] gt I_phote[k]) then begin
+;    		print,'xpix[j]: ',xpix[j],' ypix[j]: ',ypix[j],' plotter[j]: ',plotter[j]
+;	    endif
+;	endfor
+;endfor
+
 print,'Effective radius, act radius, ellip re, ellip theta, lambda,dispersion:'
 print, r_e,radius_re,eps_re,theta_re,lambda_re,sig_re
+if (testing ne 1) then begin
+		printf, 9, r_e, lambda_re, FORMAT='(2f10.6)'
+endif
+
 
 ;set_plot, 'ps'
 ;device, filename='lambda_v_R_e.eps', /encapsul, /color, BITS=8
 
-plot, radius/r_e, lambda, xtitle='radius/r_e', ytitle='lambda', title=gal+' '+obj, yrange=[0,0.5], xrange = [0,1]
+;plot, radius/r_e, lambda, xtitle='radius/r_e', ytitle='lambda', title=gal+' '+obj, yrange=[0,0.5], xrange = [0,1]
 
 ;hitme
 
