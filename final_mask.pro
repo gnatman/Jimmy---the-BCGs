@@ -144,6 +144,11 @@ if (testing ne 1) then begin
     fovout='/Users/jimmy/Downloads/temp_fov.fits'
 endif
 
+dir_exists = FILE_TEST(dir+mask+'/', /DIRECTORY)
+if (dir_exists ne 1) then begin
+	FILE_MKDIR, dir+mask+'/'
+endif
+
 mwrfits,im,fileout,create=1 ;/create=1 creates new file even if old one exists
 mwrfits,im_2d,fovout,create=1
 
