@@ -64,16 +64,19 @@ testing=FIX(testing_string)
 if (testing ne 1) then begin
     dir='/Users/jimmy/Astro/reduced/'+gal+'pro/'
     if (strmatch(obj,'1') eq 1) then begin
-		openw, 9, dir+'main/lambda.txt'            
+		openw, 9, dir+'main/lambda.txt'
+		openw, 1, dir+'main/lambda_re.txt'
     endif
     if (strmatch(obj,'2') eq 1) then begin
-		openw, 9, dir+'comp/lambda.txt'            
+		openw, 9, dir+'comp/lambda.txt'
+		openw, 1, dir+'main/lambda_re.txt'
     endif
 endif
 
 if (testing) then begin
     dir=getenv('indir')
 	openw, 9, dir+'lambda.txt'
+	openw, 1, dir+'lambda_re.txt'
 endif
 
 file1='voronoi_2d_bins.txt'
@@ -328,9 +331,9 @@ for k=0,steps-1 do begin
     
 
     print, count_pix, eps[k], theta[k], radius[k], radius[k]/r_e, lambda[k], I_phote[k]
-    ;if (testing ne 1) then begin
-	;	printf, 9, radius[k]/r_e, lambda[k], FORMAT='(2f10.6)'
-	;endif
+    if (testing ne 1) then begin
+		printf, 9, radius[k]/r_e, lambda[k], FORMAT='(2f10.6)'
+	endif
 
 
     ;radius=sqrt(a x b) and eps = b/a therefore:
@@ -449,7 +452,7 @@ endfor
 print,'Effective radius, act radius, ellip re, ellip theta, lambda,dispersion:'
 print, r_e,radius_re,eps_re,theta_re,lambda_re,sig_re
 if (testing ne 1) then begin
-		printf, 9, r_e, lambda_re, FORMAT='(2f10.6)'
+		printf, 1, r_e, lambda_re, FORMAT='(2f10.6)'
 endif
 
 
@@ -479,8 +482,9 @@ endif
 ;device,/close
 ;set_plot,'x'
 
-    if (testing ne 1) then begin
+;    if (testing ne 1) then begin
 		close, 9
-	endif
+		close, 1
+;	endif
 
 end
