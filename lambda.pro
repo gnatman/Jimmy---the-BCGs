@@ -128,7 +128,9 @@ for k=0, number_of_fibers-1 do begin
 		endfor
 	endfor
 endfor
-mwrfits,new_img,'new_img.fits',create=1 ;/create=1 creates new file even if old one exists
+if (testing ne 1) then begin
+	mwrfits,new_img,'new_img.fits',create=1 ;/create=1 creates new file even if old one exists
+endif
 ;Find the central pixel of our galaxy.
 find_galaxy, new_img, majorAxis, eps, ang, xc, yc, Fraction=1, /PLOT
 ;hitme
@@ -245,56 +247,72 @@ for j=0,photometry_steps-1 do begin
         endif
     endfor
     if (j eq 0) then begin
-	    mwrfits,isophote_img0,'new_img0.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img0,'new_img0.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img0, majorAxis0, eps0, ang0, xc0, yc0, Fraction=1, /QUIET
 	    epsillon[0] = eps0
 		theta[0] = ang0
 	    ;hitme
 	endif
     if (j eq 1) then begin
-	    mwrfits,isophote_img1,'new_img1.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img1,'new_img1.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img1, majorAxis1, eps1, ang1, xc1, yc1, Fraction=1, /QUIET
 	    epsillon[1] = eps1
 		theta[1] = ang1
 	    ;hitme
 	endif
     if (j eq 2) then begin
-	    mwrfits,isophote_img2,'new_img2.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img2,'new_img2.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img2, majorAxis2, eps2, ang2, xc2, yc2, Fraction=1, /QUIET
 		epsillon[2] = eps2
 		theta[2] = ang2
 	    ;hitme
 	endif
     if (j eq 3) then begin
-	    mwrfits,isophote_img3,'new_img3.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img3,'new_img3.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img3, majorAxis3, eps3, ang3, xc3, yc3, Fraction=1, /QUIET
 	    epsillon[3] = eps3
 		theta[3] = ang3
 	    ;hitme
 	endif
     if (j eq 4) then begin
-	    mwrfits,isophote_img4,'new_img4.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img4,'new_img4.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img4, majorAxis4, eps4, ang4, xc4, yc4, Fraction=1, /QUIET
 	    epsillon[4] = eps4
 		theta[4] = ang4
 	    ;hitme
 	endif
     if (j eq 5) then begin
-	    mwrfits,isophote_img5,'new_img5.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img5,'new_img5.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img5, majorAxis5, eps5, ang5, xc5, yc5, Fraction=1, /QUIET
 	    epsillon[5] = eps5
 		theta[5] = ang5
 	    ;hitme
 	endif
     if (j eq 6) then begin
-	    mwrfits,isophote_img6,'new_img6.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img6,'new_img6.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img6, majorAxis6, eps6, ang6, xc6, yc6, Fraction=1, /QUIET
 	    epsillon[6] = eps6
 		theta[6] = ang6
 	    ;hitme
 	endif
     if (j eq 7) then begin
-	    mwrfits,isophote_img7,'new_img7.fits',create=1 ;/create=1 creates new file even if old one exists
+	    if (testing ne 1) then begin
+	    	mwrfits,isophote_img7,'new_img7.fits',create=1 ;/create=1 creates new file even if old one exists
+	    endif
 	    find_galaxy, isophote_img7, majorAxis7, eps7, ang7, xc7, yc7, Fraction=1, /QUIET
 	    epsillon[7] = eps7
 		theta[7] = ang7
@@ -418,8 +436,9 @@ for k=0, re_pixels-1 do begin
 		endfor
 	endfor
 endfor
-
-mwrfits,re_img,'re_img.fits',create=1 ;/create=1 creates new file even if old one exists
+if (testing ne 1) then begin
+	mwrfits,re_img,'re_img.fits',create=1 ;/create=1 creates new file even if old one exists
+endnif
 find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1, /PLOT
 
 
