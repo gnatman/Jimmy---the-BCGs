@@ -201,9 +201,9 @@ endif
 
 ;Title, print it now so it doesn't print 50 times.
 print, 'count_pix . . epsillon[j] . . theta[j] . . radius[j] . radius[j]/r_e . lambda[j] . lambda_sb[j] . isophote[j]'
-if (testing ne 1) then begin
+;if (testing ne 1) then begin
 		printf, 9, 'radius_sb[j]/r_e, epsillon[j], lambda[j]'
-endif
+;endif
 
 
 for j=0,photometry_steps-1 do begin   
@@ -447,14 +447,14 @@ find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1, /PLOT
     lambda_sb_re = sum_upper_lam_sb_re / sum_lower_lam_sb_re
     
     print, re_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_sb_re, 0
-	if (testing ne 1) then begin
+	;if (testing ne 1) then begin
 		printf, 1, 'radius_sb_re/r_e, eps_re, lambda_re'
-	endif    
+	;endif    
 endif
 
-if (testing ne 1) then begin
+;if (testing ne 1) then begin
 	close, 9
 	close, 1
-endif
+;endif
 
 end
