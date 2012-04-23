@@ -581,20 +581,25 @@ if [ $lambda == y ]
 	then
 	echo "Running Lambda calculation"
 	export indir=$PRO_DIR/$2/
-	if [ $2 == 'main' ]; then
-	    export onetwo="1"
-	fi
-	if [ $2 == 'all' ]; then
-	    export onetwo="1"
-	fi
-	if [ $2 == 'comp' ]; then
-	    export onetwo="2"
-	fi
-	echo "$onetwo"
+#	if [ $2 == 'main' ]; then
+#	    export onetwo="1"
+#	fi
+#	if [ $2 == 'all' ]; then
+#	    export onetwo="1"
+#	fi
+#	if [ $2 == 'comp' ]; then
+#	    export onetwo="2"
+#	fi
+#	echo "$onetwo"
+#idl << EOF
+#.comp jimmy_lambda.pro
+#jimmy_lambda,'$1','$onetwo'
+#EOF
 idl << EOF
-.comp jimmy_lambda.pro
-jimmy_lambda,'$1','$onetwo'
+.comp new_lambda.pro
+lambda,'$1','$2'
 EOF
+
 	#/Applications/itt/idl/bin/idl /Users/jimmy/Astro/coms/lambda.com
 fi
 date
