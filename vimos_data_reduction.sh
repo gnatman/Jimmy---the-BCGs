@@ -67,12 +67,16 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	science="n"
 	idl_spectra_to_cube="n"
 	mosaic="n"
-	mask="y"
-	sncut="y"
-	bin="y"
-	ppxf="y"
+	mask="n"
+	sncut="n"
+	bin="n"
+	ppxf="n"
 	plot="n"
+<<<<<<< HEAD
 	monte="y"
+=======
+	monte="n"
+>>>>>>> Temporary Change
 	lambda="y"
 else
 	read -p "Create Master Bias and Calibration Files?: " -e t1
@@ -596,7 +600,11 @@ if [ $lambda == y ]
 #jimmy_lambda,'$1','$onetwo'
 #EOF
 idl << EOF
+<<<<<<< HEAD
 .comp new_lambda.pro
+=======
+.comp lambda.pro
+>>>>>>> Temporary Change
 lambda,'$1','$2'
 EOF
 
