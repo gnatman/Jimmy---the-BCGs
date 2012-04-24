@@ -43,12 +43,8 @@
 ;       None
 ;
 ; MODIFICATION HISTORY:
-<<<<<<< HEAD
-;   V0.1 -- Created  by Jimmy.
-=======
 ;   v0.5 -- 4/23/2012 Functional but ugly version of the code.
 ;   V0.1 -- 4/01/2012 Created  by Jimmy.
->>>>>>> Temporary Change
 ;
 ;----------------------------------------------------------------------------
 pro lambda, gal, obj
@@ -137,11 +133,7 @@ if (testing ne 1) then begin
 	mwrfits,new_img,'new_img.fits',create=1 ;/create=1 creates new file even if old one exists
 endif
 ;Find the central pixel of our galaxy.
-<<<<<<< HEAD
-find_galaxy, new_img, majorAxis, eps, ang, xc, yc, Fraction=1, /PLOT
-=======
 find_galaxy, new_img, majorAxis, eps, ang, xc, yc, Fraction=1;, /PLOT
->>>>>>> Temporary Change
 ;hitme
 ;Now we have the pixel definition of center, so lets find the center in arcseconds.
 for j=0,number_of_fibers-1 do begin
@@ -199,13 +191,9 @@ endif
 ;This is used to plot the isophotes to check for consistency
 loadct,39
 plotter = fltarr(number_of_fibers)
-<<<<<<< HEAD
-plot,[0,45],[0,45], color=255, /NODATA, /ISO
-=======
 if CanConnect() then begin
 plot,[0,45],[0,45], color=255, /NODATA, /ISO
 endif
->>>>>>> Temporary Change
 
 ;Used to derive the radius of the circle later.
 pix_area=(0.66^2) ;r^2
@@ -352,13 +340,9 @@ for j=0,photometry_steps-1 do begin
     for k=0,number_of_fibers-1 do begin
         if (signal[k] gt isophote[j]) then begin
         	plotter[k] = plotter[k]+1
-<<<<<<< HEAD
-        	xyouts,xpix[k],ypix[k],'!9B!3',color=(plotter[k]*30)+0
-=======
         	if CanConnect() then begin
         	xyouts,xpix[k],ypix[k],'!9B!3',color=(plotter[k]*30)+0
         	endif
->>>>>>> Temporary Change
         	sum_upper_lam = (abs(velocity[k]) * signal[k] * arc_radius[k]) + sum_upper_lam
             sum_lower_lam = (signal[k] * arc_radius[k] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam
             sum_upper_lam_sb = (abs(velocity[k]) * signal[k] * radius_sb[j]) + sum_upper_lam
@@ -459,13 +443,8 @@ for k=0, re_pixels-1 do begin
 endfor
 if (testing ne 1) then begin
 	mwrfits,re_img,'re_img.fits',create=1 ;/create=1 creates new file even if old one exists
-<<<<<<< HEAD
-endnif
-find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1, /PLOT
-=======
 endif
 find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1; , /PLOT
->>>>>>> Temporary Change
 
 
 
@@ -481,13 +460,9 @@ find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1; , /PLO
     
     for k=0,re_pixels-1 do begin
         	plotter_re[k] = plotter_re[k]+1
-<<<<<<< HEAD
-        	xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
-=======
 			if CanConnect() then begin
         	xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
         	endif
->>>>>>> Temporary Change
             sum_upper_lam_re = (abs(velocity_re[k]) * signal_re[k] * arc_radius_re[k]) + sum_upper_lam_re
             sum_lower_lam_re = (signal_re[k] * arc_radius_re[k] * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
             sum_upper_lam_sb_re = (abs(velocity_re[k]) * signal_re[k] * r_e) + sum_upper_lam_re
