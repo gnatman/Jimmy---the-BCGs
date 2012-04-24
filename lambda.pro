@@ -100,16 +100,6 @@ for i=0,number_of_fibers-1 do begin
 endfor
 
 
-
-
-
-
-
-;Print some diagnostic data to see how much gets cut
-print,'Number of elements: ',n_elements(dispersion)
-print, 'x limits: ',min(xarc),' to',max(xarc)
-
-
 img_size = size(img)
 new_img = fltarr(img_size[1],img_size[2])
 isophote_img0 = fltarr(img_size[1],img_size[2])
@@ -355,7 +345,7 @@ for j=0,photometry_steps-1 do begin
     
     print, count_pix, epsillon[j], theta[j], radius_sb[j], radius_sb[j]/r_e, lambda[j], lambda_sb[j], isophote[j]
     if (testing ne 1) then begin
-		printf, 9, radius_sb[j]/r_e, epsillon[j], lambda[j], FORMAT='(2f10.6)'
+		printf, 9, radius_sb[j]/r_e, epsillon[j], lambda[j], FORMAT='(3f10.6)'
 	endif
 endfor
 
@@ -475,8 +465,12 @@ find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1; , /PLO
     print, re_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_sb_re, 0
 	;if (testing ne 1) then begin
 		printf, 1, 'radius_sb_re/r_e, eps_re, lambda_re'
+		printf, 1, radius_sb_re/r_e, eps_re, lambda_re
 	;endif    
-endif
+endif else begin
+	printf, 1, 'radius_sb_re/r_e, eps_re, lambda_re'
+	printf, 1, radius_sb[0]/r_e, epsillon[0], lambda[0]
+endelse
 
 ;if (testing ne 1) then begin
 	close, 9

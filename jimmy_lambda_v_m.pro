@@ -48,13 +48,31 @@ set_plot, 'ps'
 device, filename='lambda_v_mass.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
 
 label = [ 'BCG 1050', 'BCG 1027', 'BCG 1066', 'BCG 2086', 'BCG 2001', 'BCG 1153' ] 
-lambda = [ 0.124, 0.150, 0.164, 0.144, 0.179, 0.240 ]
+;lambda = [ 0.124, 0.150, 0.164, 0.144, 0.179, 0.240 ]
 m_dyn = [ 12.08, 11.85, 11.88, 11.82, 11.25, 11.87 ]
 label_comp = [ 'Comp 1027', 'Comp 1066', 'Comp 2086' ] 
 lambda_comp = [ 0.272, 0.483, 0.11 ]
 m_dyn_comp = [ 11.6, 11.6, 11.06 ]
 sarah_lambda = [ 0.113958, 0.112633, 0.346064, 0.256023, 0.715347, 0.103441 ]
 sarah_m_dyn = [ 12.2, 11.8, 11.57, 11.84, 11.85, 11.78, 11.15 ]
+
+
+lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
+table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
+lambda = fltarr(n_elements(lambda_files))
+epsillon = fltarr(n_elements(lambda_files))
+for i=0, n_elements(files)-1 do begin
+	readcol, lambda_files[i], F='F,F,F', dummy1, tempepsillon, templambda, /silent
+	readcol, table_files[i], F='A,A,F,A,F', dummy1, dummy2, values, dummy3, errors
+	lambda[i] = templambda
+	epsillon[i] = tempepsillon
+endfor
+
+;print,lambda
+;print,epsillon
+
+
+
 
 ;Window,1,XSIZE=1200,YSIZE=700
 
@@ -80,7 +98,7 @@ lambda[5] = lambda[5]
 ;oplot, sarah_m_dyn, sarah_lambda, PSYM=6, color=100
 ;xyouts, sarah_m_dyn+0.02, sarah_lambda-0.005, label, color=100, CHARSIZE = 1
 
-readcol,'/Users/jimmy/Astro/Supporting\ Documents/SAURON_Data_Fig7_LR_MB_Mvir_core.txt', F='A,F,F,F,A', dummy1, sauron_lambda, dummy2, sauron_m_dyn, dummy3
+readcol,'/Users/jimmy/Astro/Supporting\ Documents/SAURON_Data_Fig7_LR_MB_Mvir_core.txt', F='A,F,F,F,A', dummy1, sauron_lambda, dummy2, sauron_m_dyn, dummy3, /SILENT
 
 USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 
