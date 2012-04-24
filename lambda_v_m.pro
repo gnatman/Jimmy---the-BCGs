@@ -15,7 +15,7 @@
 ;#############################################################################
 ;
 ; NAME:
-;   JIMMY_LAMBDA_V_M
+;   LAMBDA_V_M
 ;
 ; PURPOSE:
 ;   This code creates a plot of lambda_R_e vs mass, used for making posters.
@@ -40,7 +40,7 @@
 ;   V0.1 -- Created by Jimmy, 2011
 ;
 ;----------------------------------------------------------------------------
-pro jimmy_lambda_v_m
+pro lambda_v_m
 
 loadct, 4
 ;sauron_colormap
@@ -58,12 +58,16 @@ sarah_m_dyn = [ 12.2, 11.8, 11.57, 11.84, 11.85, 11.78, 11.15 ]
 
 
 lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
-table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
+table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
+print,'lambda_files',lambda_files
+print,'table_files',table_files
 lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
 for i=0, n_elements(files)-1 do begin
-	readcol, lambda_files[i], F='F,F,F', dummy1, tempepsillon, templambda, /silent
+	readcol, lambda_files[i], F='F,F,F', dummy1, tempepsillon, templambda;, /silent
 	readcol, table_files[i], F='A,A,F,A,F', dummy1, dummy2, values, dummy3, errors
+	dispersion[i] = values[1]
+	print,'dispersion[i]',dispersion[i]
 	lambda[i] = templambda
 	epsillon[i] = tempepsillon
 endfor

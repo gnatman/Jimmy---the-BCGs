@@ -378,7 +378,6 @@ endfor
 
 
 if radius_sb[0] gt r_e then begin
-
 effective_area = !pi*r_e^2
 effective_pix_area = effective_area/pix_area
 re_pixels = ROUND(effective_pix_area)

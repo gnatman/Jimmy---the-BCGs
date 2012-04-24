@@ -15,7 +15,7 @@
 ;#############################################################################
 ;
 ; NAME:
-;   JIMMY_LAMBDA_V_R
+;   LAMBDA_V_R
 ;
 ; PURPOSE:
 ;   This code creates a plot of radial profile of lambda_r, used for making posters.
@@ -41,7 +41,7 @@
 ;
 ;----------------------------------------------------------------------------
 
-pro jimmy_lambda_v_r
+pro lambda_v_r
 
 loadct, 4
 set_plot, 'ps'
