@@ -189,9 +189,9 @@ endif
 
 
 ;This is used to plot the isophotes to check for consistency
-loadct,39
 plotter = fltarr(number_of_fibers)
 if CanConnect() then begin
+loadct,39
 plot,[0,45],[0,45], color=255, /NODATA, /ISO
 endif
 
