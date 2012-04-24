@@ -597,11 +597,7 @@ if [ $lambda == y ]
 #jimmy_lambda,'$1','$onetwo'
 #EOF
 idl << EOF
-<<<<<<< HEAD
-.comp new_lambda.pro
-=======
 .comp lambda.pro
->>>>>>> Temporary Change
 lambda,'$1','$2'
 EOF
 
