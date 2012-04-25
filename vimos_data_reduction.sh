@@ -73,13 +73,8 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	ppxf="n"
 	plot="n"
 	monte="n"
-<<<<<<< HEAD
-	plot="n"
-	lambda="y"
-=======
 	plot="y"
 	lambda="n"
->>>>>>> Cluster Fix
 else
 	read -p "Create Master Bias and Calibration Files?: " -e t1
 	if [ -n "$t1" ]; then
