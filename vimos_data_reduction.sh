@@ -73,7 +73,7 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	ppxf="n"
 	plot="n"
 	monte="n"
-	plot="y"
+	plot="n"
 	lambda="y"
 else
 	read -p "Create Master Bias and Calibration Files?: " -e t1

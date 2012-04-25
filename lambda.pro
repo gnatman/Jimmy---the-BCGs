@@ -344,9 +344,9 @@ for j=0,photometry_steps-1 do begin
     lambda_sb[j] = sum_upper_lam_sb / sum_lower_lam_sb
     
     print, count_pix, epsillon[j], theta[j], radius_sb[j], radius_sb[j]/r_e, lambda[j], lambda_sb[j], isophote[j]
-    if (testing ne 1) then begin
+    ;if (testing ne 1) then begin
 		printf, 9, radius_sb[j]/r_e, epsillon[j], lambda[j], FORMAT='(3f10.6)'
-	endif
+	;endif
 endfor
 
 ;This is the average of the radii of all the spaxels that are in one particular isophote,
