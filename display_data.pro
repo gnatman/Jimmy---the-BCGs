@@ -119,9 +119,9 @@ endfor
 
 close,1
 
-if CanConnect() then begin
 
-sauron_colormap
+
+
 ;xbin = xbin+0.603
 ;x=x+0.603
 ;xpix = xpix+2
@@ -132,6 +132,10 @@ print,'Mean Sigma: ',wmean(sigma, sigma_sig, ERROR=serror), '  +/-',serror
 print,'Min & Max Z: ',min(z),max(z)
 print,'Min & Max Vel: ',min(V),max(V)
 print,'Min & Max Sigma: ',min(sigma),max(sigma)
+
+if CanConnect() then begin
+
+sauron_colormap
 
 max_scale=(max(V)*1.2)+100
 min_scale=(min(V)*1.2)-100
