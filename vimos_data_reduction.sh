@@ -71,9 +71,8 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	sncut="n"
 	bin="n"
 	ppxf="n"
-	plot="n"
-	monte="n"
 	plot="y"
+	monte="n"
 	lambda="n"
 else
 	read -p "Create Master Bias and Calibration Files?: " -e t1
@@ -132,26 +131,25 @@ else
 		ppxf="$default"
 	fi
 
+	read -p "Perform Monte Carlo Simulation?: " -e t1
+	if [ -n "$t1" ]; then
+#		mask="$t1"
+#		sncut="$t1"
+#		bin="$t1"
+#		ppxf="$t1"
+#		plot="$t1"
+		monte="$t1"
+	else
+		monte="$default"
+	fi
+	export montecarlointoppxf=$monte
+	
 	read -p "Plot Data?: " -e t1
 	if [ -n "$t1" ]; then
 		plot="$t1"
 	else
 		plot="$default"
 	fi
-
-	read -p "Perform Monte Carlo Simulation?: " -e t1
-	if [ -n "$t1" ]; then
-		mask="$t1"
-		sncut="$t1"
-		bin="$t1"
-		ppxf="$t1"
-		plot="$t1"
-		monte="$t1"
-	else
-		monte="$default"
-	fi
-
-	export montecarlointoppxf=$monte
 
 	read -p "Perform Lambda?: " -e t1
 	if [ -n "$t1" ]; then
@@ -558,24 +556,24 @@ idl << EOF
 display_data,'vbinned','$1'
 EOF
 
-#    export infile1=$PRO_DIR/$2/radial_2d_bins.txt
-#    export infile2=$PRO_DIR/$2/ppxf_rad_bin_output
-#    export infile3=$PRO_DIR/$2/radial_2d_binning_output.txt
-#idl << EOF
-#.comp display_data.pro
-#display_data,'radial','$1'
-#EOF
+    export infile1=$PRO_DIR/$2/radial_2d_bins.txt
+    export infile2=$PRO_DIR/$2/ppxf_rad_bin_output
+    export infile3=$PRO_DIR/$2/radial_2d_binning_output.txt
+idl << EOF
+.comp display_data.pro
+display_data,'radial','$1'
+EOF
 
         mv table_one.txt /$PRO_DIR/$2/table_one.txt
-#        mv sigma_scale.eps /$PRO_DIR/$2/sigma_scale.eps
-#        mv velocity_scale.eps /$PRO_DIR/$2/velocity_scale.eps
+        mv sigma_scale.eps /$PRO_DIR/$2/sigma_scale.eps
+        mv velocity_scale.eps /$PRO_DIR/$2/velocity_scale.eps
         mv table.txt /$PRO_DIR/$2/table.txt
-#        mv sigma_rad.eps /$PRO_DIR/$2/sigma_rad.eps
-#        mv velocity_rad.eps /$PRO_DIR/$2/velocity_rad.eps
-#        mv table_rad.txt /$PRO_DIR/$2/table_rad.txt
-#        mv velocity.eps /$PRO_DIR/$2/velocity.eps
-#        mv signal_noise.eps /$PRO_DIR/$2/signal_noise.eps
-#        mv signal_noise_rad.eps /$PRO_DIR/$2/signal_noise_rad.eps
+        mv sigma_rad.eps /$PRO_DIR/$2/sigma_rad.eps
+        mv velocity_rad.eps /$PRO_DIR/$2/velocity_rad.eps
+        mv table_rad.txt /$PRO_DIR/$2/table_rad.txt
+        mv velocity.eps /$PRO_DIR/$2/velocity.eps
+        mv signal_noise.eps /$PRO_DIR/$2/signal_noise.eps
+        mv signal_noise_rad.eps /$PRO_DIR/$2/signal_noise_rad.eps
 fi
 
 if [ $lambda == y ]
