@@ -59,14 +59,15 @@ sarah_m_dyn = [ 12.2, 11.8, 11.57, 11.84, 11.85, 11.78, 11.15 ]
 
 lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
 table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
-print,'lambda_files',lambda_files
-print,'table_files',table_files
+;print,'lambda_files',n_elements(lambda_files)
+;print,'table_files',n_elements(table_files)
 lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
-for i=0, n_elements(files)-1 do begin
+dispersion = fltarr(n_elements(lambda_files))
+for i=0, n_elements(lambda_files)-1 do begin
 	readcol, lambda_files[i], F='F,F,F', dummy1, tempepsillon, templambda;, /silent
-	readcol, table_files[i], F='A,A,F,A,F', dummy1, dummy2, values, dummy3, errors
-	dispersion[i] = values[1]
+	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5
+	dispersion[i] = values[2]
 	print,'dispersion[i]',dispersion[i]
 	lambda[i] = templambda
 	epsillon[i] = tempepsillon
@@ -74,7 +75,7 @@ endfor
 
 ;print,lambda
 ;print,epsillon
-
+;print,dispersion
 
 
 
@@ -111,6 +112,6 @@ oplot, sauron_m_dyn, sauron_lambda, PSYM=5, symsize = 1.2, thick=2
 
 device,/close
 
-file_move,'lambda_v_mass.eps','Downloads/lambda_v_mass.eps', /OVERWRITE
+;file_move,'lambda_v_mass.eps','Downloads/lambda_v_mass.eps', /OVERWRITE
 
 end
