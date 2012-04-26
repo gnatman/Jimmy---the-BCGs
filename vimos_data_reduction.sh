@@ -67,13 +67,13 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	science="n"
 	idl_spectra_to_cube="n"
 	mosaic="n"
-	mask="n"
-	sncut="n"
-	bin="n"
-	ppxf="n"
+	mask="y"
+	sncut="y"
+	bin="y"
+	ppxf="y"
 	plot="y"
-	monte="n"
-	lambda="n"
+	monte="y"
+	lambda="y"
 else
 	read -p "Create Master Bias and Calibration Files?: " -e t1
 	if [ -n "$t1" ]; then
