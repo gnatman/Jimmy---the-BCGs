@@ -49,7 +49,7 @@ device, filename='lambda_v_mass.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER
 
 label = [ 'BCG 1050', 'BCG 1027', 'BCG 1066', 'BCG 2086', 'BCG 2001', 'BCG 1153' ] 
 ;lambda = [ 0.124, 0.150, 0.164, 0.144, 0.179, 0.240 ]
-m_dyn = [ 12.08, 11.85, 11.88, 11.82, 11.25, 11.87 ]
+;m_dyn = [ 12.08, 11.85, 11.88, 11.82, 11.25, 11.87 ]
 label_comp = [ 'Comp 1027', 'Comp 1066', 'Comp 2086' ] 
 lambda_comp = [ 0.272, 0.483, 0.11 ]
 m_dyn_comp = [ 11.6, 11.6, 11.06 ]
@@ -65,24 +65,32 @@ lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
 mass = fltarr(n_elements(lambda_files))
+r_e = fltarr(n_elements(lambda_files))
+redshift = fltarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
-	readcol, lambda_files[i], F='F,F,F', dummy1, tempepsillon, templambda;, /silent
-	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5
+	print,'Reading in: ',lambda_files[i]
+	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsillon, templambda, /silent
+	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5, /silent
+	r_e[i] = tempr_e[0]
 	dispersion[i] = values[2]
-	print,'dispersion[i]',dispersion[i]
+	redshift[i] = values[0]
 	lambda[i] = templambda
 	epsillon[i] = tempepsillon
 endfor
 
-;Pull in effective radius.
-if (testing ne 1) then begin
-    r_e = 3 ;change manually.
-endif
-if (testing) then begin
-    r_e = getenv('r_e')
-endif
+;print,'r_e: ',r_e
+radius_rad = r_e*4.84813681E-6
+;print,'radius_rad: ',radius_rad
+distance = redshift*1.302773E26
+;print,'distance: ',distance
+radius_m = distance*tan(radius_rad)
+;print,'radius_m: ',radius_m
+mass = (5*radius_m*((dispersion*1000)^2))/(1.98892E30*6.673E-11)
+;print,'mass: ',mass
+log_mass = alog10(mass)
+;print,'log_mass',log_mass
 
-;mass = 
+m_dyn = log_mass
 
 ;print,lambda
 ;print,epsillon

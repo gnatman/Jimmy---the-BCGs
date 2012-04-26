@@ -464,11 +464,11 @@ find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1; , /PLO
     print, re_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_sb_re, 0
 	;if (testing ne 1) then begin
 		printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re'
-		printf, 1, radius_sb_re, r_e, eps_re, lambda_re
+		printf, 1, radius_sb_re, r_e, eps_re, lambda_re, FORMAT='(4f10.6)'
 	;endif    
 endif else begin
 	printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re'
-	printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0]
+	printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0], FORMAT='(4f10.6)'
 endelse
 
 ;if (testing ne 1) then begin

@@ -47,19 +47,19 @@ loadct, 4
 set_plot, 'ps'
 device, filename='lambda_v_rad.eps', /encapsul, /color, BITS=8
 
-readcol, '/Users/jimmy/Astro/reduced/1027pro/main/lambda.txt', F='F,F', r1027, e1027, l1027, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1027pro/comp/lambda.txt', F='F,F', r1027_comp, e1027comp, l1027_comp, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1042pro/main/lambda.txt', F='F,F', r1042, e1042, l1042, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1048pro/main/lambda.txt', F='F,F', r1048, e1048, l1048, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1050pro/main/lambda.txt', F='F,F', r1050, e1050, l1050, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1066pro/main/lambda.txt', F='F,F', r1066, e1066, l1066, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1066pro/comp/lambda.txt', F='F,F', r1066_comp, e1066_comp, l1066_comp, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1067pro/main/lambda.txt', F='F,F', r1067, e1067, l1067, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1153pro/main/lambda.txt', F='F,F', r1153, e1153, l1153, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/1261pro/main/lambda.txt', F='F,F', r1261, e1261, l1261, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/2001pro/main/lambda.txt', F='F,F', r2001, e2001, l2001, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/2039pro/main/lambda.txt', F='F,F', r2039, e2039, l2039, /SILENT, SKIPLINE=1
-readcol, '/Users/jimmy/Astro/reduced/2086pro/main/lambda.txt', F='F,F', r2086, e2086, l2086, /SILENT, SKIPLINE=1 
+readcol, '/Users/jimmy/Astro/reduced/1027pro/main/lambda.txt', F='F,F', r1027, r_e1027, e1027, l1027, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1027pro/comp/lambda.txt', F='F,F', r1027_comp, r_e1027_comp, e1027comp, l1027_comp, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1042pro/main/lambda.txt', F='F,F', r1042, r_e1042, e1042, l1042, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1048pro/main/lambda.txt', F='F,F', r1048, r_e1048, e1048, l1048, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1050pro/main/lambda.txt', F='F,F', r1050, r_e1050, e1050, l1050, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1066pro/main/lambda.txt', F='F,F', r1066, r_e1066, e1066, l1066, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1066pro/comp/lambda.txt', F='F,F', r1066_comp, r_e1066_comp, e1066_comp, l1066_comp, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1067pro/main/lambda.txt', F='F,F', r1067, r_e1067, e1067, l1067, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1153pro/main/lambda.txt', F='F,F', r1153, r_e1153, e1153, l1153, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/1261pro/main/lambda.txt', F='F,F', r1261, r_e1261, e1261, l1261, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/2001pro/main/lambda.txt', F='F,F', r2001, r_e2001, e2001, l2001, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/2039pro/main/lambda.txt', F='F,F', r2039, r_e2039, e2039, l2039, /SILENT, SKIPLINE=1
+readcol, '/Users/jimmy/Astro/reduced/2086pro/main/lambda.txt', F='F,F', r2086, r_e2086, e2086, l2086, /SILENT, SKIPLINE=1 
 
 
 ;readcol, '/Users/jimmy/Astro/Supporting Documents/fake_sauron_slow', F='F,F', r_sauron_slow, l_sauron_slow, /SILENT
@@ -71,19 +71,19 @@ readcol, '/Users/jimmy/Astro/reduced/2086pro/main/lambda.txt', F='F,F', r2086, e
 
 
 plot, [0,0], [0,0], yrange=[0,1], xrange = [0,2], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5 ;xtitle='!3R/R!De', ytitle='!4k!D!3R', 
-oplot, r1027, l1027, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r1027_comp, l1027_comp, THICK = 8, COLOR = 180, LINESTYLE = 0 
-oplot, r1042, l1042, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r1048, l1048, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r1050, l1050, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r1066, l1066, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r1066_comp, l1066_comp, THICK = 8, COLOR = 180, LINESTYLE = 0
-oplot, r1067, l1067, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r1153, l1153, THICK = 8, COLOR = 180, LINESTYLE = 0
-oplot, r1261, l1261, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r2001, l2001, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r2039, l2039, THICK = 8, COLOR = 180, LINESTYLE = 2
-oplot, r2086, l2086, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r1027/r_e1027, l1027, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r1027_comp/r_e1027_comp, l1027_comp, THICK = 8, COLOR = 180, LINESTYLE = 0 
+oplot, r1042/r_e1042, l1042, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r1048/r_e1048, l1048, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r1050/r_e1050, l1050, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r1066/r_e1066, l1066, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r1066_comp/r_e1066_comp, l1066_comp, THICK = 8, COLOR = 180, LINESTYLE = 0
+oplot, r1067/r_e1067, l1067, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r1153/r_e1153, l1153, THICK = 8, COLOR = 180, LINESTYLE = 0
+oplot, r1261/r_e1261, l1261, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r2001/r_e2001, l2001, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r2039/r_e2039, l2039, THICK = 8, COLOR = 180, LINESTYLE = 2
+oplot, r2086/r_e2086, l2086, THICK = 8, COLOR = 180, LINESTYLE = 2
 ;oplot, r_fast, l_fast, THICK = 8, COLOR = 180, LINESTYLE = 0
 ;oplot, r_slow, l_slow, THICK = 8, COLOR = 180, LINESTYLE = 2
 ;oplot, r_sauron_slow, l_sauron_slow, COLOR = 1, LINESTYLE = 2
