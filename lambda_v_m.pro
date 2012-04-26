@@ -64,6 +64,7 @@ table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.tx
 lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
+mass = fltarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
 	readcol, lambda_files[i], F='F,F,F', dummy1, tempepsillon, templambda;, /silent
 	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5
@@ -72,6 +73,16 @@ for i=0, n_elements(lambda_files)-1 do begin
 	lambda[i] = templambda
 	epsillon[i] = tempepsillon
 endfor
+
+;Pull in effective radius.
+if (testing ne 1) then begin
+    r_e = 3 ;change manually.
+endif
+if (testing) then begin
+    r_e = getenv('r_e')
+endif
+
+;mass = 
 
 ;print,lambda
 ;print,epsillon

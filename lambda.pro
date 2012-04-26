@@ -197,7 +197,7 @@ endif
 ;Title, print it now so it doesn't print 50 times.
 print, 'count_pix . . epsillon[j] . . theta[j] . . radius[j] . radius[j]/r_e . lambda[j] . lambda_sb[j] . isophote[j]'
 ;if (testing ne 1) then begin
-		printf, 9, 'radius_sb[j]/r_e, epsillon[j], lambda[j]'
+		printf, 9, 'radius_sb[j], r_e, epsillon[j], lambda[j]'
 ;endif
 
 
@@ -345,7 +345,7 @@ for j=0,photometry_steps-1 do begin
     
     print, count_pix, epsillon[j], theta[j], radius_sb[j], radius_sb[j]/r_e, lambda[j], lambda_sb[j], isophote[j]
     ;if (testing ne 1) then begin
-		printf, 9, radius_sb[j]/r_e, epsillon[j], lambda[j], FORMAT='(3f10.6)'
+		printf, 9, radius_sb[j], r_e, epsillon[j], lambda[j], FORMAT='(4f10.6)'
 	;endif
 endfor
 
@@ -463,12 +463,12 @@ find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1; , /PLO
     
     print, re_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_sb_re, 0
 	;if (testing ne 1) then begin
-		printf, 1, 'radius_sb_re/r_e, eps_re, lambda_re'
-		printf, 1, radius_sb_re/r_e, eps_re, lambda_re
+		printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re'
+		printf, 1, radius_sb_re, r_e, eps_re, lambda_re
 	;endif    
 endif else begin
-	printf, 1, 'radius_sb_re/r_e, eps_re, lambda_re'
-	printf, 1, radius_sb[0]/r_e, epsillon[0], lambda[0]
+	printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re'
+	printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0]
 endelse
 
 ;if (testing ne 1) then begin
