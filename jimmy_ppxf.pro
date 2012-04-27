@@ -343,7 +343,7 @@ for i = 0, max(binNum) do begin
     print,' '
      
 
-    printf, 9, i, sol[0], velocity_std_dev, sol[1], sigma_std_dev, sol[2], sol[3], sol[4], sol[5], sol[6],(z + 1)*(1 + sol[0]/c) - 1, FORMAT='(i6,2f10.1,7f10.3,f10.6,e12.5)'
+    printf, 9, i, sol[0], velocity_std_dev, sol[1], sigma_std_dev, sol[2], sol[3], sol[4], sol[5], sol[6],(z + 1)*(1 + sol[0]/c) - 1, FORMAT='(i6,2f10.1,7f10.3,f10.6)'
 
 	if CanConnect() then begin ;only do this if we're printing things
 	    ;make the directory that the plots are saved to, move the printed plot to the directory, and then directory will be moved with bash

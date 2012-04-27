@@ -556,24 +556,24 @@ idl << EOF
 display_data,'vbinned','$1'
 EOF
 
-    export infile1=$PRO_DIR/$2/radial_2d_bins.txt
-    export infile2=$PRO_DIR/$2/ppxf_rad_bin_output
-    export infile3=$PRO_DIR/$2/radial_2d_binning_output.txt
-idl << EOF
-.comp display_data.pro
-display_data,'radial','$1'
-EOF
+#    export infile1=$PRO_DIR/$2/radial_2d_bins.txt
+#    export infile2=$PRO_DIR/$2/ppxf_rad_bin_output
+#    export infile3=$PRO_DIR/$2/radial_2d_binning_output.txt
+#idl << EOF
+#.comp display_data.pro
+#display_data,'radial','$1'
+#EOF
 
         mv table_one.txt /$PRO_DIR/$2/table_one.txt
         mv sigma_scale.eps /$PRO_DIR/$2/sigma_scale.eps
         mv velocity_scale.eps /$PRO_DIR/$2/velocity_scale.eps
         mv table.txt /$PRO_DIR/$2/table.txt
-        mv sigma_rad.eps /$PRO_DIR/$2/sigma_rad.eps
-        mv velocity_rad.eps /$PRO_DIR/$2/velocity_rad.eps
-        mv table_rad.txt /$PRO_DIR/$2/table_rad.txt
+#        mv sigma_rad.eps /$PRO_DIR/$2/sigma_rad.eps
+#        mv velocity_rad.eps /$PRO_DIR/$2/velocity_rad.eps
+#        mv table_rad.txt /$PRO_DIR/$2/table_rad.txt
         mv velocity.eps /$PRO_DIR/$2/velocity.eps
         mv signal_noise.eps /$PRO_DIR/$2/signal_noise.eps
-        mv signal_noise_rad.eps /$PRO_DIR/$2/signal_noise_rad.eps
+#        mv signal_noise_rad.eps /$PRO_DIR/$2/signal_noise_rad.eps
 fi
 
 if [ $lambda == y ]
