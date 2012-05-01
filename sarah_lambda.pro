@@ -17,7 +17,7 @@
 ;#############################################################################
 ;
 ; NAME:
-;   JIMMY_LAMBDA_V_M
+;   SARAH_LAMBDA
 ;
 ; PURPOSE:
 ;   This code calculates the lambda parameter for a given galaxy.
@@ -69,7 +69,7 @@ if (testing ne 1) then begin
     endif
     if (strmatch(obj,'2') eq 1) then begin
 		openw, 9, dir+'comp/lambda.txt'
-		openw, 1, dir+'main/lambda_re.txt'
+		openw, 1, dir+'comp/lambda_re.txt'
     endif
 endif
 
@@ -279,6 +279,7 @@ pix_area=(0.66^2) ;pi*r^2
 
 ;Title, print it now so it doesn't print 50 times.
 print, 'count_pix . . eps[k] . . theta[k] . . radius[k] . radius[k]/r_e . lambda[k] . I_phote[k]'
+printf, 9,'radius_sb[j], r_e, epsillon[j], lambda[j]'
 
 plot,[0,40],[0,40], color=255, /NODATA, /ISO
 
@@ -332,7 +333,7 @@ for k=0,steps-1 do begin
 
     print, count_pix, eps[k], theta[k], radius[k], radius[k]/r_e, lambda[k], I_phote[k]
     if (testing ne 1) then begin
-		printf, 9, radius[k]/r_e, lambda[k], FORMAT='(2f10.6)'
+		printf, 9, radius[k], r_e, eps[k], lambda[k], FORMAT='(4f10.6)'
 	endif
 
 
@@ -452,7 +453,8 @@ endfor
 print,'Effective radius, act radius, ellip re, ellip theta, lambda,dispersion:'
 print, r_e,radius_re,eps_re,theta_re,lambda_re,sig_re
 if (testing ne 1) then begin
-		printf, 1, r_e, lambda_re, FORMAT='(2f10.6)'
+		printf, 1,'radius_sb_re, r_e, eps_re, lambda_re'
+		printf, 1, radius_re, r_e, eps_re, lambda_re, FORMAT='(4f10.6)'
 endif
 
 

@@ -150,10 +150,10 @@ for j=0, photometry_steps-1 do begin
 endfor
 
 ;Take the ring of pixels surrounding the central pixel, and remove the central velocity, I don't like this.
-;central=where(xarc gt central_xarc-1.0 and xarc lt central_xarc+1.0 and yarc gt central_yarc-1. and yarc lt central_yarc+1.)
-;median_central_velocity=median(velocity[central],/EVEN) ;Find the median velocity of our central pixels square.
-;print, 'Median Velocity (within 1" of the center): ', median_central_velocity
-;velocity=velocity-median_central_velocity
+central=where(xarc gt xc_arc-1.0 and xarc lt xc_arc+1.0 and yarc gt yc_arc-1. and yarc lt yc_arc+1.)
+median_central_velocity=median(velocity[central],/EVEN) ;Find the median velocity of our central pixels square.
+print, 'Median Velocity (within 1" of the center): ', median_central_velocity
+velocity=velocity-median_central_velocity
 
 ;setting up variables to calculate radii and lambda parameters
 area=fltarr(photometry_steps)
