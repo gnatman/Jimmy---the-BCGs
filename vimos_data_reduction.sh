@@ -469,16 +469,16 @@ idl <<EOF
 vbinning
 EOF
 
-    echo "Radial Binning and singular bin"
-    export radius=$r_e
-    export infile=$PRO_DIR
-    export outfile1=$PRO_DIR/$2/radial_2d_binning_output.txt
-    export outfile2=$PRO_DIR/$2/radial_2d_bins.txt
-    export target=$1
-idl <<EOF
-.comp radial_bin.pro
-radial_bin
-EOF
+#    echo "Radial Binning and singular bin"
+#    export radius=$r_e
+#    export infile=$PRO_DIR
+#    export outfile1=$PRO_DIR/$2/radial_2d_binning_output.txt
+#    export outfile2=$PRO_DIR/$2/radial_2d_bins.txt
+#    export target=$1
+#idl <<EOF
+#.comp radial_bin.pro
+#radial_bin
+#EOF
 
     export infile=$PRO_DIR/$2/voronoi_2d_binning.txt
     export outfile1=$PRO_DIR/$2/one_bin_output.txt
@@ -524,17 +524,17 @@ EOF
 	    mv ppxf_fits /$PRO_DIR/$2/
     fi
     
-    export infile2=$PRO_DIR/$2/radial_2d_binning_output.txt
-    export infile4=$PRO_DIR/$2/radial_2d_bins.txt
-    export outfile=$PRO_DIR/$2/ppxf_rad_bin_output
-idl << EOF
-.comp jimmy_ppxf.pro
-jimmy_ppxf
-EOF
-    rm -rf /$PRO_DIR/$2/ppxf_fits_rad
-    if [ -d ppxf_fits ]; then
-	    mv ppxf_fits /$PRO_DIR/$2/ppxf_fits_rad
-	fi
+#    export infile2=$PRO_DIR/$2/radial_2d_binning_output.txt
+#    export infile4=$PRO_DIR/$2/radial_2d_bins.txt
+#    export outfile=$PRO_DIR/$2/ppxf_rad_bin_output
+#idl << EOF
+#.comp jimmy_ppxf.pro
+#jimmy_ppxf
+#EOF
+#    rm -rf /$PRO_DIR/$2/ppxf_fits_rad
+#    if [ -d ppxf_fits ]; then
+#	    mv ppxf_fits /$PRO_DIR/$2/ppxf_fits_rad
+#	fi
 fi
 
 if [ $plot == y ]; then
@@ -580,20 +580,6 @@ if [ $lambda == y ]
 	then
 	echo "Running Lambda calculation"
 	export indir=$PRO_DIR/$2/
-#	if [ $2 == 'main' ]; then
-#	    export onetwo="1"
-#	fi
-#	if [ $2 == 'all' ]; then
-#	    export onetwo="1"
-#	fi
-#	if [ $2 == 'comp' ]; then
-#	    export onetwo="2"
-#	fi
-#	echo "$onetwo"
-#idl << EOF
-#.comp jimmy_lambda.pro
-#jimmy_lambda,'$1','$onetwo'
-#EOF
 idl << EOF
 .comp lambda.pro
 lambda,'$1','$2'

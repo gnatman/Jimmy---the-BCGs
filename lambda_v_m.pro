@@ -41,8 +41,9 @@
 ;
 ;----------------------------------------------------------------------------
 pro lambda_v_m
+COMPILE_OPT idl2, HIDDEN
 
-loadct, 4
+loadct, 4, /SILENT
 ;sauron_colormap
 set_plot, 'ps'
 device, filename='lambda_v_mass.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
@@ -59,8 +60,6 @@ sarah_m_dyn = [ 12.2, 11.8, 11.57, 11.84, 11.85, 11.78, 11.15 ]
 
 lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
 table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
-;print,'lambda_files',n_elements(lambda_files)
-;print,'table_files',n_elements(table_files)
 lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
@@ -102,22 +101,22 @@ m_dyn = log_mass
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
-plot, m_dyn, lambda, PSYM=4, yrange=[0,0.8], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5 ; XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le',
+plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5 ; XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le',
 oplot, m_dyn, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, m_dyn_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
-m_dyn[0] = m_dyn[0]+0.05
-m_dyn[1] = m_dyn[1]+0.05
-m_dyn[2] = m_dyn[2]+0.05
-m_dyn[3] = m_dyn[3]-0.7
-m_dyn[4] = m_dyn[4]-0.25
-m_dyn[5] = m_dyn[5]+0.05
-lambda[0] = lambda[0]-0.01
-lambda[1] = lambda[1]-0
-lambda[2] = lambda[2]+0.02
-lambda[3] = lambda[3]-0.025
-lambda[4] = lambda[4]+0.02
-lambda[5] = lambda[5]
-;xyouts, m_dyn, lambda, label, CHARSIZE = 1.2, CHARTHICK = 4, COLOR = 180
+;m_dyn[0] = m_dyn[0]+0.05
+;m_dyn[1] = m_dyn[1]+0.05
+;m_dyn[2] = m_dyn[2]+0.05
+;m_dyn[3] = m_dyn[3]-0.7
+;m_dyn[4] = m_dyn[4]-0.25
+;m_dyn[5] = m_dyn[5]+0.05
+;lambda[0] = lambda[0]-0.01
+;lambda[1] = lambda[1]-0
+;lambda[2] = lambda[2]+0.02
+;lambda[3] = lambda[3]-0.025
+;lambda[4] = lambda[4]+0.02
+;lambda[5] = lambda[5]
+xyouts, m_dyn, lambda, label, CHARSIZE = 1.2, CHARTHICK = 4, COLOR = 180
 
 ;oplot, sarah_m_dyn, sarah_lambda, PSYM=6, color=100
 ;xyouts, sarah_m_dyn+0.02, sarah_lambda-0.005, label, color=100, CHARSIZE = 1

@@ -63,6 +63,7 @@
 ;----------------------------------------------------------------------------
 
 function determine_goodPixels, logLam, lamRangeTemp, redshift, act_z
+COMPILE_OPT idl2, HIDDEN
 
 ; Wavelengths of sky lines - correct for z as wavelength re-scaled below
 lines = [5577.0d/(1+act_z),5892.0d/(1+act_z)] 
@@ -83,6 +84,7 @@ end
 
 ;------------------------------------------------------------------------------
 pro jimmy_ppxf
+COMPILE_OPT idl2, HIDDEN
 
 testing=0 ;Set to 0 if you want to be in "testing" mode
 testing_string=getenv('not_testing') ;read from bash

@@ -103,7 +103,6 @@ if type eq 'one' then begin
 endif
 
 openw,1,table_file_name
-print,'z: ',z
 printf,1,'Mean Z: ',mean(z)
 printf,1,'Mean Vel: ',wmean(V, v_sig, ERROR=verror), '  +/-',verror
 printf,1,'Mean Sigma: ',wmean(sigma, sigma_sig, ERROR=serror), '  +/-',serror

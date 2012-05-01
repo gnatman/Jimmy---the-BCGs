@@ -53,6 +53,7 @@
 ;----------------------------------------------------------------------------
 
 pro vbinning
+COMPILE_OPT idl2, HIDDEN
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
 testing_string=getenv('not_testing')
