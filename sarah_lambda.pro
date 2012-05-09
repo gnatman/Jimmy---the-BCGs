@@ -66,10 +66,12 @@ if (testing ne 1) then begin
     if (strmatch(obj,'1') eq 1) then begin
 		openw, 9, dir+'main/lambda.txt'
 		openw, 1, dir+'main/lambda_re.txt'
+		dir='/Users/jimmy/Astro/reduced/'+gal+'pro/main/'
     endif
     if (strmatch(obj,'2') eq 1) then begin
 		openw, 9, dir+'comp/lambda.txt'
 		openw, 1, dir+'comp/lambda_re.txt'
+		dir='/Users/jimmy/Astro/reduced/'+gal+'pro/comp/'
     endif
 endif
 
@@ -310,6 +312,10 @@ for k=0,steps-1 do begin
         	;print,'xpix[j]: ',xpix[j],' ypix[j]: ',ypix[j],' plotter[j]: ',plotter[j]
         	xyouts,xpix[j],ypix[j],'!9B!3',color=(plotter[j]*30)+0
             sum_upper_lam = (abs(velocity[j]) * signal[j] * radius[k]) + sum_upper_lam
+            ;print,'abs(velocity[j]): ',abs(velocity[j])
+            ;print,'signal[j]: ',signal[j]
+            ;print,'radius[k]: ',radius[k]
+            ;print,'sum_upper_lam: ',sum_upper_lam
             sum_lower_lam = (signal[j] * radius[k] * sqrt(velocity[j]^2 + dispersion[j]^2)) + sum_lower_lam
             sum_ix = (signal[j] * ((xarc[j] - central_xarc)^2)) + sum_ix
             sum_iy = (signal[j] * ((yarc[j] - central_yarc)^2)) + sum_iy

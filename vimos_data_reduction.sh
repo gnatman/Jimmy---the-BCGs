@@ -580,23 +580,23 @@ if [ $lambda == y ]
 	then
 	echo "Running Lambda calculation"
 	export indir=$PRO_DIR/$2/
-	if [ $2 == 'main' ]; then
-	    export onetwo="1"
-	fi
-	if [ $2 == 'all' ]; then
-	    export onetwo="1"
-	fi
-	if [ $2 == 'comp' ]; then
-	    export onetwo="2"
-	fi
-#idl << EOF
-#.comp lambda.pro
-#lambda,'$1','$2'
-#EOF
+#	if [ $2 == 'main' ]; then
+#	    export onetwo="1"
+#	fi
+#	if [ $2 == 'all' ]; then
+#	    export onetwo="1"
+#	fi
+#	if [ $2 == 'comp' ]; then
+#	    export onetwo="2"
+#	fi
 idl << EOF
-.comp sarah_lambda.pro
-sarah_lambda,'$1','$onetwo'
+.comp lambda.pro
+lambda,'$1','$2'
 EOF
+#idl << EOF
+#.comp sarah_lambda.pro
+#sarah_lambda,'$1','$onetwo'
+#EOF
 
 	#/Applications/itt/idl/bin/idl /Users/jimmy/Astro/coms/lambda.com
 fi

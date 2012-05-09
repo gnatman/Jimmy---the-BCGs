@@ -75,6 +75,7 @@
 ;----------------------------------------------------------------------------
 
 pro display_data,type,galaxy
+compile_opt hidden
 
 testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
 testing_string=getenv('not_testing')
@@ -133,7 +134,7 @@ print,'Min & Max Z: ',min(z),max(z)
 print,'Min & Max Vel: ',min(V),max(V)
 print,'Min & Max Sigma: ',min(sigma),max(sigma)
 
-if CanConnect() then begin
+;if CanConnect() then begin
 
 sauron_colormap
 
@@ -329,6 +330,6 @@ color_bar_y, max(xbin)+2, max(xbin)+3, !Y.crange[0],!y.crange[1],0,max(sn)*1.1,t
 device,/close
 
 endif
-endif
+;endif
 
 end

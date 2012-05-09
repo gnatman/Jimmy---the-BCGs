@@ -73,17 +73,40 @@ rdfloat, dir+ppxf_result, bin,V,v_sig,sig,sig_sig,h3,h4,h5,h6,Chi2,z, /SILENT
 rdfloat, dir+binning_output, x, y, xpix, ypix, binNum, SKIPLINE=1, /SILENT
 rdfloat, dir+binning_input, xarc, yarc, x2, y2, signal, noise, SKIPLINE=1, /SILENT
 
+
+
 ;File names of output files.  Using two different files because that's easier to parse
 openw, 9, dir+'lambda.txt' ;output file for this info.
 openw, 1, dir+'lambda_re.txt' ;output file for this info.
 
 ;Pull in effective radius.
 if (testing ne 1) then begin
-    r_e = 3 ;change manually.
+    r_e = 3.71 ;change manually.
 endif
 if (testing) then begin
     r_e = getenv('r_e')
 endif
+
+;
+;
+;
+;
+if (strmatch(gal,'1027') eq 1) then begin
+    if (strmatch(obj,'main') eq 1) then begin
+        r_e=4.64
+        xmin=5.
+        xmax=13.
+    endif
+    if (strmatch(obj,'comp') eq 1) then begin
+        r_e=3.71
+        xmin=-2
+        xmax=5.                
+    endif
+endif
+;
+;
+;
+;
 
 ;Create blank arrays to store the numbers we'll be working with.
 number_of_fibers=n_elements(binNum)
@@ -100,17 +123,46 @@ for i=0,number_of_fibers-1 do begin
     endfor
 endfor
 
+;
+;
+;
+;
+;
+;
+;
+;
+;This is where our data is definitely good.
+;clean=where(dispersion gt 120. and dispersion lt 500. and xarc gt xmin and xarc lt xmax)
+;clean=where(dispersion gt 120. and dispersion lt 500.0)
+;clean=where(xarc gt xmin and xarc lt xmax)
+
+;Print some diagnostic data to see how much gets cut
+;print,'Number of elements: ',n_elements(dispersion)
+;print,'Number used: ',n_elements(clean)
+;print,'Number rejected: ',n_elements(dispersion) - n_elements(clean)
+;print, 'x limits: ',xmin,' to',xmax
+
+
+;assign all our variables to only the spaxels that pass the cut.
+;xarc=x[clean]
+;yarc=y[clean]
+;xpix=xpix[clean] 
+;ypix=ypix[clean]
+;binNum=binNum[clean] 
+;signal=signal[clean] 
+;velocity=velocity[clean] 
+;dispersion=dispersion[clean] 
+;
+;
+;
+;
+;
+;
+;
 
 img_size = size(img)
 new_img = fltarr(img_size[1],img_size[2])
-isophote_img0 = fltarr(img_size[1],img_size[2])
-isophote_img1 = fltarr(img_size[1],img_size[2])
-isophote_img2 = fltarr(img_size[1],img_size[2])
-isophote_img3 = fltarr(img_size[1],img_size[2])
-isophote_img4 = fltarr(img_size[1],img_size[2])
-isophote_img5 = fltarr(img_size[1],img_size[2])
-isophote_img6 = fltarr(img_size[1],img_size[2])
-isophote_img7 = fltarr(img_size[1],img_size[2])
+isophote_img = fltarr(img_size[1],img_size[2], 7)
 for k=0, number_of_fibers-1 do begin
 	for i=0, img_size[1]-1 do begin
 		for j=0, img_size[2]-1 do begin
@@ -144,7 +196,7 @@ photometry_steps=7 ;Why seven steps, does more or less work better?
 isophote=fltarr(photometry_steps)
 for j=0, photometry_steps-1 do begin
 	min_signal=min(signal)
-	max_signal=max(signal)
+	max_signal=max(signal)/1.1 ;**********************************;
 	isophote[j]=alog10(min_signal) + (j * ( (alog10(max_signal) - alog10(min_signal)) / photometry_steps) )
 	isophote[j]=10^(isophote[j]) ;go back to linear scale
 endfor
@@ -171,9 +223,6 @@ x_dist = x2 - xc
 y_dist = y2 - yc
 radius = sqrt((x_dist^2)+(y_dist^2))
 arc_radius = radius*0.66 
-;if gal eq '1153' or '1067' then begin
-;	arc_radius = radius*0.33
-;endif
 if (gal eq '1067' or gal eq '1153') then begin
 	arc_radius = radius*0.33
 endif
@@ -211,113 +260,19 @@ for j=0,photometry_steps-1 do begin
             for i=0, img_size[1]-1 do begin
 				for l=0, img_size[2]-1 do begin
 					if (i eq xpix[k] and l eq ypix[k]) then begin
-						if (j eq 0) then begin
-							isophote_img0[i,l] = img[i,l]
-						endif
-						if (j eq 1) then begin
-							isophote_img1[i,l] = img[i,l]
-						endif
-						if (j eq 2) then begin
-							isophote_img2[i,l] = img[i,l]
-						endif
-						if (j eq 3) then begin
-							isophote_img3[i,l] = img[i,l]
-						endif
-						if (j eq 4) then begin
-							isophote_img4[i,l] = img[i,l]
-						endif
-						if (j eq 5) then begin
-							isophote_img5[i,l] = img[i,l]
-						endif
-						if (j eq 6) then begin
-							isophote_img6[i,l] = img[i,l]
-						endif
-						if (j eq 7) then begin
-							isophote_img7[i,l] = img[i,l]
-						endif
+						isophote_img[i,l,j] = img[i,l]
 					endif
 				endfor
 			endfor
         endif
     endfor
-    if (j eq 0) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img0,'new_img0.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img0, majorAxis0, eps0, ang0, xc0, yc0, Fraction=1, /QUIET
-	    epsillon[0] = eps0
-		theta[0] = ang0
-	    ;hitme
+    if (testing ne 1) then begin
+	    mwrfits,isophote_img[*,*,j],'new_img'+string(j)+'.fits',create=1 ;/create=1 creates new file even if old one exists
 	endif
-    if (j eq 1) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img1,'new_img1.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img1, majorAxis1, eps1, ang1, xc1, yc1, Fraction=1, /QUIET
-	    epsillon[1] = eps1
-		theta[1] = ang1
-	    ;hitme
-	endif
-    if (j eq 2) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img2,'new_img2.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img2, majorAxis2, eps2, ang2, xc2, yc2, Fraction=1, /QUIET
-		epsillon[2] = eps2
-		theta[2] = ang2
-	    ;hitme
-	endif
-    if (j eq 3) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img3,'new_img3.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img3, majorAxis3, eps3, ang3, xc3, yc3, Fraction=1, /QUIET
-	    epsillon[3] = eps3
-		theta[3] = ang3
-	    ;hitme
-	endif
-    if (j eq 4) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img4,'new_img4.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img4, majorAxis4, eps4, ang4, xc4, yc4, Fraction=1, /QUIET
-	    epsillon[4] = eps4
-		theta[4] = ang4
-	    ;hitme
-	endif
-    if (j eq 5) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img5,'new_img5.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img5, majorAxis5, eps5, ang5, xc5, yc5, Fraction=1, /QUIET
-	    epsillon[5] = eps5
-		theta[5] = ang5
-	    ;hitme
-	endif
-    if (j eq 6) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img6,'new_img6.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img6, majorAxis6, eps6, ang6, xc6, yc6, Fraction=1, /QUIET
-	    epsillon[6] = eps6
-		theta[6] = ang6
-	    ;hitme
-	endif
-    if (j eq 7) then begin
-	    if (testing ne 1) then begin
-	    	mwrfits,isophote_img7,'new_img7.fits',create=1 ;/create=1 creates new file even if old one exists
-	    endif
-	    find_galaxy, isophote_img7, majorAxis7, eps7, ang7, xc7, yc7, Fraction=1, /QUIET
-	    epsillon[7] = eps7
-		theta[7] = ang7
-	    ;hitme
-	endif
-	
-	
-	
-	
-	
-	
+	tempimg = isophote_img[*,*,j]
+    find_galaxy, tempimg, tempmajorAxis, tempeps, tempang, tempxc, tempyc, Fraction=1, /QUIET
+	epsillon[j] = tempeps
+	theta[j] = tempang
 	
 	
 	;Find the radius of all the pixels, as if they were one constant radius circle.
@@ -327,17 +282,23 @@ for j=0,photometry_steps-1 do begin
     ;Initially set all variables to zero.
     sum_upper_lam=0.0 ;upper lambda is the numerator in the equation
     sum_lower_lam=0.0 ;lower lambda is the denominator in the equation
+    sum_upper_lam_sb=0.0 ;upper lambda is the numerator in the equation
+    sum_lower_lam_sb=0.0 ;lower lambda is the denominator in the equation
     
     for k=0,number_of_fibers-1 do begin
         if (signal[k] gt isophote[j]) then begin
         	plotter[k] = plotter[k]+1
         	if CanConnect() then begin
-        	xyouts,xpix[k],ypix[k],'!9B!3',color=(plotter[k]*30)+0
+        		xyouts,xpix[k],ypix[k],'!9B!3',color=(plotter[k]*30)+0
         	endif
         	sum_upper_lam = (abs(velocity[k]) * signal[k] * arc_radius[k]) + sum_upper_lam
             sum_lower_lam = (signal[k] * arc_radius[k] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam
-            sum_upper_lam_sb = (abs(velocity[k]) * signal[k] * radius_sb[j]) + sum_upper_lam
-            sum_lower_lam_sb = (signal[k] * radius_sb[j] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam
+            sum_upper_lam_sb = (abs(velocity[k]) * signal[k] * radius_sb[j]) + sum_upper_lam_sb
+            ;print,'abs(velocity[k]): ',abs(velocity[k])
+            ;print,'signal[k]: ',signal[k]
+            ;print,'radius_sb[j]: ',radius_sb[j]
+            ;print,'sum_upper_lam_sb: ',sum_upper_lam_sb
+            sum_lower_lam_sb = (signal[k] * radius_sb[j] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam_sb
             endif
     endfor
     
@@ -345,9 +306,7 @@ for j=0,photometry_steps-1 do begin
     lambda_sb[j] = sum_upper_lam_sb / sum_lower_lam_sb
     
     print, count_pix, epsillon[j], theta[j], radius_sb[j], radius_sb[j]/r_e, lambda[j], lambda_sb[j], isophote[j]
-    ;if (testing ne 1) then begin
-		printf, 9, radius_sb[j], r_e, epsillon[j], lambda[j], FORMAT='(4f10.6)'
-	;endif
+	printf, 9, radius_sb[j], r_e, epsillon[j], lambda[j], FORMAT='(4f10.6)'
 endfor
 
 ;This is the average of the radii of all the spaxels that are in one particular isophote,

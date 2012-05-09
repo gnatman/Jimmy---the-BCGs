@@ -77,10 +77,14 @@ for i=0, n_elements(lambda_files)-1 do begin
 	if (lambda_re[i] lt (0.31*sqrt(epsillon_re[i]))) then begin
 		linestyle[i] = 2
 		print,'lambda_re[i]: ',lambda_re[i],' (0.31*sqrt(epsillon_re[i])): ',(0.31*sqrt(epsillon_re[i]))
+		print,'epsillon_re[i]: ',epsillon_re[i]
+		print,'sqrt(epsillon_re[i]): ',sqrt(epsillon_re[i])
 		;print,'slow rotator'
 	endif else begin
 		linestyle[i] = 0
 		print,'lambda_re[i]: ',lambda_re[i],' (0.31*sqrt(epsillon_re[i])): ',(0.31*sqrt(epsillon_re[i]))
+		print,'epsillon_re[i]: ',epsillon_re[i]
+		print,'sqrt(epsillon_re[i]): ',sqrt(epsillon_re[i])
 		;print,'fast rotator'
 	endelse
 endfor
