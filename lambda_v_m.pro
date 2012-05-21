@@ -121,7 +121,7 @@ print,'name_comp: ',name_comp
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
-plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5 ; XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le',
+plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le'
 oplot, m_dyn, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, m_dyn_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, m_dyn, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180

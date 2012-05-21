@@ -440,7 +440,7 @@ if [ $sncut == y ]; then
     export infile=$PRO_DIR/$2/$1$2.fits
     export outfile1=$PRO_DIR/$2/voronoi_2d_binning.txt
     export galaxy=$1
-    export sncut=3.0
+    export sncut=5.0
     # Using the com file allows you to stop and check the s/n cut, EOF requires no user intervention
 #    /Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/sncut.com
 idl <<EOF
@@ -462,7 +462,7 @@ if [ $bin == y ]; then
     export infile=$PRO_DIR/$2/voronoi_2d_binning.txt
     export outfile1=$PRO_DIR/$2/voronoi_2d_binning_output.txt
     export outfile2=$PRO_DIR/$2/voronoi_2d_bins.txt
-    export targetsn=5.0
+    export targetsn=10.0
     #/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/vbinning.com
 idl <<EOF
 .comp vbinning.pro

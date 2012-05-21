@@ -89,7 +89,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 	endelse
 endfor
 
-plot, [0,0], [0,0], yrange=[0,1], xrange = [0,1.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5 ;xtitle='!3R/R!De', ytitle='!4k!D!3R', 
+plot, [0,0], [0,0], yrange=[0,1], xrange = [0,1.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
 for i=0, n_elements(lambda_files)-1 do begin
 	oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
 	xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*]), strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4), CHARSIZE = 0.5, CHARTHICK = 2, COLOR = 180

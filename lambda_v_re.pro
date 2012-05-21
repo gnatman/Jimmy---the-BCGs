@@ -106,7 +106,7 @@ name_comp = name_comp[where(name_comp ne '')]
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
-plot, r_e, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5 ; XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le',
+plot, r_e, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='R_e', YTITLE='!4k!D!3R!Le'
 oplot, r_e, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, r_e_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, r_e, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
