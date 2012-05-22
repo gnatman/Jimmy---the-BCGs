@@ -98,6 +98,7 @@ if (testing) then begin
     rdfloat, getenv('infile2'), xarc, yarc, x, y, binNum, SKIPLINE=1, /SILENT
     rdfloat, getenv('infile4'), dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1, /SILENT
     openw, 9, getenv('outfile')
+    monte_iterations = getenv('monte_iterations')
 endif
 if (testing ne 1) then begin
     fits_read, '/Users/jimmy/Astro/reduced/1050pro/temp.fits', datacube, h
@@ -105,6 +106,7 @@ if (testing ne 1) then begin
     rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_binning_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
     rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
     openw, 9, '/Users/jimmy/Downloads/ppxf_v_bin_output'
+    monte_iterations = 10
 endif
 
 
@@ -287,20 +289,20 @@ for i = 0, max(binNum) do begin
 
 
     ;Begin Monte Carlo procedure
-    monte_velocity=fltarr(getenv('monte_iterations'))
-    monte_sigma=fltarr(getenv('monte_iterations'))
+    monte_velocity=fltarr(monte_iterations)
+    monte_sigma=fltarr(monte_iterations)
     
     print,'Proposed noise level: ',noise_level ;Good to check how much noise we're adding/subtracting from signal
     print,' '
     
     
-    if ( getenv('montecarlointoppxf') eq 'y' ) then begin
+    if ( monte_iterations ne 0 ) then begin
         galaxy_size = size(galaxy) ;size of logarithmically rebinned spectra
-        for k=0,getenv('monte_iterations')-1 do begin
+        for k=0,monte_iterations-1 do begin
             noisy = (RANDOMU(seed, galaxy_size[1])-0.5)*noise_level ;generate noise for each pixel in the spectra
             noisy_galaxy = galaxy + noisy ;make the galaxy noisy
             ;perform a ppxf fit on the noisy galaxy
-            ;noise = galaxy*0 + 1
+            noise = galaxy*0 + 1
             if CanConnect() then begin
 	            ppxf, templates, noisy_galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=4, DEGREE=6, VSYST=dv,BIAS=0, ERROR=error
 	        endif else begin
