@@ -497,8 +497,8 @@ if [ $ppxf == y ]; then
     export infile3=$ASTRO_DIR/MILES_library
     export infile4=$PRO_DIR/$2/one_bin_bins.txt
     export outfile=$PRO_DIR/$2/ppxf_one_bin_output
-    export start_range=1600
-    export end_range=2600
+    export start_range=300
+    export end_range=1600
     export template_list="/s025*.fits"
     export monte_iterations=10
     

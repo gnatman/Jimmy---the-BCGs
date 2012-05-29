@@ -128,6 +128,18 @@ endfor
 
 device,/close
 
+set_plot, 'ps'
+device, filename='lambda_v_rad_prop.eps', /encapsul, /color, BITS=8
+plot, [0,0], [0,0], yrange=[0,0.2], xrange = [0,1], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
+i=13
+oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
+xyouts, max(tempradius2[i,*]/r_e[i])+0.01, max(templambda2[i,*]), '2039', CHARSIZE = 1, CHARTHICK = 5, COLOR = 180
+i=15
+oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
+xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*])+0.01, '2086', CHARSIZE = 1, CHARTHICK = 5, COLOR = 180
+
+device,/close
+
 ;file_move,'lambda_v_rad.eps','Downloads/lambda_v_rad.eps', /OVERWRITE
 
 

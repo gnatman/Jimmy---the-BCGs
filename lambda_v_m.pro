@@ -65,24 +65,24 @@ r_e = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
 redshift = fltarr(n_elements(lambda_files))
 lambda = fltarr(n_elements(lambda_files))
-epsillon = fltarr(n_elements(lambda_files))
+epsilon = fltarr(n_elements(lambda_files))
 name = strarr(n_elements(lambda_files))
 r_e_comp = fltarr(n_elements(lambda_files))
 dispersion_comp = fltarr(n_elements(lambda_files))
 redshift_comp = fltarr(n_elements(lambda_files))
 lambda_comp = fltarr(n_elements(lambda_files))
-epsillon_comp = fltarr(n_elements(lambda_files))
+epsilon_comp = fltarr(n_elements(lambda_files))
 name_comp = strarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
 	print,'Reading in: ',lambda_files[i]
-	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsillon, templambda, /silent
+	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsilon, templambda, /silent
 	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5, /silent
 	if (strmid(lambda_files[i], 35, 4) eq 'main') then begin
 		r_e[i] = tempr_e[0]
 		dispersion[i] = values[2]
 		redshift[i] = values[0]
 		lambda[i] = templambda
-		epsillon[i] = tempepsillon
+		epsilon[i] = tempepsilon
 		radius_rad = r_e*4.84813681E-6
 		distance = redshift*1.302773E26
 		radius_m = distance*tan(radius_rad)
@@ -95,7 +95,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 		dispersion_comp[i] = values[2]
 		redshift_comp[i] = values[0]
 		lambda_comp[i] = templambda
-		epsillon_comp[i] = tempepsillon
+		epsilon_comp[i] = tempepsilon
 		radius_rad_comp = r_e_comp*4.84813681E-6
 		distance_comp = redshift_comp*1.302773E26
 		radius_m_comp = distance_comp*tan(radius_rad_comp)
@@ -109,12 +109,23 @@ endfor
 
 
 ;print,lambda
-;print,epsillon
+;print,epsilon
 ;print,dispersion
 
-print,'name: ',name
-print,'name_comp: ',name_comp
+;print,'name: ',name
+;print,'name_comp: ',name_comp
 
+for i=0, n_elements(name)-1 do begin
+	if (redshift[i] ne 0) then begin
+		print,'Name: ',name[i],' Z: ',redshift[i],' Dispersion: ',dispersion[i],' Mass: ',m_dyn[i],' Lambda: ',lambda[i],' R_e: ',r_e[i],' Ellipticity: ',epsilon[i]
+	endif
+endfor
+
+for i=0, n_elements(name_comp)-1 do begin
+	if (redshift_comp[i] ne 0) then begin
+		print,'Name: ',name_comp[i],' Z: ',redshift_comp[i],' Dispersion: ',dispersion_comp[i],' Mass: ',m_dyn_comp[i],' Lambda: ',lambda_comp[i],' R_e: ',r_e_comp[i],' Ellipticity: ',epsilon_comp[i]
+	endif
+endfor
 
 
 ;Window,1,XSIZE=1200,YSIZE=700
