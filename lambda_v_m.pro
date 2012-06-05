@@ -59,7 +59,9 @@ label = [ 'BCG 1050', 'BCG 1027', 'BCG 1066', 'BCG 2086', 'BCG 2001', 'BCG 1153'
 
 
 lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
-table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
+table_files = strmid( lambda_files, 0, 40)
+table_files = table_files + 'table_one.txt'
+;table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
 
 r_e = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
@@ -74,7 +76,9 @@ lambda_comp = fltarr(n_elements(lambda_files))
 epsilon_comp = fltarr(n_elements(lambda_files))
 name_comp = strarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
-	print,'Reading in: ',lambda_files[i]
+	table_files[i] = strmid( lambda_files[i], 0, 40)
+	table_files[i] = table_files[i] + 'table_one.txt'	
+	;print,'Reading in: ',lambda_files[i], ' and ',table_files[i]
 	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsilon, templambda, /silent
 	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5, /silent
 	if (strmid(lambda_files[i], 35, 4) eq 'main') then begin
@@ -105,15 +109,6 @@ for i=0, n_elements(lambda_files)-1 do begin
 		name_comp[i] = strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4)
 	endelse
 endfor
-
-
-
-;print,lambda
-;print,epsilon
-;print,dispersion
-
-;print,'name: ',name
-;print,'name_comp: ',name_comp
 
 for i=0, n_elements(name)-1 do begin
 	if (redshift[i] ne 0) then begin

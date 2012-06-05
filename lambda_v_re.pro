@@ -50,7 +50,9 @@ device, filename='lambda_v_r_e.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_
 
 
 lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
-table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
+table_files = strmid( lambda_files, 0, 40)
+table_files = table_files + 'table_one.txt'
+;table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
 
 r_e = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
