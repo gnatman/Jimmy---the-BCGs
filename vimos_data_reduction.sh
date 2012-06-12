@@ -87,7 +87,7 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	idl_spectra_to_cube="n"
 	mosaic="n"
 	mask="y"
-	sncut="y"
+	snc="y"
 	bin="y"
 	ppxf="y"
 	plot="y"
@@ -131,9 +131,9 @@ else
 
 	read -p "Perform S/N cut?: " -e t1
 	if [ -n "$t1" ]; then
-		sncut="$t1"
+		snc="$t1"
 	else
-		sncut="$default"
+		snc="$default"
 	fi
 
 	read -p "Bin the data?: " -e t1
@@ -153,7 +153,7 @@ else
 	read -p "Perform Monte Carlo Simulation?: " -e t1
 	if [ -n "$t1" ]; then
 #		mask="$t1"
-#		sncut="$t1"
+#		snc="$t1"
 #		bin="$t1"
 #		ppxf="$t1"
 #		plot="$t1"
@@ -451,7 +451,7 @@ fi
 
 export targetsn=5
 #PERFORM THE SIGNAL TO NOISE CUT
-if [ $sncut == y ]; then
+if [ $snc == y ]; then
     #Perform Signal to Noise Cut
     echo "S/N Cut"
     #only input is the test.fits file   
@@ -627,7 +627,7 @@ fi
 
 export targetsn=10
 #PERFORM THE SIGNAL TO NOISE CUT
-if [ $sncut == y ]; then
+if [ $snc == y ]; then
     #Perform Signal to Noise Cut
     echo "S/N Cut"
     #only input is the test.fits file   
