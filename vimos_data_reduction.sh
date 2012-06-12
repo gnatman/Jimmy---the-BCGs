@@ -29,14 +29,19 @@ if [ $# -ne 2 ]; then
 fi
 echo "Input target number: " $1
 echo "Input object of interest: " $2
+export targetsn=10
 
 #If the project directory for this galaxy doesn't exist, we will make it.
-if [ ! -d $PRO_DIR ]; then
+if [ ! -d $PRO_DIR/all/sn$targetsn ]; then
     mkdir $PRO_DIR
     mkdir $PRO_DIR/all
     mkdir $PRO_DIR/main
     mkdir $PRO_DIR/comp
     mkdir $PRO_DIR/2ndcomp
+    mkdir $PRO_DIR/all/sn$targetsn
+    mkdir $PRO_DIR/main/sn$targetsn
+    mkdir $PRO_DIR/comp/sn$targetsn
+    mkdir $PRO_DIR/2ndcomp/sn$targetsn
 fi
 
 #If there is a SOF directory for this galaxy, then we will remove the sym links to whatever galaxy may have been previously used, and add new symlinks for our current directory.
@@ -162,7 +167,6 @@ fi
 
 #Pull in environmental variables like redshift and sky fibers
 . $SOF_DIR/$1_env.sh
-
 
 
 #MASTER BIAS AND CALIBRATION FILES CREATION
@@ -438,16 +442,21 @@ if [ $sncut == y ]; then
     echo "S/N Cut"
     #only input is the test.fits file   
     export infile=$PRO_DIR/$2/$1$2.fits
-    export outfile1=$PRO_DIR/$2/voronoi_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
     export galaxy=$1
-    export sncut=3.0
+    if [ $targetsn == 5 ]; then
+	    export sncut=3.0
+	fi
+	if [ $targetsn == 10 ]; then
+		export sncut=5.0
+	fi
     # Using the com file allows you to stop and check the s/n cut, EOF requires no user intervention
 #    /Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/sncut.com
 idl <<EOF
 .comp signal_noise_cut.pro
 signal_noise_cut
 EOF
-    export outfile1=$PRO_DIR/$2/radial_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/sn$targetsn/radial_2d_binning.txt
     export sncut=1.0
 idl <<EOF
 .comp signal_noise_cut.pro
@@ -459,10 +468,9 @@ fi
 if [ $bin == y ]; then
     #Perform the Binning
     echo "Voronoi Binning"
-    export infile=$PRO_DIR/$2/voronoi_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/voronoi_2d_binning_output.txt
-    export outfile2=$PRO_DIR/$2/voronoi_2d_bins.txt
-    export targetsn=5.0
+    export infile=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
+    export outfile2=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
     #/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/vbinning.com
 idl <<EOF
 .comp vbinning.pro
@@ -480,9 +488,9 @@ EOF
 #radial_bin
 #EOF
 
-    export infile=$PRO_DIR/$2/voronoi_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/one_bin_output.txt
-    export outfile2=$PRO_DIR/$2/one_bin_bins.txt
+    export infile=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
+    export outfile1=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
+    export outfile2=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
 idl <<EOF
 .comp one_bin.pro
 one_bin
@@ -493,10 +501,10 @@ if [ $ppxf == y ]; then
     #Find Velocities
     echo "PPXF Velocities"
     export infile1=$PRO_DIR/$2/$1$2.fits
-    export infile2=$PRO_DIR/$2/one_bin_output.txt
+    export infile2=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
     export infile3=$ASTRO_DIR/MILES_library
-    export infile4=$PRO_DIR/$2/one_bin_bins.txt
-    export outfile=$PRO_DIR/$2/ppxf_one_bin_output
+    export infile4=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
+    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_one_bin_output
     export start_range=300
     export end_range=1600
     export template_list="/s025*.fits"
@@ -506,80 +514,81 @@ idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    rm -rf /$PRO_DIR/$2/ppxf_fit_one
+    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
     if [ -d ppxf_fits ]; then
-    	mv ppxf_fits /$PRO_DIR/$2/ppxf_fit_one
+    	mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
     fi
     
-    export infile2=$PRO_DIR/$2/voronoi_2d_binning_output.txt
-    export infile4=$PRO_DIR/$2/voronoi_2d_bins.txt
-    export outfile=$PRO_DIR/$2/ppxf_v_bin_output
+    export infile2=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
+    export infile4=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
+    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output
     
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    rm -rf /$PRO_DIR/$2/ppxf_fits
+    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fits
     if [ -d ppxf_fits ]; then
-	    mv ppxf_fits /$PRO_DIR/$2/
+	    mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/
     fi
     
-#    export infile2=$PRO_DIR/$2/radial_2d_binning_output.txt
-#    export infile4=$PRO_DIR/$2/radial_2d_bins.txt
-#    export outfile=$PRO_DIR/$2/ppxf_rad_bin_output
+#    export infile2=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
+#    export infile4=$PRO_DIR/$2/sn$targetsn/radial_2d_bins.txt
+#    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_rad_bin_output
 #idl << EOF
 #.comp jimmy_ppxf.pro
 #jimmy_ppxf
 #EOF
-#    rm -rf /$PRO_DIR/$2/ppxf_fits_rad
+#    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fits_rad
 #    if [ -d ppxf_fits ]; then
-#	    mv ppxf_fits /$PRO_DIR/$2/ppxf_fits_rad
+#	    mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fits_rad
 #	fi
 fi
 
 if [ $plot == y ]; then
     #Make Pretty Plots
     echo "Plot Data"
-    export infile1=$PRO_DIR/$2/one_bin_bins.txt
-    export infile2=$PRO_DIR/$2/ppxf_one_bin_output
-    export infile3=$PRO_DIR/$2/one_bin_output.txt
+    export infile1=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
+    export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_one_bin_output
+    export infile3=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'one','$1'
 EOF
 
-    export infile1=$PRO_DIR/$2/voronoi_2d_bins.txt
-    export infile2=$PRO_DIR/$2/ppxf_v_bin_output
-    export infile3=$PRO_DIR/$2/voronoi_2d_binning_output.txt
+    export infile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
+    export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output
+    export infile3=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'vbinned','$1'
 EOF
 
-#    export infile1=$PRO_DIR/$2/radial_2d_bins.txt
-#    export infile2=$PRO_DIR/$2/ppxf_rad_bin_output
-#    export infile3=$PRO_DIR/$2/radial_2d_binning_output.txt
+#    export infile1=$PRO_DIR/$2/sn$targetsn/radial_2d_bins.txt
+#    export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_rad_bin_output
+#    export infile3=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
 #idl << EOF
 #.comp display_data.pro
 #display_data,'radial','$1'
 #EOF
 
-        mv table_one.txt /$PRO_DIR/$2/table_one.txt
-        mv sigma_scale.eps /$PRO_DIR/$2/sigma_scale.eps
-        mv velocity_scale.eps /$PRO_DIR/$2/velocity_scale.eps
-        mv table.txt /$PRO_DIR/$2/table.txt
-#        mv sigma_rad.eps /$PRO_DIR/$2/sigma_rad.eps
-#        mv velocity_rad.eps /$PRO_DIR/$2/velocity_rad.eps
-#        mv table_rad.txt /$PRO_DIR/$2/table_rad.txt
-        mv velocity.eps /$PRO_DIR/$2/velocity.eps
-        mv signal_noise.eps /$PRO_DIR/$2/signal_noise.eps
-#        mv signal_noise_rad.eps /$PRO_DIR/$2/signal_noise_rad.eps
+        mv table_one.txt /$PRO_DIR/$2/sn$targetsn/table_one.txt
+        mv sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/sigma_scale.eps
+        mv velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/velocity_scale.eps
+        mv table.txt /$PRO_DIR/$2/sn$targetsn/table.txt
+#        mv sigma_rad.eps /$PRO_DIR/$2/sn$targetsn/sigma_rad.eps
+#        mv velocity_rad.eps /$PRO_DIR/$2/sn$targetsn/velocity_rad.eps
+#        mv table_rad.txt /$PRO_DIR/$2/sn$targetsn/table_rad.txt
+        mv velocity.eps /$PRO_DIR/$2/sn$targetsn/velocity.eps
+        mv signal_noise.eps /$PRO_DIR/$2/sn$targetsn/signal_noise.eps
+#        mv signal_noise_rad.eps /$PRO_DIR/$2/sn$targetsn/signal_noise_rad.eps
 fi
 
 if [ $lambda == y ]
 	then
 	echo "Running Lambda calculation"
-	export indir=$PRO_DIR/$2/
+	export indir=$PRO_DIR/$2/sn$targetsn/
+	export fitsdir=$PRO_DIR/$2/
 #	if [ $2 == 'main' ]; then
 #	    export onetwo="1"
 #	fi

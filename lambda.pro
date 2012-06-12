@@ -57,16 +57,18 @@ testing=FIX(testing_string)
 ;Specify the location of input files.
 if (testing ne 1) then begin
     dir='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/'
+    fitsdir='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/'
 endif
 if (testing) then begin
     dir=getenv('indir')
+    fitsdir=getenv('fitsdir')
 endif
 ;File names contained within the directory.
 bins_file='voronoi_2d_bins.txt' ;has bin x & position as well as s/n info
 ppxf_result='ppxf_v_bin_output' ;has velocity & dispersion info
 binning_output='voronoi_2d_binning_output.txt';correlates bin # to position (tells us which pixels belong in which bin)
 binning_input='voronoi_2d_binning.txt';binning input file, signal and noise numbers as well as positions
-fits_read, dir+gal+obj+'_fov.fits', img, h
+fits_read, fitsdir+gal+obj+'_fov.fits', img, h
 ;Read in the data from our source files.
 rdfloat, dir+bins_file, xbin, ybin,sn,NPix,total_noise, SKIPLINE=1, /SILENT
 rdfloat, dir+ppxf_result, bin,V,v_sig,sig,sig_sig,h3,h4,h5,h6,Chi2,z, /SILENT
