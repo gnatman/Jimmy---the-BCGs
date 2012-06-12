@@ -29,6 +29,20 @@ if [ $# -ne 2 ]; then
 fi
 echo "Input target number: " $1
 echo "Input object of interest: " $2
+export targetsn=5
+
+#If the project directory for this galaxy doesn't exist, we will make it.
+if [ ! -d $PRO_DIR/all/sn$targetsn ]; then
+    mkdir $PRO_DIR
+    mkdir $PRO_DIR/all
+    mkdir $PRO_DIR/main
+    mkdir $PRO_DIR/comp
+    mkdir $PRO_DIR/2ndcomp
+    mkdir $PRO_DIR/all/sn$targetsn
+    mkdir $PRO_DIR/main/sn$targetsn
+    mkdir $PRO_DIR/comp/sn$targetsn
+    mkdir $PRO_DIR/2ndcomp/sn$targetsn
+fi
 export targetsn=10
 
 #If the project directory for this galaxy doesn't exist, we will make it.
@@ -435,7 +449,7 @@ EOF
 fi
 
 
-
+for targetsn in 5 10; do
 #PERFORM THE SIGNAL TO NOISE CUT
 if [ $sncut == y ]; then
     #Perform Signal to Noise Cut
@@ -609,4 +623,7 @@ EOF
 
 	#/Applications/itt/idl/bin/idl /Users/jimmy/Astro/coms/lambda.com
 fi
+
+
+done
 date
