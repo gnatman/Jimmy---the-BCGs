@@ -48,12 +48,12 @@ testing=FIX(testing_string)
 if (testing ne 1) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
 	dir='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target
-	;dir=getenv('input')+bcg+'pro/'+target
+	;dir=getenv('indir')
 endif
 
 if (testing) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
-	dir=getenv('input')+bcg+'pro/'+target
+	dir=getenv('indir')
 	;dir='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target
 endif
 
