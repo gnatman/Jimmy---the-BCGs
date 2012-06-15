@@ -92,6 +92,7 @@ if [ $(whoami) == 'jimmyerickson' ]; then
 	ppxf="y"
 	plot="y"
 	monte="y"
+	export montecarlointoppxf=$monte
 	lambda="y"
 	wiki="y"
 else
