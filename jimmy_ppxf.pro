@@ -101,12 +101,12 @@ if (testing) then begin
     monte_iterations = getenv('monte_iterations')
 endif
 if (testing ne 1) then begin
-    fits_read, '/Users/jimmy/Astro/reduced/1050pro/temp.fits', datacube, h
-    var=mrdfits('/Users/jimmy/Astro/reduced/1050pro/temp.fits',1,h) ;, /SILENT)
-    rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_binning_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
-    rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
+    fits_read, '/Users/jimmy/Astro/reduced/1261pro/temp.fits', datacube, h
+    var=mrdfits('/Users/jimmy/Astro/reduced/1261pro/temp.fits',1,h) ;, /SILENT)
+    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/all/sn10/one_bin_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
+    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/all/sn10/one_bin_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
     openw, 9, '/Users/jimmy/Downloads/ppxf_v_bin_output'
-    monte_iterations = 10
+    monte_iterations = 0
 endif
 
 
@@ -152,6 +152,10 @@ for i = 0, max(binNum) do begin
     if (testing) then begin
         goodpix_safe[i]=getenv('start_range')
         goodpix_safe1[i]=getenv('end_range')
+    endif
+    if (testing ne 1) then begin
+    	goodpix_safe[i]=300
+    	goodpix_safe1[i]=1600
     endif
     
     new_wavelength_range = fltarr(2)
@@ -223,7 +227,7 @@ for i = 0, max(binNum) do begin
         miles = file_search(getenv('infile3') + getenv('template_list'), COUNT=nfiles)
     endif
     if (testing ne 1) then begin
-        miles = file_search('/Users/jimmy/Astro/MILES_library/s02*.fits',COUNT=nfiles)
+        miles = file_search('/Users/jimmy/Astro/MILES_library/s0*.fits',COUNT=nfiles)
     endif
 
 
@@ -287,16 +291,15 @@ for i = 0, max(binNum) do begin
 
     start = [redshift, 300d] ; (km/s), starting guess for [V,sigma]
 
-
-    ;Begin Monte Carlo procedure
-    monte_velocity=fltarr(monte_iterations)
-    monte_sigma=fltarr(monte_iterations)
-    
-    print,'Proposed noise level: ',noise_level ;Good to check how much noise we're adding/subtracting from signal
-    print,' '
     
     
     if ( monte_iterations ne 0 ) then begin
+    	;Begin Monte Carlo procedure
+    	monte_velocity=fltarr(monte_iterations)
+    	monte_sigma=fltarr(monte_iterations)
+    
+    	print,'Proposed noise level: ',noise_level ;Good to check how much noise we're adding/subtracting from signal
+    	print,' '
         galaxy_size = size(galaxy) ;size of logarithmically rebinned spectra
         for k=0,monte_iterations-1 do begin
             noisy = (RANDOMU(seed, galaxy_size[1])-0.5)*noise_level ;generate noise for each pixel in the spectra
@@ -311,14 +314,13 @@ for i = 0, max(binNum) do begin
             monte_velocity[k]=sol[0] ;store to a vector of all the resulting velocities
             monte_sigma[k]=sol[1] ;store to a vector of all the resulting dispersions
         endfor
+        velocity_std_dev = stddev(monte_velocity) ;compute the standard deviation, this is our error in velocity
+    	sigma_std_dev = stddev(monte_sigma) ;compute the standard deviation, this is our error in dispersion
+
+    	print,'Error in Velocity: ',velocity_std_dev
+    	print,'Error in Dispersion: ',sigma_std_dev 
+    	print,' '
     endif
-
-    velocity_std_dev = stddev(monte_velocity) ;compute the standard deviation, this is our error in velocity
-    sigma_std_dev = stddev(monte_sigma) ;compute the standard deviation, this is our error in dispersion
-
-    print,'Error in Velocity: ',velocity_std_dev
-    print,'Error in Dispersion: ',sigma_std_dev 
-    print,' '
 
     noise = galaxy*0 + 1
 
@@ -326,8 +328,8 @@ for i = 0, max(binNum) do begin
     if CanConnect() then begin
     	set_plot,'PS'
 	    device, filename='ppxf_fit.eps', /encapsul, /color, bits=8
-	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=4, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error
-	    device, /close
+	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=4, DEGREE=8, VSYST=dv,BIAS=0, ERROR=error
+	    device,/close
 	endif else begin
 	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, MOMENTS=4, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error
 	endelse
@@ -346,9 +348,13 @@ for i = 0, max(binNum) do begin
     print,' '
     print,' '
      
-
-    printf, 9, i, sol[0], velocity_std_dev, sol[1], sigma_std_dev, sol[2], sol[3], sol[4], sol[5], sol[6],(z + 1)*(1 + sol[0]/c) - 1, FORMAT='(i6,2f10.1,6f10.3,e11.4,f10.6)'
-
+	if ( monte_iterations ne 0 ) then begin
+	    printf, 9, i, sol[0], velocity_std_dev, sol[1], sigma_std_dev, sol[2], sol[3], sol[4], sol[5], sol[6],(z + 1)*(1 + sol[0]/c) - 1, FORMAT='(i6,2f10.1,6f10.3,e11.4,f10.6)'
+	endif
+	if ( monte_iterations eq 0 ) then begin
+	    printf, 9, i, sol[0], 0, sol[1], 0, sol[2], sol[3], sol[4], sol[5], sol[6],(z + 1)*(1 + sol[0]/c) - 1, FORMAT='(i6,2f10.1,6f10.3,e11.4,f10.6)'
+	endif
+	
 	if CanConnect() then begin ;only do this if we're printing things
 	    ;make the directory that the plots are saved to, move the printed plot to the directory, and then directory will be moved with bash
     	file_mkdir,'ppxf_fits'

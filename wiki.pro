@@ -47,14 +47,30 @@ testing=FIX(testing_string)
 
 if (testing ne 1) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
+<<<<<<< HEAD
 	dir='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target
 	;dir=getenv('indir')
+=======
+	lambda_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/lambda_re.txt'
+	table_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/table_one.txt'
+	lambda_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/lambda_re.txt'
+	table_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/table_one.txt'
+	output='output.csv'
+>>>>>>> Added effective radius limit to calculations
 endif
 
 if (testing) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
+<<<<<<< HEAD
 	dir=getenv('indir')
 	;dir='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target
+=======
+	lambda_sn10=getenv('infile1')
+	table_sn10=getenv('infile2')
+	lambda_sn5=getenv('infile3')
+	table_sn5=getenv('infile4')
+	output=getenv('outfile')
+>>>>>>> Added effective radius limit to calculations
 endif
 
 ;
@@ -321,9 +337,9 @@ if (bcg eq '2086') then begin
 endif
 
 
-readcol, dir+'/sn10/lambda_re.txt', F='F,F,F,F', dummy1, r_e, epsilon, lambda, /silent
-readcol, dir+'/sn10/table_one.txt', F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5;, /silent
-readcol, dir+'/sn10/table_one.txt', F='A,A,A,A', dummy6, dummy7, dummy8, dummy9, errors;, /silent
+readcol, lambda_sn10, F='F,F,F,F', dummy1, r_e, epsilon, lambda, /silent
+readcol, table_sn10, F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5;, /silent
+readcol, table_sn10, F='A,A,A,A', dummy6, dummy7, dummy8, dummy9, errors;, /silent
 
 redshift10 = values[0]
 dispersion10 = values[2]
@@ -340,9 +356,9 @@ lambda10 = lambda
 lambda_err10 = 0
 epsilon10 = epsilon
 
-readcol, dir+'/sn5/lambda_re.txt', F='F,F,F,F', dummy1, r_e, epsilon, lambda, /silent
-readcol, dir+'/sn5/table_one.txt', F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5;, /silent
-readcol, dir+'/sn5/table_one.txt', F='A,A,A,A', dummy6, dummy7, dummy8, dummy9, errors;, /silent
+readcol, lambda_sn5, F='F,F,F,F', dummy1, r_e, epsilon, lambda, /silent
+readcol, table_sn5, F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5;, /silent
+readcol, table_sn5, F='A,A,A,A', dummy6, dummy7, dummy8, dummy9, errors;, /silent
 
 redshift5 = values[0]
 dispersion5 = values[2]
@@ -383,7 +399,7 @@ mass_err_sdss = sdss_m_dyn_error
 
 ;print,'Name: ',bcg+'_'+target,' Z: ',redshift,' Dispersion: ',dispersion,' +\- ',dispersion_err,' Mass: ',m_dyn,' +\- ',mass_err,' Lambda: ',lambda,' +\- ',lambda_err,' R_e: ',r_e,' Ellipticity: ',epsilon, 'Signal/Noise: ',sn
 
-openw,9,'output.csv'
+openw,9,output
 ;printf,9, bcg, ',', target, ',', STRCOMPRESS(redshift10, /REMOVE_ALL), ',', STRCOMPRESS(dispersion10, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err10, /REMOVE_ALL), ',', STRCOMPRESS(STRING(m_dyn10), /REMOVE_ALL), ',', STRCOMPRESS(STRING(mass_err10), /REMOVE_ALL), ',', STRCOMPRESS(lambda10, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err10, /REMOVE_ALL), ',', STRCOMPRESS(r_e10, /REMOVE_ALL), ',', STRCOMPRESS(epsilon10, /REMOVE_ALL), ',', STRCOMPRESS(redshift5, /REMOVE_ALL), ',', STRCOMPRESS(dispersion5, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err5, /REMOVE_ALL), ',', STRCOMPRESS(m_dyn5, /REMOVE_ALL), ',', STRCOMPRESS(mass_err5, /REMOVE_ALL), ',', STRCOMPRESS(lambda5, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err5, /REMOVE_ALL), ',', STRCOMPRESS(r_e5, /REMOVE_ALL), ',', STRCOMPRESS(epsilon5, /REMOVE_ALL), ',', STRCOMPRESS(redshift_s, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_s, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err_s, /REMOVE_ALL), ',', STRCOMPRESS(m_dyn_s, /REMOVE_ALL), ',', STRCOMPRESS(mass_err_s, /REMOVE_ALL), ',', STRCOMPRESS(lambda_s, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err_s, /REMOVE_ALL), ',', STRCOMPRESS(r_e_s, /REMOVE_ALL), ',', STRCOMPRESS(epsilon_s, /REMOVE_ALL), ',', STRCOMPRESS(redshift_sdss, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_sdss, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err_sdss, /REMOVE_ALL), ',', STRCOMPRESS(m_dyn_sdss, /REMOVE_ALL), ',', STRCOMPRESS(mass_err10, /REMOVE_ALL), ',', STRCOMPRESS(lambda_sdss, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err_sdss, /REMOVE_ALL), ',', STRCOMPRESS(r_e_sdss, /REMOVE_ALL), ',', STRCOMPRESS(epsilon_sdss, /REMOVE_ALL)
 printf,9, FORMAT = '( 38( A, "," ))', bcg, target, STRCOMPRESS(redshift10, /REMOVE_ALL), STRCOMPRESS(dispersion10, /REMOVE_ALL), STRCOMPRESS(dispersion_err10, /REMOVE_ALL), STRCOMPRESS(STRING(m_dyn10), /REMOVE_ALL), STRCOMPRESS(STRING(mass_err10), /REMOVE_ALL), STRCOMPRESS(lambda10, /REMOVE_ALL), STRCOMPRESS(lambda_err10, /REMOVE_ALL), STRCOMPRESS(r_e10, /REMOVE_ALL), STRCOMPRESS(epsilon10, /REMOVE_ALL), STRCOMPRESS(redshift5, /REMOVE_ALL), STRCOMPRESS(dispersion5, /REMOVE_ALL), STRCOMPRESS(dispersion_err5, /REMOVE_ALL), STRCOMPRESS(m_dyn5, /REMOVE_ALL), STRCOMPRESS(mass_err5, /REMOVE_ALL), STRCOMPRESS(lambda5, /REMOVE_ALL), STRCOMPRESS(lambda_err5, /REMOVE_ALL), STRCOMPRESS(r_e5, /REMOVE_ALL), STRCOMPRESS(epsilon5, /REMOVE_ALL), STRCOMPRESS(redshift_s, /REMOVE_ALL), STRCOMPRESS(dispersion_s, /REMOVE_ALL), STRCOMPRESS(dispersion_err_s, /REMOVE_ALL), STRCOMPRESS(m_dyn_s, /REMOVE_ALL), STRCOMPRESS(mass_err_s, /REMOVE_ALL), STRCOMPRESS(lambda_s, /REMOVE_ALL), STRCOMPRESS(lambda_err_s, /REMOVE_ALL), STRCOMPRESS(r_e_s, /REMOVE_ALL), STRCOMPRESS(epsilon_s, /REMOVE_ALL), STRCOMPRESS(redshift_sdss, /REMOVE_ALL), STRCOMPRESS(dispersion_sdss, /REMOVE_ALL), STRCOMPRESS(m_dyn_sdss, /REMOVE_ALL), STRCOMPRESS(lambda_sdss, /REMOVE_ALL), STRCOMPRESS(r_e_sdss, /REMOVE_ALL), STRCOMPRESS(epsilon_sdss, /REMOVE_ALL)
 close,9

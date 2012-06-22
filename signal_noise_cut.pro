@@ -56,11 +56,31 @@
 
 pro signal_noise_cut
 
-;Location of test.fits file to be s/n cutted
-file=getenv('infile')
+testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
+testing_string=getenv('not_testing') ;if called from a bash script, these two lines pull it out of testing mode
+testing=FIX(testing_string)
 
-;s/n wish to output
-limit=FLOAT(getenv('sncut'))
+;READ IN THE DATA AND REFERENCE FILES
+;Assign the filename to the variable file, then read in using mrdfits from NASA
+
+if (testing) then begin
+	;environmental variables are set with the export command in bash.
+	;Location of temp.fits file to be s/n cutted
+	file=getenv('infile')
+	;s/n wish to output
+	limit=FLOAT(getenv('sncut'))
+	r_e=FLOAT(getenv('r_e'))
+endif
+
+if (testing ne 1) then begin
+	;Location of temp.fits file to be s/n cutted
+	file='/Users/jimmy/Astro/reduced/1050pro/temp.fits'
+	;s/n wish to output
+	limit=5
+	r_e=5
+endif
+
+
 
 ; read in first extension which contains image data, and second extention, which has the variance data
 im=mrdfits(file,0,header0)
@@ -132,6 +152,31 @@ endif
 
 signal_clean=where((signal ne 0) and (signal/noise ge limit))
 
+
+;use r_e to calculate effective area, calculate how many spaxels would fit within that area, then choose the x highest S/N spaxels, where x is the number of pixels that would fit within the effective area.
+area_e = !pi*(r_e^2)
+print, 'area_e: ',area_e
+pixel_area = 0.66^2
+num_pixels = area_e/pixel_area
+max_pixels = round(num_pixels)-1
+sn = signal/noise
+sorted_sn = sn[REVERSE(SORT(sn))]
+sorted_x = x[REVERSE(SORT(sn))]
+sorted_y = y[REVERSE(SORT(sn))]
+sorted_signal = signal[REVERSE(SORT(sn))]
+sorted_noise = noise[REVERSE(SORT(sn))]
+
+effective_sn = sorted_sn[0:max_pixels]
+effective_x = sorted_x[0:max_pixels]
+effective_y = sorted_y[0:max_pixels]
+effective_signal = sorted_signal[0:max_pixels]
+effective_noise = sorted_noise[0:max_pixels]
+
+effective_clean=where((sorted_signal ne 0) and (sorted_signal/sorted_noise ge limit))
+
+print, 'effective_sn: ', effective_sn
+print, 'effective_sn[effective_clean]: ', effective_sn[effective_clean]
+
 ;I believe spaxel scale should be 0.66 arcseconds and not cdelt, which is like 0.602
 galaxy = getenv('galaxy')
 spaxel_scale = 0.66
@@ -142,10 +187,14 @@ endif
 ;WRITING OUT DATA FOR VORONOI TESSELATION
 ;voronoi tesselation requires as input x,y in arcseconds; pixels and
 ;the flux & noise in those fibres - can be output here:
-astrolib
-forprint, (x[signal_clean]-mean(x))*spaxel_scale,(y[signal_clean]-mean(y))*spaxel_scale,x[signal_clean],y[signal_clean],signal[signal_clean],noise[signal_clean], $
-format='(2f10.4,2i6,2f20.4)',$
-TEXTOUT=getenv('outfile1'), $
-COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
+if (testing) then begin
+	forprint, (x[signal_clean]-mean(x))*spaxel_scale,(y[signal_clean]-mean(y))*spaxel_scale,x[signal_clean],y[signal_clean],signal[signal_clean],noise[signal_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT=getenv('outfile1'), COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
+	forprint, (effective_x[effective_clean]-mean(x))*spaxel_scale, (effective_y[effective_clean]-mean(y))*spaxel_scale, effective_x[effective_clean], effective_y[effective_clean], effective_signal[effective_clean], effective_noise[effective_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT=getenv('outfile2'), COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
+endif
+
+if (testing ne 1) then begin
+	forprint, (x[signal_clean]-mean(x))*spaxel_scale,(y[signal_clean]-mean(y))*spaxel_scale,x[signal_clean],y[signal_clean],signal[signal_clean],noise[signal_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT='/Users/jimmy/Downloads/voronoi_2d_binning.txt', COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
+	forprint, (effective_x[effective_clean]-mean(x))*spaxel_scale, (effective_y[effective_clean]-mean(y))*spaxel_scale, effective_x[effective_clean], effective_y[effective_clean], effective_signal[effective_clean], effective_noise[effective_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT='/Users/jimmy/Downloads/r_e_2d_binning.txt', COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
+endif
 
 end

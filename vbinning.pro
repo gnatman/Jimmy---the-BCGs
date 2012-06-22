@@ -66,8 +66,8 @@ if (testing) then begin
 endif
     
 if (testing ne 1) then begin
-    rdfloat, '/Users/jimmy/idl/voronoi_2d_binning/voronoi_2d_binning.txt', x, y, xpix, ypix, signal, noise,SKIPLINE=1
-    targetSN = 5.0
+    rdfloat, '/Users/jimmy/Downloads/voronoi_2d_binning.txt', x, y, xpix, ypix, signal, noise,SKIPLINE=1
+    targetSN = 10.0
 endif
 
 if CanConnect() then begin
@@ -98,9 +98,9 @@ if (testing) then begin
 endif
     
 if (testing ne 1) then begin
-    forprint, x, y, xpix, ypix, binNum, TEXTOUT='/Users/jimmy/idl/voronoi_2d_binning/voronoi_2d_binning_output.txt', $
+    forprint, x, y, xpix, ypix, binNum, TEXTOUT='/Users/jimmy/Downloads/voronoi_2d_binning_output.txt', $
     COMMENT='#         X"          Y"          Xpix          Ypix          BIN_NUM'
-    forprint, xNode, yNode, sn, nPixels, total_noise, TEXTOUT='/Users/jimmy/idl/voronoi_2d_binning/voronoi_2d_bins.txt', $
+    forprint, xNode, yNode, sn, nPixels, total_noise, TEXTOUT='/Users/jimmy/Downloads/voronoi_2d_bins.txt', $
     COMMENT='#         Xbin          Ybin          S/N     Num Pixels        Total Noise'
 endif
 

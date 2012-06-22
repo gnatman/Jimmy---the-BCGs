@@ -51,8 +51,19 @@
 ;----------------------------------------------------------------------------
 pro one_bin
 
-rdfloat, getenv('infile'), x, y, xpix, ypix, signal, noise,SKIPLINE=1
-;rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_binning.txt', x, y, xpix, ypix, signal, noise,SKIPLINE=1
+
+testing=0 ;Set to 0 if you want to be in "testing" mode, where more output is displayed, and files are split up, so they can be more easily examined, also paths are then hard coded.
+testing_string=getenv('not_testing')
+testing=FIX(testing_string)
+
+
+if (testing) then begin
+	rdfloat, getenv('infile'), x, y, xpix, ypix, signal, noise,SKIPLINE=1
+endif
+    
+if (testing ne 1) then begin
+    rdfloat, '/Users/jimmy/Astro/reduced/1050pro/voronoi_2d_binning.txt', x, y, xpix, ypix, signal, noise,SKIPLINE=1
+endif
 
 
 file_size = size(x)

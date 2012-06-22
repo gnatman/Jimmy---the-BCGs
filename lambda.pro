@@ -56,30 +56,40 @@ testing=FIX(testing_string)
 
 ;Specify the location of input files.
 if (testing ne 1) then begin
-    dir='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/'
+    bins_file='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/sn5/voronoi_2d_bins.txt'
+    ppxf_result='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/sn5/ppxf_v_bin_output'
+    binning_output='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/sn5/voronoi_2d_binning_output.txt'
+    binning_input='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/sn5/voronoi_2d_binning.txt'
+    lambda_file='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/sn5/lambda.txt'
+    lambda_re_file='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/sn5/lambda_re.txt'
     fitsdir='/Users/jimmy/Astro/reduced/'+gal+'pro/'+obj+'/'
 endif
 if (testing) then begin
-    dir=getenv('indir')
+    bins_file=getenv('infile1')
+    ppxf_result=getenv('infile2')
+    binning_output=getenv('infile3')
+    binning_input=getenv('infile4')
+    lambda_file=getenv('outfile1')
+    lambda_re_file=getenv('outfile2')
     fitsdir=getenv('fitsdir')
 endif
 ;File names contained within the directory.
-bins_file='voronoi_2d_bins.txt' ;has bin x & position as well as s/n info
-ppxf_result='ppxf_v_bin_output' ;has velocity & dispersion info
-binning_output='voronoi_2d_binning_output.txt';correlates bin # to position (tells us which pixels belong in which bin)
-binning_input='voronoi_2d_binning.txt';binning input file, signal and noise numbers as well as positions
+;bins_file='voronoi_2d_bins.txt' ;has bin x & position as well as s/n info
+;ppxf_result='ppxf_v_bin_output' ;has velocity & dispersion info
+;binning_output='voronoi_2d_binning_output.txt';correlates bin # to position (tells us which pixels belong in which bin)
+;binning_input='voronoi_2d_binning.txt';binning input file, signal and noise numbers as well as positions
 fits_read, fitsdir+gal+obj+'_fov.fits', img, h
 ;Read in the data from our source files.
-rdfloat, dir+bins_file, xbin, ybin,sn,NPix,total_noise, SKIPLINE=1, /SILENT
-rdfloat, dir+ppxf_result, bin,V,v_sig,sig,sig_sig,h3,h4,h5,h6,Chi2,z, /SILENT
-rdfloat, dir+binning_output, x, y, xpix, ypix, binNum, SKIPLINE=1, /SILENT
-rdfloat, dir+binning_input, xarc, yarc, x2, y2, signal, noise, SKIPLINE=1, /SILENT
+rdfloat, bins_file, xbin, ybin,sn,NPix,total_noise, SKIPLINE=1, /SILENT
+rdfloat, ppxf_result, bin,V,v_sig,sig,sig_sig,h3,h4,h5,h6,Chi2,z, /SILENT
+rdfloat, binning_output, x, y, xpix, ypix, binNum, SKIPLINE=1, /SILENT
+rdfloat, binning_input, xarc, yarc, x2, y2, signal, noise, SKIPLINE=1, /SILENT
 
 
 
 ;File names of output files.  Using two different files because that's easier to parse
-openw, 9, dir+'lambda.txt' ;output file for this info.
-openw, 1, dir+'lambda_re.txt' ;output file for this info.
+openw, 9, lambda_file ;output file for this info.
+openw, 1, lambda_re_file ;output file for this info.
 
 ;Pull in effective radius.
 if (testing ne 1) then begin

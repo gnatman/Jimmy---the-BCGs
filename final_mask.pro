@@ -103,7 +103,7 @@ cdelt=fxpar(header0,'CDELT3')
 ;Done by importing a column list of bad fibers (with a 0 at the end to keep the loop from freaking out)
 
 if (testing ne 1) then begin
-    readcol,'/Users/jimmy/Astro/reduced/'+target+'sof/'+mask+'_mask.txt',F='F,F',mask_x,mask_y
+    readcol,'/Users/jimmy/Astro/reduced/'+target+'pt1sof/'+mask+'_mask.txt',F='F,F',mask_x,mask_y
 endif
 
 if (testing) then begin
