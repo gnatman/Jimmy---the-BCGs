@@ -774,6 +774,8 @@ EOF
 	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn10.jpg
 	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_signal_noise.eps" -flatten temp.jpg
 	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn10.jpg	
+	
+	ssh jimmy@io.physics.tamu.edu chmod a+r -R /home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/
 
 	rm token.txt
 	rm edit.txt
