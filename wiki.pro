@@ -57,10 +57,10 @@ if (testing) then begin
 	;dir='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target
 endif
 
-
-
-if (bcg eq '1027') then begin
-	if (target eq 'all') then begin
+;
+;
+if (bcg eq '_') then begin
+	if (target eq 'main') then begin
 		sarah_redshift = '-'
 		sarah_dispersion = '-'
 		sarah_dispersion_error = '-'
@@ -80,253 +80,246 @@ if (bcg eq '1027') then begin
 		sdss_lambda_error = '-'
 		sdss_epsilon = '-'
 	endif
-	if (target eq 'main') then begin
-		sarah_redshift = '0.0894'
-		sarah_dispersion = '263'
-		sarah_dispersion_error = '2'
+	if (target eq 'comp') then begin
+		sarah_redshift = '-'
+		sarah_dispersion = '-'
+		sarah_dispersion_error = '-'
 		sarah_r_e = '-'
-		sarah_m_dyn = '11.80'
-		sarah_m_dyn_error = '0.29'
-		sarah_lambda = '0.104'
-		sarah_lambda_error = '0.009'
+		sarah_m_dyn = '-'
+		sarah_m_dyn_error = '-'
+		sarah_lambda = '-'
+		sarah_lambda_error = '-'
 		sarah_epsilon = '-'
 		sdss_redshift = '-'
 		sdss_dispersion = '-'
 		sdss_dispersion_error = '-'
-		sdss_r_e = '4.64'
+		sdss_r_e = '-'
 		sdss_m_dyn = '-'
 		sdss_m_dyn_error = '-'
 		sdss_lambda = '-'
 		sdss_lambda_error = '-'
+		sdss_epsilon = '-'
+	endif
+endif
+;
+;
+
+sarah_redshift = '-'
+sarah_dispersion = '-'
+sarah_dispersion_error = '-'
+sarah_r_e = '-'
+sarah_m_dyn = '-'
+sarah_m_dyn_error = '-'
+sarah_lambda = '-'
+sarah_lambda_error = '-'
+sarah_epsilon = '-'
+sdss_redshift = '-'
+sdss_dispersion = '-'
+sdss_dispersion_error = '-'
+sdss_r_e = '-'
+sdss_m_dyn = '-'
+sdss_m_dyn_error = '-'
+sdss_lambda = '-'
+sdss_lambda_error = '-'
+sdss_epsilon = '-'
+
+if (bcg eq '1027') then begin
+	if (target eq 'main') then begin
+		sarah_redshift = '0.0894'
+		sarah_dispersion = '263'
+		sarah_dispersion_error = '2'
+		sarah_m_dyn = '11.80'
+		sarah_m_dyn_error = '0.29'
+		sarah_lambda = '0.104'
+		sarah_lambda_error = '0.009'
+		sdss_redshift = '0.088'
+		sdss_dispersion = '246.34'
+		sdss_dispersion_error = '8.27'
+		sdss_r_e = '4.64'
 		sdss_epsilon = '0.93'
 	endif
 	if (target eq 'comp') then begin
 		sarah_redshift = '0.0909'
 		sarah_dispersion = '224'
 		sarah_dispersion_error = '4'
-		sarah_r_e = '-'
 		sarah_m_dyn = '11.57'
 		sarah_m_dyn_error = '0.20'
 		sarah_lambda = '0.248'
 		sarah_lambda_error = '0.004'
-		sarah_epsilon = '-'
 		sdss_redshift = '0.0908'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
+		sdss_dispersion = '200.82'
+		sdss_dispersion_error = '8.14'
 		sdss_r_e = '3.71'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
 		sdss_epsilon = '0.035'
 	endif
 endif
-if (bcg eq '1050') then begin
-	if (target eq 'all') then begin
-		sarah_redshift = '-'
-		sarah_dispersion = '-'
-		sarah_dispersion_error = '-'
-		sarah_r_e = '-'
-		sarah_m_dyn = '-'
-		sarah_m_dyn_error = '-'
-		sarah_lambda = '-'
-		sarah_lambda_error = '-'
-		sarah_epsilon = '-'
-		sdss_redshift = '-'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
-		sdss_r_e = '-'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
-		sdss_epsilon = '-'
+if (bcg eq '1042') then begin
+	if (target eq 'main') then begin
+		sdss_redshift = '0.097200'
+		sdss_dispersion = '246.89'
+		sdss_dispersion_error = '8.74'
+		sdss_r_e = '4.432619'
 	endif
+endif
+if (bcg eq '1048') then begin
+	if (target eq 'main') then begin
+		sdss_redshift = '0.077450'
+		sdss_dispersion = '65.09'
+		sdss_dispersion_error = '5.61'
+		sdss_r_e = '6.099069'
+	endif
+	if (target eq 'comp') then begin
+		sdss_redshift = '0.077450'
+		sdss_dispersion = '100.55'
+		sdss_dispersion_error = '9.94'
+		sdss_r_e = '2.057725'
+	endif
+	if (target eq '2ndcomp') then begin
+		sdss_redshift = '0.073597'
+		sdss_dispersion = '171.07'
+		sdss_dispersion_error = '8.24'
+		sdss_r_e = '3.505275'
+	endif
+endif
+if (bcg eq '1050') then begin
 	if (target eq 'main') then begin
 		sarah_redshift = '0.722'
 		sarah_dispersion = '399'
 		sarah_dispersion_error = '2'
-		sarah_r_e = '-'
 		sarah_m_dyn = '12.20'
 		sarah_m_dyn_error = '0.55'
 		sarah_lambda = '0.085'
 		sarah_lambda_error = '0.005'
-		sarah_epsilon = '-'
 		sdss_redshift = '0.721'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
+		sdss_dispersion = '352.60'
+		sdss_dispersion_error = '7.32'
 		sdss_r_e = '6.29'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
 		sdss_epsilon = '0.066'
-	endif
-	if (target eq 'comp') then begin
-		sarah_redshift = '-'
-		sarah_dispersion = '-'
-		sarah_dispersion_error = '-'
-		sarah_r_e = '-'
-		sarah_m_dyn = '-'
-		sarah_m_dyn_error = '-'
-		sarah_lambda = '-'
-		sarah_lambda_error = '-'
-		sarah_epsilon = '-'
-		sdss_redshift = '-'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
-		sdss_r_e = '-'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
-		sdss_epsilon = '-'
 	endif
 endif
 if (bcg eq '1066') then begin
-	if (target eq 'all') then begin
-		sarah_redshift = '-'
-		sarah_dispersion = '-'
-		sarah_dispersion_error = '-'
-		sarah_r_e = '-'
-		sarah_m_dyn = '-'
-		sarah_m_dyn_error = '-'
-		sarah_lambda = '-'
-		sarah_lambda_error = '-'
-		sarah_epsilon = '-'
-		sdss_redshift = '-'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
-		sdss_r_e = '-'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
-		sdss_epsilon = '-'
-	endif
 	if (target eq 'main') then begin
 		sarah_redshift = '0.837'
 		sarah_dispersion = '232'
 		sarah_dispersion_error = '3'
-		sarah_r_e = '-'
 		sarah_m_dyn = '11.84'
 		sarah_m_dyn_error = '0.26'
 		sarah_lambda = '0.181'
 		sarah_lambda_error = '0.006'
-		sarah_epsilon = '-'
 		sdss_redshift = '0.0836'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
+		sdss_dispersion = ''
+		sdss_dispersion_error = ''
 		sdss_r_e = '7.03'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
 		sdss_epsilon = '0.100'
 	endif
 	if (target eq 'comp') then begin
 		sarah_redshift = '0.0836'
 		sarah_dispersion = '231'
 		sarah_dispersion_error = '3'
-		sarah_r_e = '-'
 		sarah_m_dyn = '11.85'
 		sarah_m_dyn_error = '0.28'
 		sarah_lambda = '0.569'
 		sarah_lambda_error = '0.006'
-		sarah_epsilon = '-'
 		sdss_redshift = '0.0836'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
+		sdss_dispersion = '246.7'
+		sdss_dispersion_error = '7.8'
 		sdss_r_e = '7.23'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
 		sdss_epsilon = '0.312'
+	endif
+	if (target eq '2ndcomp') then begin
+		sdss_redshift = '0.083595'
+		sdss_dispersion = '199.3'
+		sdss_dispersion_error = '7.30'
+		sdss_r_e = '2.013'
+	endif
+endif
+if (bcg eq '1067') then begin
+	if (target eq 'main') then begin
+		sdss_redshift = '0.095'
+		sdss_dispersion = '186.83'
+		sdss_dispersion_error = '7.70'
+		sdss_r_e = '2.636639'
+	endif
+endif
+if (bcg eq '1153') then begin
+	if (target eq 'main') then begin
+		sdss_redshift = '0.06000'
+		sdss_dispersion = '251.440'
+		sdss_dispersion_error = '6.72'
+		sdss_r_e = '3.107662'
+	endif
+endif
+if (bcg eq '1261') then begin
+	if (target eq 'main') then begin
+		sdss_redshift = '0.091000'
+		sdss_dispersion = '226.91'
+		sdss_dispersion_error = '13.62'
+		sdss_r_e = '3.343759'
+	endif
+	if (target eq 'comp') then begin
+		sdss_redshift = '0.0887970'
+		sdss_dispersion = '125.23'
+		sdss_dispersion_error = '11.53'
+		sdss_r_e = '2.886154'
+	endif
+endif
+if (bcg eq '2001') then begin
+	if (target eq 'main') then begin
+		sdss_redshift = '0.041132'
+		sdss_dispersion = '208.960'
+		sdss_dispersion_error = '5.24'
+		sdss_r_e = '11.94404'
+	endif
+	if (target eq 'comp') then begin
+		sdss_redshift = '0.042469'
+		sdss_dispersion = '0'
+		sdss_dispersion_error = '0'
+		sdss_r_e = '21.75893'
+	endif
+endif
+if (bcg eq '2039') then begin
+	if (target eq 'main') then begin
+		sdss_redshift = '0.083'
+		sdss_dispersion = '301.34'
+		sdss_dispersion_error = '4.84'
+		sdss_r_e = '6.306086'
+	endif
+	if (target eq 'comp') then begin
+		sdss_redshift = '0.084182'
+		sdss_dispersion = '106.36'
+		sdss_dispersion_error = '6.22'
+		sdss_r_e = '21.75893'
 	endif
 endif
 if (bcg eq '2086') then begin
-	if (target eq 'all') then begin
-		sarah_redshift = '-'
-		sarah_dispersion = '-'
-		sarah_dispersion_error = '-'
-		sarah_r_e = '-'
-		sarah_m_dyn = '-'
-		sarah_m_dyn_error = '-'
-		sarah_lambda = '-'
-		sarah_lambda_error = '-'
-		sarah_epsilon = '-'
-		sdss_redshift = '-'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
-		sdss_r_e = '-'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
-		sdss_epsilon = '-'
-	endif
 	if (target eq 'main') then begin
 		sarah_redshift = '0.0840'
 		sarah_dispersion = '266'
 		sarah_dispersion_error = '8'
-		sarah_r_e = '-'
 		sarah_m_dyn = '11.78'
 		sarah_m_dyn_error = '0.46'
 		sarah_lambda = '0.090'
 		sarah_lambda_error = '0.006'
-		sarah_epsilon = '-'
 		sdss_redshift = '0.0840'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
+		sdss_dispersion = '275.81'
+		sdss_dispersion_error = '8.77'
 		sdss_r_e = '4.63'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
 		sdss_epsilon = '0.083'
 	endif
 	if (target eq 'comp') then begin
 		sarah_redshift = '0.819'
 		sarah_dispersion = '228'
 		sarah_dispersion_error = '3'
-		sarah_r_e = '-'
 		sarah_m_dyn = '11.15'
 		sarah_m_dyn_error = '0.41'
-		sarah_lambda = '-'
-		sarah_lambda_error = '-'
-		sarah_epsilon = '-'
 		sdss_redshift = '0.0830'
-		sdss_dispersion = '-'
-		sdss_dispersion_error = '-'
+		sdss_dispersion = '203.93'
+		sdss_dispersion_error = '9.31'
 		sdss_r_e = '1.51'
-		sdss_m_dyn = '-'
-		sdss_m_dyn_error = '-'
-		sdss_lambda = '-'
-		sdss_lambda_error = '-'
 		sdss_epsilon = '0.024'
 	endif
 endif
-if (bcg ne '2086' AND bcg ne '1027' AND bcg ne '1050' AND bcg ne 1066) then begin
-	sarah_redshift = '-'
-	sarah_dispersion = '-'
-	sarah_dispersion_error = '-'
-	sarah_r_e = '-'
-	sarah_m_dyn = '-'
-	sarah_m_dyn_error = '-'
-	sarah_lambda = '-'
-	sarah_lambda_error = '-'
-	sarah_epsilon = '-'
-	sdss_redshift = '-'
-	sdss_dispersion = '-'
-	sdss_dispersion_error = '-'
-	sdss_r_e = '-'
-	sdss_m_dyn = '-'
-	sdss_m_dyn_error = '-'
-	sdss_lambda = '-'
-	sdss_lambda_error = '-'
-	sdss_epsilon = '-'
-endif
+
 
 readcol, dir+'/sn10/lambda_re.txt', F='F,F,F,F', dummy1, r_e, epsilon, lambda, /silent
 readcol, dir+'/sn10/table_one.txt', F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5;, /silent

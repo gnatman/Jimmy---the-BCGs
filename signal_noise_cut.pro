@@ -92,10 +92,6 @@ noise=fltarr(x_fibers*y_fibers)
 
 k=0
 
-;used once to send a spaxel to Karl G.  Can probaly be deleted.
-;print, 'im[20,21,*]',im[20,21,*]
-;forprint,im[20,21,*],TEXTOUT='/Users/jimmy/kg.txt'
-
 ;go through x & y of each cube
 for n0=0,x_fibers-1 do begin
     for n1=0,y_fibers-1 do begin
