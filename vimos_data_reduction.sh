@@ -451,216 +451,205 @@ EOF
 fi
 
 for targetsn in 5 10; do
-#PERFORM THE SIGNAL TO NOISE CUT
-if [ $snc == y ]; then
-    #Perform Signal to Noise Cut
-    echo "S/N Cut"
-    #only input is the test.fits file   
-    export infile=$PRO_DIR/$2/$1$2.fits
-    export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
-    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
-    export galaxy=$1
-    if [ $targetsn == 5 ]; then
-	    export sncut=3.0
-	fi
-	if [ $targetsn == 10 ]; then
-		export sncut=5.0
-	fi
-    # Using the com file allows you to stop and check the s/n cut, EOF requires no user intervention
-#    /Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/sncut.com
+	#PERFORM THE SIGNAL TO NOISE CUT
+	if [ $snc == y ]; then
+	    #Perform Signal to Noise Cut
+	    echo "S/N Cut"
+	    #only input is the test.fits file   
+	    export infile=$PRO_DIR/$2/$1$2.fits
+	    export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
+	    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+	    export galaxy=$1
+	    if [ $targetsn == 5 ]; then
+		    export sncut=3.0
+		fi
+		if [ $targetsn == 10 ]; then
+			export sncut=5.0
+		fi
+    	# Using the com file allows you to stop and check the s/n cut, EOF requires no user intervention
+		#/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/sncut.com
 idl <<EOF
 .comp signal_noise_cut.pro
 signal_noise_cut
 EOF
-#    export outfile1=$PRO_DIR/$2/sn$targetsn/radial_2d_binning.txt
-#    export sncut=1.0
+		#export outfile1=$PRO_DIR/$2/sn$targetsn/radial_2d_binning.txt
+		#export sncut=1.0
 #idl <<EOF
 #.comp signal_noise_cut.pro
 #signal_noise_cut
 #EOF
+	fi
 
-fi
-
-if [ $bin == y ]; then
-    #Perform the Binning
-    echo "Voronoi Binning"
-    export infile=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
-    export outfile2=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
-    #/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/vbinning.com
+	if [ $bin == y ]; then
+    	#Perform the Binning
+    	echo "Voronoi Binning"
+    	export infile=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
+    	export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
+    	export outfile2=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt    
 idl <<EOF
 .comp vbinning.pro
 vbinning
 EOF
 
-    export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
-    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
-    #/Applications/itt/idl/idl/bin/idl /Users/jimmy/Astro/coms/vbinning.com
+	    export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+	    export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+	    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
 idl <<EOF
 .comp vbinning.pro
 vbinning
 EOF
 
-#    echo "Radial Binning and singular bin"
-#    export radius=$r_e
-#    export infile=$PRO_DIR
-#    export outfile1=$PRO_DIR/$2/radial_2d_binning_output.txt
-#    export outfile2=$PRO_DIR/$2/radial_2d_bins.txt
-#    export target=$1
+		#echo "Radial Binning and singular bin"
+		#export radius=$r_e
+		#export infile=$PRO_DIR
+		#export outfile1=$PRO_DIR/$2/radial_2d_binning_output.txt
+		#export outfile2=$PRO_DIR/$2/radial_2d_bins.txt
+		#export target=$1
 #idl <<EOF
 #.comp radial_bin.pro
 #radial_bin
 #EOF
 
-    export infile=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
-    export outfile2=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
+    	export infile=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
+    	export outfile1=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
+    	export outfile2=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
 idl <<EOF
 .comp one_bin.pro
 one_bin
 EOF
 
-    export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
-    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
+    	export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+    	export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
+    	export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
 idl <<EOF
 .comp one_bin.pro
 one_bin
 EOF
+	fi
 
-
-fi
-
-if [ $ppxf == y ]; then
-    #Find Velocities
-    echo "PPXF Velocities"
-    export infile1=$PRO_DIR/$2/$1$2.fits
-    export infile2=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
-    export infile3=$ASTRO_DIR/MILES_library
-    export infile4=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
-    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_one_bin_output
-    export start_range=300
-    export end_range=1600
-    export template_list="/s025*.fits"
-    export monte_iterations=0
-    if [ $monte == y ]; then
-	    export monte_iterations=10
-    fi
+	if [ $ppxf == y ]; then
+	    #Find Velocities
+	    echo "PPXF Velocities"
+	    export infile1=$PRO_DIR/$2/$1$2.fits
+	    export infile2=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
+	    export infile3=$ASTRO_DIR/MILES_library
+	    export infile4=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
+	    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_one_bin_output
+	    export start_range=300
+	    export end_range=1600
+	    export template_list="/s0*.fits"
+	    export monte_iterations=0
+	    if [ $monte == y ]; then
+		    export monte_iterations=10
+	    fi
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
-    if [ -d ppxf_fits ]; then
-    	mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
-    fi
+	    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
+	    if [ -d ppxf_fits ]; then
+	    	mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
+	    fi
     
-    export infile2=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
-    export infile4=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
-    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output
-    
+	    export infile2=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
+	    export infile4=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
+	    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output  
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fits
-    if [ -d ppxf_fits ]; then
-	    mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/
-    fi
+    	rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fits
+    	if [ -d ppxf_fits ]; then
+	 		mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/
+    	fi
 
-    export infile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
-    export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
-    export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
-    
+    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+    	export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
+    	export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
-    if [ -d ppxf_fits ]; then
-	    mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
-    fi
+    	rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
+    	if [ -d ppxf_fits ]; then
+	    	mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
+    	fi
     
-    export infile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
-    export infile4=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
-    export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
-    
+    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
+    	export infile4=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
+    	export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
-    if [ -d ppxf_fits ]; then
-	    mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
-    fi
+    	rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
+    	if [ -d ppxf_fits ]; then
+			mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
+    	fi
 
-#    export infile2=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
-#    export infile4=$PRO_DIR/$2/sn$targetsn/radial_2d_bins.txt
-#    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_rad_bin_output
-#idl << EOF
-#.comp jimmy_ppxf.pro
-#jimmy_ppxf
-#EOF
-#    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fits_rad
-#    if [ -d ppxf_fits ]; then
-#	    mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fits_rad
-#	fi
-fi
+		#export infile2=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
+		#export infile4=$PRO_DIR/$2/sn$targetsn/radial_2d_bins.txt
+		#export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_rad_bin_output
+		#idl << EOF
+		#.comp jimmy_ppxf.pro
+		#jimmy_ppxf
+		#EOF
+		#rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fits_rad
+		#if [ -d ppxf_fits ]; then
+		#mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fits_rad
+		#fi
+	fi
 
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/velocity_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/velocity_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/sigma_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/dispersion_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/signal_noise.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/sn_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/velocity_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/velocity_sn10.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/sigma_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/dispersion_sn10.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/signal_noise.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/sn_sn10.jpg	
-	ssh jimmy@io.physics.tamu.edu chmod a+r -R /home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/
+	if [ $plot == y ]; then
+    	#Make Pretty Plots
+    	echo "Plot Data"
+    	export infile1=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
+    	export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_one_bin_output
+    	export infile3=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
+idl << EOF
+.comp display_data.pro
+display_data,'one','$1'
+EOF
 
-    export infile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
-    export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output
-    export infile3=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
+		export infile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
+    	export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output
+    	export infile3=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'vbinned','$1'
 EOF
 
 
-#    export infile1=$PRO_DIR/$2/sn$targetsn/radial_2d_bins.txt
-#    export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_rad_bin_output
-#    export infile3=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
+		#export infile1=$PRO_DIR/$2/sn$targetsn/radial_2d_bins.txt
+		#export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_rad_bin_output
+		#export infile3=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
 #idl << EOF
 #.comp display_data.pro
 #display_data,'radial','$1'
 #EOF
 
-        mv table_one.txt /$PRO_DIR/$2/sn$targetsn/table_one.txt
-        mv sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/sigma_scale.eps
-        mv velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/velocity_scale.eps
-        mv table.txt /$PRO_DIR/$2/sn$targetsn/table.txt
-#        mv sigma_rad.eps /$PRO_DIR/$2/sn$targetsn/sigma_rad.eps
-#        mv velocity_rad.eps /$PRO_DIR/$2/sn$targetsn/velocity_rad.eps
-#        mv table_rad.txt /$PRO_DIR/$2/sn$targetsn/table_rad.txt
+		mv table_one.txt /$PRO_DIR/$2/sn$targetsn/table_one.txt
+		mv sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/sigma_scale.eps
+		mv velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/velocity_scale.eps
+		mv table.txt /$PRO_DIR/$2/sn$targetsn/table.txt
+		#mv sigma_rad.eps /$PRO_DIR/$2/sn$targetsn/sigma_rad.eps
+		#mv velocity_rad.eps /$PRO_DIR/$2/sn$targetsn/velocity_rad.eps
+		#mv table_rad.txt /$PRO_DIR/$2/sn$targetsn/table_rad.txt
         mv velocity.eps /$PRO_DIR/$2/sn$targetsn/velocity.eps
         mv signal_noise.eps /$PRO_DIR/$2/sn$targetsn/signal_noise.eps
-#        mv signal_noise_rad.eps /$PRO_DIR/$2/sn$targetsn/signal_noise_rad.eps
+		#mv signal_noise_rad.eps /$PRO_DIR/$2/sn$targetsn/signal_noise_rad.eps
 
-    export infile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
-    export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
-    export infile3=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
+		export infile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
+		export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
+		export infile3=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'one','$1'
 EOF
 
-    export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
-    export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
-    export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+		export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
+		export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
+		export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'vbinned','$1'
@@ -673,35 +662,36 @@ EOF
         mv velocity.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity.eps
         mv signal_noise.eps /$PRO_DIR/$2/sn$targetsn/r_e_signal_noise.eps
 
-fi
+	fi
 
-if [ $lambda == y ]; then
-	echo "Running Lambda calculation"
-	export indir=$PRO_DIR/$2/sn$targetsn/
-	export infile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
-    export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output
-    export infile3=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
-    export infile4=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/sn$targetsn/lambda.txt
-    export outfile2=$PRO_DIR/$2/sn$targetsn/lambda_re.txt
-	export fitsdir=$PRO_DIR/$2/
+	if [ $lambda == y ]; then
+		echo "Running Lambda calculation"
+		export indir=$PRO_DIR/$2/sn$targetsn/
+		export infile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_bins.txt
+    	export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_v_bin_output
+    	export infile3=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
+    	export infile4=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
+    	export outfile1=$PRO_DIR/$2/sn$targetsn/lambda.txt
+    	export outfile2=$PRO_DIR/$2/sn$targetsn/lambda_re.txt
+		export fitsdir=$PRO_DIR/$2/
 idl << EOF
 .comp lambda.pro
 lambda,'$1','$2'
 EOF
 
-	export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
-    export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
-    export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
-    export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
-    export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_lambda.txt
-    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_lambda_re.txt
-	export fitsdir=$PRO_DIR/$2/
+		export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
+    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
+    	export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+    	export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+    	export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_lambda.txt
+    	export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_lambda_re.txt
+		export fitsdir=$PRO_DIR/$2/
 idl << EOF
 .comp lambda.pro
 lambda,'$1','$2'
 EOF
-fi
+
+	fi
 done
 
 if [ $wiki == y ]; then
