@@ -47,30 +47,20 @@ testing=FIX(testing_string)
 
 if (testing ne 1) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
-<<<<<<< HEAD
-	dir='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target
-	;dir=getenv('indir')
-=======
 	lambda_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/lambda_re.txt'
 	table_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/table_one.txt'
 	lambda_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/lambda_re.txt'
 	table_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/table_one.txt'
 	output='output.csv'
->>>>>>> Added effective radius limit to calculations
 endif
 
 if (testing) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
-<<<<<<< HEAD
-	dir=getenv('indir')
-	;dir='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target
-=======
 	lambda_sn10=getenv('infile1')
 	table_sn10=getenv('infile2')
 	lambda_sn5=getenv('infile3')
 	table_sn5=getenv('infile4')
 	output=getenv('outfile')
->>>>>>> Added effective radius limit to calculations
 endif
 
 ;
