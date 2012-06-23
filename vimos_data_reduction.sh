@@ -702,7 +702,6 @@ if [ $wiki == y ]; then
 	export infile4=$PRO_DIR/$2/sn5/table_one.txt
 	export outfile=output.csv
 	PASSWORD=$(gpg --decrypt $ASTRO_DIR/wiki.gpg)
-
 idl << EOF
 .comp wiki.pro
 wiki,'$1','$2'
@@ -749,6 +748,11 @@ EOF
 	export infile3=$PRO_DIR/$2/sn5/r_e_lambda_re.txt
 	export infile4=$PRO_DIR/$2/sn5/r_e_table_one.txt
 	export outfile=r_e_output.csv
+idl << EOF
+.comp wiki.pro
+wiki,'$1','$2'
+EOF
+
 	
 	INPUT=$outfile
 	OLDIFS=$IFS
