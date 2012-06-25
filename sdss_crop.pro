@@ -207,11 +207,11 @@ z_im=mrdfits(dir+'drC-002576-z5-0109.fits',0,header0, RANGE=[y_start,y_end-1], /
 endif
 
 if (target eq 2086) then begin
-u_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-g_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-r_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-i_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-z_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+u_im=mrdfits(dir+'drC-001729-u3-0022.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-001729-g3-0022.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-001729-r3-0022.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-001729-i3-0022.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-001729-z3-0022.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
 endif
 
 ;sum up all the image files, just gives us a brighter image
