@@ -61,6 +61,13 @@ x_start = 1200
 x_end = 1600
 endif
 
+if (target eq 1048) then begin
+y_start = 650
+y_end = 850
+x_start = 850
+x_end = 1050
+endif
+
 if (target eq 1050) then begin
 y_start = 550
 y_end = 725
@@ -76,10 +83,10 @@ x_end = 375
 endif
 
 if (target eq 1067) then begin
-y_start = 0
-y_end = 0
-x_start = 0
-x_end = 0
+y_start = 1025
+y_end = 1225
+x_start = 200
+x_end = 400
 endif
 
 if (target eq 1153) then begin
@@ -89,18 +96,32 @@ x_start = 480
 x_end = 600
 endif
 
+if (target eq 1261) then begin
+y_start = 525
+y_end = 775
+x_start = 200
+x_end = 450
+endif
+
 if (target eq 2001) then begin
-y_start = 0
-y_end = 0
-x_start = 0
-x_end = 0
+y_start = 450
+y_end = 700
+x_start = 575
+x_end = 850
+endif
+
+if (target eq 2039) then begin
+y_start = 1200
+y_end = 1485
+x_start = 700
+x_end = 1200
 endif
 
 if (target eq 2086) then begin
-y_start = 0
-y_end = 0
-x_start = 0
-x_end = 0
+y_start = 350
+y_end = 600
+x_start = 575
+x_end = 925
 endif
 
 ;Use if statements to determine the proper filenames for each target.
@@ -121,6 +142,14 @@ i_im=mrdfits(dir+'drC-002190-i5-0312.fits',0,header0, RANGE=[y_start,y_end-1], /
 z_im=mrdfits(dir+'drC-002190-z5-0312.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
 endif
 
+if (target eq 1048) then begin
+u_im=mrdfits(dir+'drC-002190-u3-0539.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-002190-g3-0539.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-001458-r3-0539.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-002190-i3-0539.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-002190-z3-0539.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+endif
+
 if (target eq 1050) then begin
 u_im=mrdfits(dir+'drC-001462-u3-0539.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
 g_im=mrdfits(dir+'drC-001462-g3-0539.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
@@ -138,11 +167,11 @@ z_im=mrdfits(dir+'drC-002334-z5-0046.fits',0,header0, RANGE=[y_start,y_end-1], /
 endif
 
 if (target eq 1067) then begin
-u_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-g_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-r_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-i_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-z_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+u_im=mrdfits(dir+'drC-001478-u5-0032.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-001478-g5-0032.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-001478-r5-0032.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-001478-i5-0032.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-001478-z5-0032.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
 endif
 
 if (target eq 1153) then begin
@@ -153,12 +182,28 @@ i_im=mrdfits(dir+'drC-000752-i4-0651.fits',0,header0, RANGE=[y_start,y_end-1], /
 z_im=mrdfits(dir+'drC-000752-z4-0651.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
 endif
 
+if (target eq 1261) then begin
+u_im=mrdfits(dir+'drC-003525-u2-0209.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-003525-g2-0209.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-003525-r2-0209.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-003525-i2-0209.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-003525-z2-0209.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+endif
+
 if (target eq 2001) then begin
-u_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-g_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-r_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-i_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
-z_im=mrdfits(dir+'.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+u_im=mrdfits(dir+'drC-002566-u4-0251.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-002566-g4-0251.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-002566-r4-0251.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-002566-i4-0251.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-002566-z4-0251.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+endif
+
+if (target eq 2039) then begin
+u_im=mrdfits(dir+'drC-002576-u5-0109.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+g_im=mrdfits(dir+'drC-002576-g5-0109.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+r_im=mrdfits(dir+'drC-002576-r5-0109.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+i_im=mrdfits(dir+'drC-002576-i5-0109.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
+z_im=mrdfits(dir+'drC-002576-z5-0109.fits',0,header0, RANGE=[y_start,y_end-1], /DSCALE, /SILENT)
 endif
 
 if (target eq 2086) then begin
