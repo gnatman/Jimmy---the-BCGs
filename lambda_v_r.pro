@@ -49,9 +49,9 @@ loadct, 4, /SILENT
 set_plot, 'ps'
 device, filename='lambda_v_rad.eps', /encapsul, /color, BITS=8
 
-lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda.txt',COUNT=nfiles)
+lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/sn10/lambda.txt',COUNT=nfiles)
 lambda_re_files = strmid( lambda_files, 0, 40)
-lambda_re_files = lambda_re_files + 'lambda_re.txt'
+lambda_re_files = lambda_re_files + 'sn10/lambda_re.txt'
 ;lambda_re_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
 lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
@@ -91,7 +91,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 	endelse
 endfor
 
-plot, [0,0], [0,0], yrange=[0,1], xrange = [0,1.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
+plot, [0,0], [0,0], yrange=[0,1], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
 for i=0, n_elements(lambda_files)-1 do begin
 	oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
 	xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*]), strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4), CHARSIZE = 0.5, CHARTHICK = 2, COLOR = 180
@@ -130,41 +130,41 @@ endfor
 
 device,/close
 
-set_plot, 'ps'
-device, filename='lambda_v_rad_prop.eps', /encapsul, /color, BITS=8
-plot, [0,0], [0,0], yrange=[0,0.5], xrange = [0,1.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
-i=13
-oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8;, COLOR = 180, LINESTYLE = linestyle[i]
-xyouts, max(tempradius2[i,*]/r_e[i])+0.01, max(templambda2[i,*]), '2039', CHARSIZE = 1, CHARTHICK = 5;, COLOR = 180
-i=15
-oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8;, COLOR = 180, LINESTYLE = linestyle[i]
-xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*])-0.01, '2086', CHARSIZE = 1, CHARTHICK = 5;, COLOR = 180
-
-sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles/*',COUNT=nfiles)
-rsauron = findgen(50)
-lsauron = findgen(50)
-for j=0,nfiles-1 do begin
-		;print, sauron[j]
-        readcol, sauron[j], F='F,F', rsauron, lsauron, /SILENT
-        oplot, rsauron, lsauron, COLOR = 1, LINESTYLE = 2
-endfor
-sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles_slow/*',COUNT=nfiles)
-rsauron = findgen(50)
-lsauron = findgen(50)
-for j=0,nfiles-1 do begin
-		;print, sauron[j]
-        readcol, sauron[j], F='F,F', rsauron, lsauron, /SILENT
-        oplot, rsauron, lsauron, COLOR = 1, LINESTYLE = 2
-endfor
-
-oplot, [1.0,1.5],[0.1,0.1]
-oplot, [1.0,1.0],[0,0.1]
-xyouts, 1.05, 0.07, 'SAURON', CHARTHICK=4
-xyouts, 1.05, 0.04, 'Erickson', CHARTHICK=4
-oplot, [1.25,1.4],[0.075,0.075], linestyle=2, THICK=3
-oplot, [1.25,1.4],[0.045,0.045], THICK=7
-
-device,/close
+;set_plot, 'ps'
+;device, filename='lambda_v_rad_prop.eps', /encapsul, /color, BITS=8
+;plot, [0,0], [0,0], yrange=[0,0.5], xrange = [0,1.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
+;i=13
+;oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8;, COLOR = 180, LINESTYLE = linestyle[i]
+;xyouts, max(tempradius2[i,*]/r_e[i])+0.01, max(templambda2[i,*]), '2039', CHARSIZE = 1, CHARTHICK = 5;, COLOR = 180
+;i=15
+;oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8;, COLOR = 180, LINESTYLE = linestyle[i]
+;xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*])-0.01, '2086', CHARSIZE = 1, CHARTHICK = 5;, COLOR = 180
+;
+;sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles/*',COUNT=nfiles)
+;rsauron = findgen(50)
+;lsauron = findgen(50)
+;for j=0,nfiles-1 do begin
+;		;print, sauron[j]
+;       readcol, sauron[j], F='F,F', rsauron, lsauron, /SILENT
+;       oplot, rsauron, lsauron, COLOR = 1, LINESTYLE = 2
+;endfor
+;sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles_slow/*',COUNT=nfiles)
+;rsauron = findgen(50)
+;lsauron = findgen(50)
+;for j=0,nfiles-1 do begin
+;		;print, sauron[j]
+;        readcol, sauron[j], F='F,F', rsauron, lsauron, /SILENT
+;        oplot, rsauron, lsauron, COLOR = 1, LINESTYLE = 2
+;endfor
+;
+;oplot, [1.0,1.5],[0.1,0.1]
+;oplot, [1.0,1.0],[0,0.1]
+;xyouts, 1.05, 0.07, 'SAURON', CHARTHICK=4
+;xyouts, 1.05, 0.04, 'Erickson', CHARTHICK=4
+;oplot, [1.25,1.4],[0.075,0.075], linestyle=2, THICK=3
+;oplot, [1.25,1.4],[0.045,0.045], THICK=7
+;
+;device,/close
 
 ;file_move,'lambda_v_rad.eps','Downloads/lambda_v_rad.eps', /OVERWRITE
 

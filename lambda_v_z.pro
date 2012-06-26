@@ -49,9 +49,9 @@ set_plot, 'ps'
 device, filename='lambda_v_z.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
 
 
-lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
+lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
 table_files = strmid( lambda_files, 0, 40)
-table_files = table_files + 'table_one.txt'
+table_files = table_files + 'sn10/table_one.txt'
 ;table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
 
 r_e = fltarr(n_elements(lambda_files))
@@ -108,7 +108,7 @@ name_comp = name_comp[where(name_comp ne '')]
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
-plot, redshift, lambda, PSYM=4, yrange=[0,1.0], xrange = [0.04,0.1], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='Z', YTITLE='!4k!D!3R!Le'
+plot, redshift, lambda, PSYM=4, yrange=[0,1.0], xrange = [0.03,0.1], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='Z', YTITLE='!4k!D!3R!Le'
 oplot, redshift, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, redshift_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, redshift, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
