@@ -50,7 +50,7 @@ device, filename='lambda_v_e.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SI
 
 
 
-lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
+lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
 
 r_e = fltarr(n_elements(lambda_files))
 lambda = strarr(n_elements(lambda_files))
@@ -61,7 +61,6 @@ lambda_comp = strarr(n_elements(lambda_files))
 epsilon_comp = fltarr(n_elements(lambda_files))
 name_comp = strarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
-	;print,'Reading in: ',lambda_files[i], ' and ',table_files[i]
 	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsilon, templambda, /silent
 	if (strmid(lambda_files[i], 35, 4) eq 'main') then begin
 		r_e[i] = tempr_e[0]
@@ -86,12 +85,12 @@ xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 xyouts, epsilon_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 ;Read in and plot the SAURON values
-readcol,'/Users/jimmy/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', sauron_name, sauron_lambda, sauron_lambda_half, sauron_epsilon, sauron_epsilon_half, /SILENT
+readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', sauron_name, sauron_lambda, sauron_lambda_half, sauron_epsilon, sauron_epsilon_half, /SILENT
 ;USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 oplot, sauron_epsilon, sauron_lambda, PSYM=5, symsize=1.2, thick=2
 
 ;Read in and plot the ATLAS3D values
-readcol,'/Users/jimmy/Astro/Supporting\ Documents/Emsellem2011_Atlas3D_Paper3_TableB1.txt', F='A,F,F,F,A,F,F,F,F,A,A', atlas3d_name, atlas3d_rmax, atlas3d_epsilon, atlas3d_epsilon_half, atlas3d_band, atlas3d_v_disp, atlas3d_v_disp_half, atlas3d_lambda, atlas3d_lambda_half, atlas3d_fast_slow, atlas3d_fast_slow_half, /SILENT
+readcol,'$HOME/Astro/Supporting\ Documents/Emsellem2011_Atlas3D_Paper3_TableB1.txt', F='A,F,F,F,A,F,F,F,F,A,A', atlas3d_name, atlas3d_rmax, atlas3d_epsilon, atlas3d_epsilon_half, atlas3d_band, atlas3d_v_disp, atlas3d_v_disp_half, atlas3d_lambda, atlas3d_lambda_half, atlas3d_fast_slow, atlas3d_fast_slow_half, /SILENT
 oplot, atlas3d_epsilon, atlas3d_lambda, PSYM=7, symsize=1.2, thick=2
 
 

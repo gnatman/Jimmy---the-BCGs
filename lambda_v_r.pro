@@ -49,10 +49,14 @@ loadct, 4, /SILENT
 set_plot, 'ps'
 device, filename='lambda_v_rad.eps', /encapsul, /color, BITS=8
 
-lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/sn10/lambda.txt',COUNT=nfiles)
-lambda_re_files = strmid( lambda_files, 0, 40)
-lambda_re_files = lambda_re_files + 'sn10/lambda_re.txt'
-;lambda_re_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/lambda_re.txt',COUNT=nfiles)
+lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
+table_files = strarr(n_elements(lambda_files))
+temp_string = strsplit(lambda_files, '/', /extract)
+for i=0, n_elements(temp_string)-1 do begin
+	table_files[i] = '/'+temp_string[i,0]+'/'+temp_string[i,1]+'/'+temp_string[i,2]+'/'+temp_string[i,3]+'/'+temp_string[i,4]+'/'+temp_string[i,5]+'/'+temp_string[i,6]+'/'+'table_one.txt'
+endfor
+print, table_files
+
 lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
@@ -101,16 +105,16 @@ endfor
 
 
 
-;readcol, '/Users/jimmy/Astro/Supporting Documents/fake_sauron_slow', F='F,F', r_sauron_slow, l_sauron_slow, /SILENT
-;readcol, '/Users/jimmy/Astro/Supporting Documents/fake_sauron_fast', F='F,F', r_sauron_fast, l_sauron_fast, /SILENT
-;readcol, '/Users/jimmy/Astro/Supporting Documents/fake_slow', F='F,F', r_slow, l_slow, /SILENT
-;readcol, '/Users/jimmy/Astro/Supporting Documents/fake_fast', F='F,F', r_fast, l_fast, /SILENT
+;readcol, '$HOME/Astro/Supporting Documents/fake_sauron_slow', F='F,F', r_sauron_slow, l_sauron_slow, /SILENT
+;readcol, '$HOME/Astro/Supporting Documents/fake_sauron_fast', F='F,F', r_sauron_fast, l_sauron_fast, /SILENT
+;readcol, '$HOME/Astro/Supporting Documents/fake_slow', F='F,F', r_slow, l_slow, /SILENT
+;readcol, '$HOME/Astro/Supporting Documents/fake_fast', F='F,F', r_fast, l_fast, /SILENT
 ;oplot, r_fast, l_fast, THICK = 8, COLOR = 180, LINESTYLE = 0
 ;oplot, r_slow, l_slow, THICK = 8, COLOR = 180, LINESTYLE = 2
 ;oplot, r_sauron_slow, l_sauron_slow, COLOR = 1, LINESTYLE = 2
 ;oplot, r_sauron_fast, l_sauron_fast, COLOR = 1
 
-sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles/*',COUNT=nfiles)
+sauron = file_search('$HOME/Astro/Supporting Documents/sauron_lambda_profiles/*',COUNT=nfiles)
 rsauron = findgen(50)
 lsauron = findgen(50)
 for j=0,nfiles-1 do begin
@@ -118,7 +122,7 @@ for j=0,nfiles-1 do begin
         readcol, sauron[j], F='F,F', rsauron, lsauron, /SILENT
         oplot, rsauron, lsauron, COLOR = 1
 endfor
-sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles_slow/*',COUNT=nfiles)
+sauron = file_search('$HOME/Astro/Supporting Documents/sauron_lambda_profiles_slow/*',COUNT=nfiles)
 rsauron = findgen(50)
 lsauron = findgen(50)
 for j=0,nfiles-1 do begin
@@ -140,7 +144,7 @@ device,/close
 ;oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8;, COLOR = 180, LINESTYLE = linestyle[i]
 ;xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*])-0.01, '2086', CHARSIZE = 1, CHARTHICK = 5;, COLOR = 180
 ;
-;sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles/*',COUNT=nfiles)
+;sauron = file_search('$HOME/Astro/Supporting Documents/sauron_lambda_profiles/*',COUNT=nfiles)
 ;rsauron = findgen(50)
 ;lsauron = findgen(50)
 ;for j=0,nfiles-1 do begin
@@ -148,7 +152,7 @@ device,/close
 ;       readcol, sauron[j], F='F,F', rsauron, lsauron, /SILENT
 ;       oplot, rsauron, lsauron, COLOR = 1, LINESTYLE = 2
 ;endfor
-;sauron = file_search('/Users/jimmy/Astro/Supporting Documents/sauron_lambda_profiles_slow/*',COUNT=nfiles)
+;sauron = file_search('$HOME/Astro/Supporting Documents/sauron_lambda_profiles_slow/*',COUNT=nfiles)
 ;rsauron = findgen(50)
 ;lsauron = findgen(50)
 ;for j=0,nfiles-1 do begin
