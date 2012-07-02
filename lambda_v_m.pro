@@ -58,7 +58,7 @@ label = [ 'BCG 1050', 'BCG 1027', 'BCG 1066', 'BCG 2086', 'BCG 2001', 'BCG 1153'
 ;sarah_m_dyn = [ 12.2, 11.8, 11.57, 11.84, 11.85, 11.78, 11.15 ]
 
 
-lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
+lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
 table_files = strmid( lambda_files, 0, 40)
 table_files = table_files + 'sn10/table_one.txt'
 print, table_files
