@@ -49,13 +49,12 @@ loadct, 4, /SILENT
 set_plot, 'ps'
 device, filename='lambda_v_rad.eps', /encapsul, /color, BITS=8
 
-lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
-table_files = strarr(n_elements(lambda_files))
+lambda_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/sn10/lambda.txt',COUNT=nfiles)
+lambda_re_files = strarr(n_elements(lambda_files))
 temp_string = strsplit(lambda_files, '/', /extract)
 for i=0, n_elements(temp_string)-1 do begin
-	table_files[i] = '/'+temp_string[i,0]+'/'+temp_string[i,1]+'/'+temp_string[i,2]+'/'+temp_string[i,3]+'/'+temp_string[i,4]+'/'+temp_string[i,5]+'/'+temp_string[i,6]+'/'+'table_one.txt'
+	lambda_re_files[i] = '/'+temp_string[i,0]+'/'+temp_string[i,1]+'/'+temp_string[i,2]+'/'+temp_string[i,3]+'/'+temp_string[i,4]+'/'+temp_string[i,5]+'/'+temp_string[i,6]+'/'+'lambda_re.txt'
 endfor
-print, table_files
 
 lambda = fltarr(n_elements(lambda_files))
 epsillon = fltarr(n_elements(lambda_files))
