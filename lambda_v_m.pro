@@ -57,8 +57,8 @@ label = [ 'BCG 1050', 'BCG 1027', 'BCG 1066', 'BCG 2086', 'BCG 2001', 'BCG 1153'
 ;sarah_lambda = [ 0.113958, 0.112633, 0.346064, 0.256023, 0.715347, 0.103441 ]
 ;sarah_m_dyn = [ 12.2, 11.8, 11.57, 11.84, 11.85, 11.78, 11.15 ]
 
-rm -rf $HOME/Astro/reduced/pro
-rm -rf $HOME/Astro/reduced/sof
+$rm -rf $HOME/Astro/reduced/pro
+$rm -rf $HOME/Astro/reduced/sof
 lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
 table_files = strmid( lambda_files, 0, 40)
 if ( getenv('USER') eq 'jimmyerickson') then begin
