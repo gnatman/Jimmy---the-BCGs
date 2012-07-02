@@ -268,7 +268,7 @@ endif
 
 print,'Writing test data cube to file : '+fileout
 
-mwrfits,cube_trans,fileout,create=1 ;/create=1 creates new file even if old one exists
+mwrfits,cube_trans,fileout,/create ;/create=1 creates new file even if old one exists
 
 ;reads header from newly created file to ensure proper header writting
 head=headfits(fileout)
@@ -284,21 +284,21 @@ if (pointing eq 'pt180') then begin ;rotate the cube back to normal so it can be
     diag_180=fltarr(Nx-20,Ny-20,5)
     
     cube_trans_180=cuberot(cube_trans,180)
-    mwrfits,cube_trans_180,fileout_180,head,create=1
+    mwrfits,cube_trans_180,fileout_180,head,/create
     
     var_trans_180=cuberot(var_trans,180)
-    mwrfits,var_trans_180,fileout_180,head,create=0
+    mwrfits,var_trans_180,fileout_180,head
     
     diag_180=cuberot(diag,180)
-    mwrfits,diag_180,diagout,head,create=1
+    mwrfits,diag_180,diagout,head,/create
 endif else begin
 	;write over former cube with new header
-	mwrfits,cube_trans,fileout,head,create=1
+	mwrfits,cube_trans,fileout,head,/create
 
 	;add as new extension variance array
-	mwrfits,var_trans,fileout,head,create=0
+	mwrfits,var_trans,fileout,head
 
-	mwrfits,diag,diagout,head,create=1
+	mwrfits,diag,diagout,head,/create
 endelse
 
 end

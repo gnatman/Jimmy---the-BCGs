@@ -85,13 +85,15 @@ oplot, epsilon_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 xyouts, epsilon_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
+;Read in and plot the SAURON values
+readcol,'/Users/jimmy/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', sauron_name, sauron_lambda, sauron_lambda_half, sauron_epsilon, sauron_epsilon_half, /SILENT
+;USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
+oplot, sauron_epsilon, sauron_lambda, PSYM=5, symsize=1.2, thick=2
 
-readcol,'/Users/jimmy/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', dummy1, sauron_lambda, dummy2, sauron_epsilon, dummy3, /SILENT
+;Read in and plot the ATLAS3D values
+readcol,'/Users/jimmy/Astro/Supporting\ Documents/Emsellem2011_Atlas3D_Paper3_TableB1.txt', F='A,F,F,F,A,F,F,F,F,A,A', atlas3d_name, atlas3d_rmax, atlas3d_epsilon, atlas3d_epsilon_half, atlas3d_band, atlas3d_v_disp, atlas3d_v_disp_half, atlas3d_lambda, atlas3d_lambda_half, atlas3d_fast_slow, atlas3d_fast_slow_half, /SILENT
+oplot, atlas3d_epsilon, atlas3d_lambda, PSYM=7, symsize=1.2, thick=2
 
-USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
-
-
-oplot, sauron_epsilon , sauron_lambda, PSYM=5, symsize = 1.2, thick=2
 
 device,/close
 

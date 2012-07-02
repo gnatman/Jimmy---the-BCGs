@@ -68,8 +68,8 @@ if (testing) then begin
 	openw, 9, getenv('outfile1')+'/auto.ifudat'
 endif
 if (testing ne 1) then begin
-    file_list = file_search('/Users/jimmy/Astro/reduced/1042pro/ifu_science_cube*_idl*.fits',COUNT=nfiles)
-	openw, 9, '/Users/jimmy/Astro/reduced/1042pt1sof/auto.ifudat'
+    file_list = file_search('/Users/jimmy/Astro/reduced/1067pro/ifu_science_cube*_idl*.fits',COUNT=nfiles)
+	openw, 9, '/Users/jimmy/Astro/reduced/1067pt1sof/auto.ifudat'
 endif
 
 number_of_files=size(file_list)
@@ -102,8 +102,19 @@ for l=0,number_of_files[1]-1 do begin
 			k=k+1
 		endfor
 	endfor
-	;print,summed_fibers
+	;summed_fibers[1466] = 0
+	;summed_fibers[372] = 0
+	;summed_fibers[203] = 0
+	;summed_fibers[1513] = 0
+	;summed_fibers[286] = 0
+	;summed_fibers[845] = 0
+	;summed_fibers[712] = 0
+	;summed_fibers[1395] = 0
+	;summed_fibers[613] = 0
+	;print,summed_fibers[sort(summed_fibers)]
+	;print,sort(summed_fibers)
 	brightest_point = max(summed_fibers)
+	
 	
 	for i=0,x_size-1 do begin
 		for j=0,y_size-1 do begin
