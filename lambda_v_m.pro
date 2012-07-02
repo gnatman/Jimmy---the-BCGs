@@ -59,14 +59,14 @@ label = [ 'BCG 1050', 'BCG 1027', 'BCG 1066', 'BCG 2086', 'BCG 2001', 'BCG 1153'
 
 spawn,'rm -rf $HOME/Astro/reduced/pro'
 spawn,'rm -rf $HOME/Astro/reduced/sof'
+
 lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
-table_files = strmid( lambda_files, 0, 40)
-if ( getenv('USER') eq 'jimmyerickson') then begin
-	table_files = strmid( lambda_files, 0, 47)
-endif
-table_files = table_files + 'sn10/table_one.txt'
+table_files = strarr(n_elements(lambda_files))
+temp_string = strsplit(lambda_files, '/', /extract)
+for i=0, n_elements(temp_string)-1 do begin
+	table_files[i] = '/'+temp_string[i,0]+'/'+temp_string[i,1]+'/'+temp_string[i,2]+'/'+temp_string[i,3]+'/'+temp_string[i,4]+'/'+temp_string[i,5]+'/'+temp_string[i,6]+'/'+'table_one.txt'
+endfor
 print, table_files
-;table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
 
 r_e = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
@@ -81,10 +81,9 @@ lambda_comp = fltarr(n_elements(lambda_files))
 epsilon_comp = fltarr(n_elements(lambda_files))
 name_comp = strarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
-	;print,'Reading in: ',lambda_files[i], ' and ',table_files[i]
 	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsilon, templambda, /silent
 	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5, /silent
-	if (strmid(lambda_files[i], 35, 4) eq 'main') then begin
+	if (temp_string[i,5] eq 'main') then begin
 		r_e[i] = tempr_e[0]
 		dispersion[i] = values[2]
 		redshift[i] = values[0]
@@ -96,7 +95,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 		mass = (5*radius_m*((dispersion*1000)^2))/(1.98892E30*6.673E-11)
 		log_mass = alog10(mass)
 		m_dyn = log_mass
-		name[i] = strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4)
+		;name[i] = strmid(temp_string[i,4], 0, 4)+temp_string[i,5] ;causes a bunch of divide by 0 and illegal operand errors
 	endif else begin
 		r_e_comp[i] = tempr_e[0]
 		dispersion_comp[i] = values[2]
@@ -109,7 +108,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 		mass_comp = (5*radius_m_comp*((dispersion_comp*1000)^2))/(1.98892E30*6.673E-11)
 		log_mass_comp = alog10(mass_comp)
 		m_dyn_comp = log_mass_comp
-		name_comp[i] = strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4)
+		name_comp[i] = strmid(temp_string[i,4], 0, 4)+temp_string[i,5] ;causes a bunch of divide by 0 and illegal operand errors
 	endelse
 endfor
 
@@ -130,6 +129,7 @@ endfor
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
+print,m_dyn
 plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le'
 oplot, m_dyn, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, m_dyn_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
@@ -151,7 +151,7 @@ xyouts, m_dyn_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR =
 ;oplot, sarah_m_dyn, sarah_lambda, PSYM=6, color=100
 ;xyouts, sarah_m_dyn+0.02, sarah_lambda-0.005, label, color=100, CHARSIZE = 1
 
-readcol,'/Users/jimmy/Astro/Supporting\ Documents/SAURON_Data_Fig7_LR_MB_Mvir_core.txt', F='A,F,F,F,A', dummy1, sauron_lambda, dummy2, sauron_m_dyn, dummy3, /SILENT
+readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig7_LR_MB_Mvir_core.txt', F='A,F,F,F,A', dummy1, sauron_lambda, dummy2, sauron_m_dyn, dummy3, /SILENT
 
 USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 
