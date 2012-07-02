@@ -1,6 +1,6 @@
 echo "Updating the images on the wiki."
 
-PASSWORD=$(gpg --decrypt $ASTRO_DIR/wiki.gpg)
+PASSWORD=$(gpg --decrypt $HOME/Astro/wiki.gpg)
 
 idl << EOF
 .comp lambda_v_m.pro
