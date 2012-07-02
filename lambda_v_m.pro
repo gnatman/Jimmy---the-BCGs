@@ -60,6 +60,9 @@ label = [ 'BCG 1050', 'BCG 1027', 'BCG 1066', 'BCG 2086', 'BCG 2001', 'BCG 1153'
 
 lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
 table_files = strmid( lambda_files, 0, 40)
+if ( getenv('USER') eq 'jimmyerickson') then begin
+	table_files = strmid( lambda_files, 0, 47)
+endif
 table_files = table_files + 'sn10/table_one.txt'
 print, table_files
 ;table_files = file_search('/Users/jimmy/Astro/reduced/*/{comp,main}/table_one.txt',COUNT=nfiles)
