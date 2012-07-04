@@ -26,7 +26,7 @@
 ;
 ; CALLING SEQUENCE:
 ;   combine_cube_quadrants,'observation','flag'
-;	eg combine_cube_quadrants,'a','180'
+;	eg combine_cube_quadrants,'a','pt180'
 ;
 ; INPUT PARAMETERS:
 ;   Observation: Galaxies have multiple pointings, this identifies which
@@ -87,26 +87,28 @@ if (testing) then begin
 endif
 
 if (testing ne 1) then begin
-    dir='/Users/jimmy/Astro/reduced/1153pro/'
+    dir='/Users/jimmy/Astro/reduced/1067pro'
 endif
 
 ;Read in all the files we'll be combining, as well as the extentions that we'll be combining.
 im1=mrdfits(dir+'/ifu_science_reduced_1'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
 im1_notsky=mrdfits(dir+'/ifu_science_reduced_1'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
 var1=mrdfits(dir+'/ifu_science_reduced_1'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
-diag1=mrdfits(dir+'diagnostic_1'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+diag1=mrdfits(dir+'/diagnostic_1'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
 im2=mrdfits(dir+'/ifu_science_reduced_2'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
 im2_notsky=mrdfits(dir+'/ifu_science_reduced_2'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
 var2=mrdfits(dir+'/ifu_science_reduced_2'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
-diag2=mrdfits(dir+'diagnostic_2'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+diag2=mrdfits(dir+'/diagnostic_2'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
 im3=mrdfits(dir+'/ifu_science_reduced_3'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
 im3_notsky=mrdfits(dir+'/ifu_science_reduced_3'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
 var3=mrdfits(dir+'/ifu_science_reduced_3'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
-diag3=mrdfits(dir+'diagnostic_3'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+diag3=mrdfits(dir+'/diagnostic_3'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
 im4=mrdfits(dir+'/ifu_science_reduced_4'+obs+'_idl_'+pointing+'.fits',0,header0, /SILENT)
 im4_notsky=mrdfits(dir+'/ifu_science_reduced_4'+obs+'_idl_'+pointing+'.fits',1,header0, /SILENT)
 var4=mrdfits(dir+'/ifu_science_reduced_4'+obs+'_idl_'+pointing+'.fits',2,header0, /SILENT)
-diag4=mrdfits(dir+'diagnostic_4'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+diag4=mrdfits(dir+'/diagnostic_4'+obs+'_'+pointing+'.fits',0,header0, /SILENT)
+
+
 
 crval=fxpar(header0,'CRVAL3')
 crpix=fxpar(header0,'CRPIX3')
@@ -259,16 +261,20 @@ endfor
 
 if (testing) then begin
     fileout=dir+'ifu_science_cube'+obs+'_idl_'+pointing+'.fits'
+    fileout_180=dir+'ifu_science_cube'+obs+'_idl_'+pointing+'.fits'
     diagout=dir+'diag_cube'+obs+'_'+pointing+'.fits'
+    fovout=dir+'ifu_full_fov'+obs+'_'+pointing+'_idl.fits'
 endif
 if (testing ne 1) then begin
     fileout='/Users/jimmy/Downloads/ifu_science_cube'+obs+'_idl.fits'
+    fileout_180='/Users/jimmy/Downloads/ifu_science_cube'+obs+'_idl_pt180.fits'
     diagout='/Users/jimmy/Downloads/diag_cube.fits'
+    fovout='/Users/jimmy/Downloads/fov.fits'
 endif
 
 print,'Writing test data cube to file : '+fileout
 
-mwrfits,cube_trans,fileout,/create ;/create=1 creates new file even if old one exists
+mwrfits,cube_trans,fileout,/create ;/create creates new file even if old one exists
 
 ;reads header from newly created file to ensure proper header writting
 head=headfits(fileout)
@@ -277,6 +283,8 @@ head=headfits(fileout)
 sxaddpar,head,'CRVAL3',crval
 sxaddpar,head,'CRPIX3',crpix
 sxaddpar,head,'CDELT3',cdelt
+
+fov=fltarr(Nx-20,Ny-20)
 
 if (pointing eq 'pt180') then begin ;rotate the cube back to normal so it can be stacked with everything else.
     cube_trans_180=fltarr(cube_x,cube_y,number_of_cube_wave_pixels)
@@ -291,6 +299,13 @@ if (pointing eq 'pt180') then begin ;rotate the cube back to normal so it can be
     
     diag_180=cuberot(diag,180)
     mwrfits,diag_180,diagout,head,/create
+    
+    for x=0,cube_x-1 do begin
+		for y=0,cube_y-1 do begin
+			fov[x,y] = total(cube_trans_180[x,y,*])
+		endfor
+	endfor
+	mwrfits,fov,fovout,head,/create
 endif else begin
 	;write over former cube with new header
 	mwrfits,cube_trans,fileout,head,/create
@@ -299,6 +314,13 @@ endif else begin
 	mwrfits,var_trans,fileout,head
 
 	mwrfits,diag,diagout,head,/create
+	
+	for x=0,cube_x-1 do begin
+		for y=0,cube_y-1 do begin
+			fov[x,y] = total(cube_trans[x,y,*])
+		endfor
+	endfor
+	mwrfits,fov,fovout,head,/create
 endelse
 
 end
