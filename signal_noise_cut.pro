@@ -186,8 +186,8 @@ clean_highest_values = highest_values[where(highest_values ne 0)]
 sorted_clean_highest_index = sort(clean_highest_values)
 sorted_clean_highest = clean_highest_values[sorted_clean_highest_index]
 ;print,'sorted_clean_highest: ',sorted_clean_highest
-print,'x[sorted_clean_highest]: ',x[sorted_clean_highest]
-print,'x[signal_clean]: ',x[signal_clean]
+;print,'x[sorted_clean_highest]: ',x[sorted_clean_highest]
+;print,'x[signal_clean]: ',x[signal_clean]
 
 effective_sn = sorted_sn[0:max_pixels]
 effective_x = sorted_x[0:max_pixels]
