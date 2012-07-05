@@ -327,11 +327,11 @@ for i = 0, max(binNum) do begin
 
     ;Perform the pPXF fit on the galaxy using the templates and 1 sigma errors on the spectra
     if CanConnect() then begin
-    	;set_plot,'PS'
-	    ;device, filename='ppxf_fit.eps', /encapsul, /color, bits=8
+    	set_plot,'PS'
+	    device, filename='ppxf_fit.eps', /encapsul, /color, bits=8
 
 	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=2, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error, RANGE=(new_wavelength_range[1]-new_wavelength_range[0]), MIN=new_wavelength_range[0]
-	    ;device,/close
+	    device,/close
 	endif else begin
 	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, MOMENTS=2, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error, RANGE=(new_wavelength_range[1]-new_wavelength_range[0]), MIN=new_wavelength_range[0]
 
@@ -360,8 +360,8 @@ for i = 0, max(binNum) do begin
 	
 	if CanConnect() then begin ;only do this if we're printing things
 	    ;make the directory that the plots are saved to, move the printed plot to the directory, and then directory will be moved with bash
-    	;file_mkdir,'ppxf_fits'
-	    ;file_move,'ppxf_fit.eps','ppxf_fits/'+STRTRIM(ppxf_plot_number,2)+'.eps', /OVERWRITE
+    	file_mkdir,'ppxf_fits'
+	    file_move,'ppxf_fit.eps','ppxf_fits/'+STRTRIM(ppxf_plot_number,2)+'.eps', /OVERWRITE
     	ppxf_plot_number = ppxf_plot_number+1 ;up the counter
 	endif
 
