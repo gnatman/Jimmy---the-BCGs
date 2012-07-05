@@ -76,8 +76,8 @@ if (testing ne 1) then begin
 	;Location of temp.fits file to be s/n cutted
 	file='/Users/jimmy/Astro/reduced/1050pro/temp.fits'
 	;s/n wish to output
-	limit=5
-	r_e=5
+	limit=7
+	r_e=1
 endif
 
 
@@ -159,12 +159,35 @@ print, 'area_e: ',area_e
 pixel_area = 0.66^2
 num_pixels = area_e/pixel_area
 max_pixels = round(num_pixels)-1
+print,'Maximum Number of Pixels: ',max_pixels 
 sn = signal/noise
 sorted_sn = sn[REVERSE(SORT(sn))]
 sorted_x = x[REVERSE(SORT(sn))]
 sorted_y = y[REVERSE(SORT(sn))]
 sorted_signal = signal[REVERSE(SORT(sn))]
 sorted_noise = noise[REVERSE(SORT(sn))]
+
+starter = sn
+highest_values = intarr(max_pixels)
+for i=0, max_pixels-1 do begin
+	highest = where(sn eq max(starter))
+	if (sn[highest] ge limit) then begin
+		;print,'highest: ', highest
+		;print,'sn[highest]: ',sn[highest]
+		remainder = where(starter ne max(starter))
+		starter = starter[remainder]
+		highest_values[i] = highest
+	endif
+endfor
+
+;print,'highest_values: ',highest_values
+clean_highest_values = highest_values[where(highest_values ne 0)]
+;print,'clean_highest_values: ',clean_highest_values
+sorted_clean_highest_index = sort(clean_highest_values)
+sorted_clean_highest = clean_highest_values[sorted_clean_highest_index]
+;print,'sorted_clean_highest: ',sorted_clean_highest
+print,'x[sorted_clean_highest]: ',x[sorted_clean_highest]
+print,'x[signal_clean]: ',x[signal_clean]
 
 effective_sn = sorted_sn[0:max_pixels]
 effective_x = sorted_x[0:max_pixels]
@@ -174,8 +197,8 @@ effective_noise = sorted_noise[0:max_pixels]
 
 effective_clean=where((sorted_signal ne 0) and (sorted_signal/sorted_noise ge limit))
 
-print, 'effective_sn: ', effective_sn
-print, 'effective_sn[effective_clean]: ', effective_sn[effective_clean]
+;print, 'effective_sn: ', effective_sn
+;print, 'effective_sn[effective_clean]: ', effective_sn[effective_clean]
 
 ;I believe spaxel scale should be 0.66 arcseconds and not cdelt, which is like 0.602
 galaxy = getenv('galaxy')
@@ -189,12 +212,12 @@ endif
 ;the flux & noise in those fibres - can be output here:
 if (testing) then begin
 	forprint, (x[signal_clean]-mean(x))*spaxel_scale,(y[signal_clean]-mean(y))*spaxel_scale,x[signal_clean],y[signal_clean],signal[signal_clean],noise[signal_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT=getenv('outfile1'), COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
-	forprint, (effective_x[effective_clean]-mean(x))*spaxel_scale, (effective_y[effective_clean]-mean(y))*spaxel_scale, effective_x[effective_clean], effective_y[effective_clean], effective_signal[effective_clean], effective_noise[effective_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT=getenv('outfile2'), COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
+	forprint, (x[sorted_clean_highest]-mean(x))*spaxel_scale, (y[sorted_clean_highest]-mean(y))*spaxel_scale, x[sorted_clean_highest], y[sorted_clean_highest], signal[sorted_clean_highest], noise[sorted_clean_highest], format='(2f10.4,2i6,2f20.4)', TEXTOUT=getenv('outfile2'), COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
 endif
 
 if (testing ne 1) then begin
 	forprint, (x[signal_clean]-mean(x))*spaxel_scale,(y[signal_clean]-mean(y))*spaxel_scale,x[signal_clean],y[signal_clean],signal[signal_clean],noise[signal_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT='/Users/jimmy/Downloads/voronoi_2d_binning.txt', COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
-	forprint, (effective_x[effective_clean]-mean(x))*spaxel_scale, (effective_y[effective_clean]-mean(y))*spaxel_scale, effective_x[effective_clean], effective_y[effective_clean], effective_signal[effective_clean], effective_noise[effective_clean], format='(2f10.4,2i6,2f20.4)', TEXTOUT='/Users/jimmy/Downloads/r_e_2d_binning.txt', COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
+	forprint, (x[sorted_clean_highest]-mean(x))*spaxel_scale, (y[sorted_clean_highest]-mean(y))*spaxel_scale, x[sorted_clean_highest], y[sorted_clean_highest], signal[sorted_clean_highest], noise[sorted_clean_highest], format='(2f10.4,2i6,2f20.4)', TEXTOUT='/Users/jimmy/Downloads/r_e_2d_binning.txt', COMMENT='#         X"  Y"  Xpix          Ypix          signal noise'
 endif
 
 end

@@ -95,7 +95,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 		mass = (5*radius_m*((dispersion*1000)^2))/(1.98892E30*6.673E-11)
 		log_mass = alog10(mass)
 		m_dyn = log_mass
-		;name[i] = strmid(temp_string[i,4], 0, 4)+temp_string[i,5] ;causes a bunch of divide by 0 and illegal operand errors
+		name[i] = strmid(temp_string[i,4], 0, 4)+temp_string[i,5] ;causes a bunch of divide by 0 and illegal operand errors
 	endif else begin
 		r_e_comp[i] = tempr_e[0]
 		dispersion_comp[i] = values[2]
@@ -135,28 +135,26 @@ oplot, m_dyn, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, m_dyn_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, m_dyn, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 xyouts, m_dyn_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
-;m_dyn[0] = m_dyn[0]+0.05
-;m_dyn[1] = m_dyn[1]+0.05
-;m_dyn[2] = m_dyn[2]+0.05
-;m_dyn[3] = m_dyn[3]-0.7
-;m_dyn[4] = m_dyn[4]-0.25
-;m_dyn[5] = m_dyn[5]+0.05
-;lambda[0] = lambda[0]-0.01
-;lambda[1] = lambda[1]-0
-;lambda[2] = lambda[2]+0.02
-;lambda[3] = lambda[3]-0.025
-;lambda[4] = lambda[4]+0.02
-;lambda[5] = lambda[5]
 
 ;oplot, sarah_m_dyn, sarah_lambda, PSYM=6, color=100
 ;xyouts, sarah_m_dyn+0.02, sarah_lambda-0.005, label, color=100, CHARSIZE = 1
 
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig7_LR_MB_Mvir_core.txt', F='A,F,F,F,A', dummy1, sauron_lambda, dummy2, sauron_m_dyn, dummy3, /SILENT
 
-USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
+;USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 
 
 oplot, sauron_m_dyn, sauron_lambda, PSYM=5, symsize = 1.2, thick=2
+
+;LEGEND
+plots, 11.95, 0.94, PSYM=5, symsize = 1.2, thick=2
+xyouts, 12, 0.925, 'SAURON', charthick=2
+plots, 11.95, 0.89, PSYM=8, COLOR = 180, symsize = 1.2
+xyouts, 12, 0.875, 'BCG', charthick=2
+plots, 11.95, 0.84, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, 12, 0.825, 'Companion', charthick=2
+plots, [11.85,12.5],[0.8,0.8], thick=5
+plots, [11.85,11.85],[0.8,1.0], thick=5
 
 device,/close
 

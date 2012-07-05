@@ -84,7 +84,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 		mass = (5*radius_m*((dispersion*1000)^2))/(1.98892E30*6.673E-11)
 		log_mass = alog10(mass)
 		m_dyn = log_mass
-		;name[i] = strmid(temp_string[i,4], 0, 4)+temp_string[i,5] ;causes a bunch of divide by 0 and illegal operand errors
+		name[i] = strmid(temp_string[i,4], 0, 4)+temp_string[i,5] ;causes a bunch of divide by 0 and illegal operand errors
 	endif else begin
 		r_e_comp[i] = tempr_e[0]
 		dispersion_comp[i] = values[2]
@@ -118,6 +118,14 @@ xyouts, redshift_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLO
 
 ;USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 ;oplot, sauron_m_dyn, sauron_lambda, PSYM=5, symsize = 1.2, thick=2
+
+;LEGEND
+plots, 0.0825, 0.94, PSYM=8, COLOR = 180, symsize = 1.2
+xyouts, 0.0855, 0.925, 'BCG', charthick=2
+plots, 0.0825, 0.89, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, 0.0855, 0.875, 'Companion', charthick=2
+plots, [0.08,0.1],[0.85,0.85], thick=5
+plots, [0.08,0.08],[0.85,1.0], thick=5
 
 device,/close
 

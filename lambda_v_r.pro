@@ -130,6 +130,22 @@ for j=0,nfiles-1 do begin
         oplot, rsauron, lsauron, COLOR = 1, LINESTYLE = 2
 endfor
 
+;LEGEND
+plots, [0.86,0.975], [0.935,0.935], COLOR = 1
+xyouts, 0.665, 0.925, 'SAURON Fast', charthick=2
+
+plots, [0.86,0.975], [0.885,0.885], COLOR = 1, LINESTYLE = 2
+xyouts, 0.665, 0.875, 'SAURON Slow', charthick=2
+
+plots, [0.86,0.975], [0.835,0.835], THICK = 8, COLOR = 180, LINESTYLE = 0
+xyouts, 0.665, 0.825, 'Jimmy Fast', charthick=2
+
+plots, [0.86,0.975], [0.785,0.785], THICK = 8, COLOR = 180, LINESTYLE = 2
+xyouts, 0.665, 0.775, 'Jimmy Slow', charthick=2
+
+plots, [0.65,1],[0.75,0.75], thick=5
+plots, [0.65,0.65],[0.75,1.0], thick=5
+
 
 device,/close
 
