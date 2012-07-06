@@ -537,7 +537,7 @@ EOF
 	    export outfile=$PRO_DIR/$2/sn$targetsn/ppxf_one_bin_output
 	    export start_range=300
 	    export end_range=1600
-	    export template_list="/s0*.fits"
+	    export template_list="/*"
 	    export monte_iterations=0
 	    if [ $monte == y ]; then
 		    export monte_iterations=10

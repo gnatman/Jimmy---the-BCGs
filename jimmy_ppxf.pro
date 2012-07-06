@@ -103,8 +103,8 @@ endif
 if (testing ne 1) then begin
     fits_read, '/Users/jimmy/Astro/reduced/1261pro/temp.fits', datacube, h
     var=mrdfits('/Users/jimmy/Astro/reduced/1261pro/temp.fits',1,h) ;, /SILENT)
-    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/all/sn10/one_bin_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
-    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/all/sn10/one_bin_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
+    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/main/sn10/one_bin_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
+    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/main/sn10/one_bin_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
     openw, 9, '/Users/jimmy/Downloads/ppxf_v_bin_output'
     monte_iterations = 0
 endif
@@ -227,7 +227,7 @@ for i = 0, max(binNum) do begin
         miles = file_search(getenv('infile3') + getenv('template_list'), COUNT=nfiles)
     endif
     if (testing ne 1) then begin
-        miles = file_search('/Users/jimmy/Astro/MILES_library/s0*.fits',COUNT=nfiles)
+        miles = file_search('/Users/jimmy/Astro/MILES_library/*',COUNT=nfiles)
     endif
 
 
@@ -235,8 +235,15 @@ for i = 0, max(binNum) do begin
     ; to the same velocity scale of the VIMOS galaxy spectrum, to determine
     ; the size needed for the array which will contain the template spectra.
 
-    fits_read, miles[0], ssp, h
-    template_range = sxpar(h,'CRVAL1') + [0d,sxpar(h,'CDELT1')*(sxpar(h,'NAXIS1')-1d)]
+    ;fits_read, miles[0], ssp, h
+    ;template_range = sxpar(h,'CRVAL1') + [0d,sxpar(h,'CDELT1')*(sxpar(h,'NAXIS1')-1d)]
+    ;log_rebin, template_range, ssp, sspNew, log_template, VELSCALE=velScale
+    ;templates = dblarr(n_elements(sspNew),nfiles)
+    
+    rdfloat, miles[0], template_wavelength, ssp, /SILENT
+    template_range = fltarr(2)
+    template_range[0] = min(template_wavelength)
+    template_range[1] = max(template_wavelength)
     log_rebin, template_range, ssp, sspNew, log_template, VELSCALE=velScale
     templates = dblarr(n_elements(sspNew),nfiles)
     
@@ -263,7 +270,8 @@ for i = 0, max(binNum) do begin
     sigma = 23d/velScale ; Quadratic sigma difference in pixels MILES --> VIMOS ;was 26, don't know why
     lsf = psf_Gaussian(NPIXEL=8*sigma, ST_DEV=sigma, /NORM, NDIM=1)
     for j=0,nfiles-1 do begin
-        fits_read, miles[j], ssp
+        ;fits_read, miles[j], ssp
+        rdfloat, miles[j], template_wavelength, ssp, /SILENT
         log_rebin, template_range, ssp, sspNew, VELSCALE=velScale
         templates[*,j] = convol(sspNew,lsf)/median(sspNew) ; Degrade template to SAURON resolution
     endfor
