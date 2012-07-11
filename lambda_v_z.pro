@@ -58,26 +58,51 @@ endfor
 print, table_files
 
 r_e = fltarr(n_elements(lambda_files))
+half_r_e = fltarr(n_elements(lambda_files))
 dispersion = fltarr(n_elements(lambda_files))
 redshift = fltarr(n_elements(lambda_files))
 lambda = fltarr(n_elements(lambda_files))
+half_lambda = fltarr(n_elements(lambda_files))
 epsilon = fltarr(n_elements(lambda_files))
+half_epsilon = fltarr(n_elements(lambda_files))
 name = strarr(n_elements(lambda_files))
 r_e_comp = fltarr(n_elements(lambda_files))
+half_r_e_comp = fltarr(n_elements(lambda_files))
 dispersion_comp = fltarr(n_elements(lambda_files))
 redshift_comp = fltarr(n_elements(lambda_files))
 lambda_comp = fltarr(n_elements(lambda_files))
+half_lambda_comp = fltarr(n_elements(lambda_files))
 epsilon_comp = fltarr(n_elements(lambda_files))
+half_epsilon_comp = fltarr(n_elements(lambda_files))
 name_comp = strarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
 	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsilon, templambda, /silent
 	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5, /silent
 	if (temp_string[i,5] eq 'main') then begin
-		r_e[i] = tempr_e[0]
+		if (n_elements(tempr_e) eq 3) then begin
+			r_e[i] = tempr_e[1]
+			lambda[i] = templambda[1]
+			epsilon[i] = tempepsilon[1]
+			half_r_e[i] = tempr_e[0]
+			half_lambda[i] = templambda[0]
+			half_epsilon[i] = tempepsilon[0]
+		endif else if (n_elements(tempr_e) eq 2) then begin
+			r_e[i] = tempr_e[1]
+			lambda[i] = templambda[1]
+			epsilon[i] = tempepsilon[1]
+			half_r_e[i] = tempr_e[0]
+			half_lambda[i] = templambda[0]
+			half_epsilon[i] = tempepsilon[0]
+		endif else begin
+			r_e[i] = tempr_e[0]
+			lambda[i] = templambda[0]
+			epsilon[i] = tempepsilon[0]
+			half_r_e[i] = tempr_e[0]
+			half_lambda[i] = templambda[0]
+			half_epsilon[i] = tempepsilon[0]
+		endelse
 		dispersion[i] = values[2]
 		redshift[i] = values[0]
-		lambda[i] = templambda
-		epsilon[i] = tempepsilon
 		radius_rad = r_e*4.84813681E-6
 		distance = redshift*1.302773E26
 		radius_m = distance*tan(radius_rad)
@@ -86,11 +111,30 @@ for i=0, n_elements(lambda_files)-1 do begin
 		m_dyn = log_mass
 		name[i] = strmid(temp_string[i,4], 0, 4)+temp_string[i,5] ;causes a bunch of divide by 0 and illegal operand errors
 	endif else begin
-		r_e_comp[i] = tempr_e[0]
+		if (n_elements(tempr_e) eq 3) then begin
+			r_e_comp[i] = tempr_e[1]
+			lambda_comp[i] = templambda[1]
+			epsilon_comp[i] = tempepsilon[1]
+			half_r_e_comp[i] = tempr_e[0]
+			half_lambda_comp[i] = templambda[0]
+			half_epsilon_comp[i] = tempepsilon[0]
+		endif else if (n_elements(tempr_e) eq 2) then begin
+			r_e_comp[i] = tempr_e[1]
+			lambda_comp[i] = templambda[1]
+			epsilon_comp[i] = tempepsilon[1]
+			half_r_e_comp[i] = tempr_e[0]
+			half_lambda_comp[i] = templambda[0]
+			half_epsilon_comp[i] = tempepsilon[0]
+		endif else begin
+			r_e_comp[i] = tempr_e[0]
+			lambda_comp[i] = templambda[0]
+			epsilon_comp[i] = tempepsilon[0]
+			half_r_e_comp[i] = tempr_e[0]
+			half_lambda_comp[i] = templambda[0]
+			half_epsilon_comp[i] = tempepsilon[0]
+		endelse
 		dispersion_comp[i] = values[2]
 		redshift_comp[i] = values[0]
-		lambda_comp[i] = templambda
-		epsilon_comp[i] = tempepsilon
 		radius_rad_comp = r_e_comp*4.84813681E-6
 		distance_comp = redshift_comp*1.302773E26
 		radius_m_comp = distance_comp*tan(radius_rad_comp)
@@ -103,9 +147,11 @@ endfor
 
 redshift = redshift[where(redshift ne 0)]
 lambda = lambda[where(lambda ne 0)]
+half_lambda = half_lambda[where(half_lambda ne 0)]
 name = name[where(name ne '')]
 redshift_comp = redshift_comp[where(redshift_comp ne 0)]
 lambda_comp = lambda_comp[where(lambda_comp ne 0)]
+half_lambda_comp = half_lambda_comp[where(half_lambda_comp ne 0)]
 name_comp = name_comp[where(name_comp ne '')]
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
@@ -118,6 +164,25 @@ xyouts, redshift_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLO
 
 ;USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 ;oplot, sauron_m_dyn, sauron_lambda, PSYM=5, symsize = 1.2, thick=2
+
+;LEGEND
+plots, 0.0825, 0.94, PSYM=8, COLOR = 180, symsize = 1.2
+xyouts, 0.0855, 0.925, 'BCG', charthick=2
+plots, 0.0825, 0.89, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, 0.0855, 0.875, 'Companion', charthick=2
+plots, [0.08,0.1],[0.85,0.85], thick=5
+plots, [0.08,0.08],[0.85,1.0], thick=5
+
+device,/close
+
+set_plot, 'ps'
+device, filename='half_lambda_v_z.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
+
+plot, redshift, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [0.03,0.1], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='Z', YTITLE='!4k!D!3R!Le!N!D/2'
+oplot, redshift, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
+oplot, redshift_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, redshift, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+xyouts, redshift_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 ;LEGEND
 plots, 0.0825, 0.94, PSYM=8, COLOR = 180, symsize = 1.2
