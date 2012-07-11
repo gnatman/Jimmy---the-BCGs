@@ -30,22 +30,38 @@ EOF
 
 #curl -b cookies.txt -d "format=xml&action=edit&title="$1"_"$2"&recreate&summary=Automatically%20Generated%20Page&text="$TEXT"&token="$EDITTOKEN2"%2B%5C" https://galaxies.physics.tamu.edu/api.php
 
-convert -density 100 "lambda_v_mass.eps" -flatten temp.jpg
+convert -density 300 "lambda_v_mass.eps" -flatten temp.jpg
 scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/lambda_v_mass.jpg
-convert -density 100 "lambda_v_r_e.eps" -flatten temp.jpg
+convert -density 300 "half_lambda_v_mass.eps" -flatten temp.jpg
+scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/half_lambda_v_mass.jpg
+convert -density 300 "lambda_v_r_e.eps" -flatten temp.jpg
 scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/lambda_v_r_e.jpg
-convert -density 100 "lambda_v_rad.eps" -flatten temp.jpg
+convert -density 300 "half_lambda_v_r_e.eps" -flatten temp.jpg
+scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/half_lambda_v_r_e.jpg
+convert -density 300 "lambda_v_rad.eps" -flatten temp.jpg
 scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/lambda_v_rad.jpg
-convert -density 100 "lambda_v_z.eps" -flatten temp.jpg
+convert -density 300 "lambda_v_rad_raw.eps" -flatten temp.jpg
+scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/lambda_v_rad_raw.jpg
+convert -density 300 "lambda_v_z.eps" -flatten temp.jpg
 scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/lambda_v_z.jpg
-convert -density 100 "lambda_v_e.eps" -flatten temp.jpg
+convert -density 300 "half_lambda_v_z.eps" -flatten temp.jpg
+scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/half_lambda_v_z.jpg
+convert -density 300 "lambda_v_e.eps" -flatten temp.jpg
 scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/lambda_v_e.jpg
+convert -density 300 "half_lambda_v_e.eps" -flatten temp.jpg
+scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/plots/half_lambda_v_e.jpg
+
 
 ssh jimmy@io.physics.tamu.edu chmod a+r -R /home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/
 
 rm lambda_v_mass.eps
+rm half_lambda_v_mass.eps
 rm lambda_v_r_e.eps
+rm half_lambda_v_r_e.eps
 rm lambda_v_rad.eps
+rm lambda_v_rad_raw.eps
 rm lambda_v_z.eps
+rm half_lambda_v_z.eps
 rm lambda_v_e.eps
+rm half_lambda_v_e.eps
 rm temp.jpg

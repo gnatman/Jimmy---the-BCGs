@@ -95,12 +95,12 @@ if (testing) then begin
 	rdfloat, getenv('infile3'), x, y, xpix, ypix, binNum, SKIPLINE=1        ;2d_binning_output
 endif
 
-table_file_name = 'table.txt'
+table_file_name = getenv('prodir')+'/table.txt'
 if type eq 'radial' then begin
-    table_file_name = 'table_rad.txt'
+    table_file_name = getenv('prodir')+'/table_rad.txt'
 endif
 if type eq 'one' then begin
-    table_file_name = 'table_one.txt'
+    table_file_name = getenv('prodir')+'/table_one.txt'
 endif
 
 openw,1,table_file_name
@@ -236,7 +236,7 @@ title_x_position = max(xbin)+xmod
 title_y_position = max(ybin)+ymod
 
 set_plot, 'ps'
-device, filename='velocity.eps', /encapsul, /color, BITS=8
+device, filename=getenv('prodir')+'/velocity.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
@@ -250,7 +250,7 @@ max_scale=400
 min_scale=-400
 
 set_plot, 'ps'
-device, filename='velocity_scale.eps', /encapsul, /color, BITS=8
+device, filename=getenv('prodir')+'/velocity_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
@@ -260,7 +260,7 @@ if (companion eq 'y') then begin
 endif
 
 set_plot, 'ps'
-device, filename='sigma_scale.eps', /encapsul, /color, BITS=8
+device, filename=getenv('prodir')+'/sigma_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Dispersion'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
@@ -270,7 +270,7 @@ if (companion eq 'y') then begin
 endif
 
 set_plot, 'ps'
-device, filename='signal_noise.eps', /encapsul, /color, BITS=8
+device, filename=getenv('prodir')+'/signal_noise.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, max(sn)*1.1], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Signal/Noise'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N', CHARSIZE=2, CHARTHICK=5
 xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
@@ -313,17 +313,17 @@ max_scale=400
 min_scale=-400
 
 set_plot, 'ps'
-device, filename='velocity_rad.eps', /encapsul, /color, BITS=8
+device, filename=getenv('prodir')+'/velocity_rad.eps', /encapsul, /color, BITS=8
 display_pixels, xin, yin, vin, PIXELSIZE=1, RANGE=[min_scale, max_scale];, _EXTRA=POSITION[0.05,0.05,0.8,0.95]sauron_colormap
 color_bar_y, max(xbin)+5, max(xbin)+6, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='V [km/s]'
 
 set_plot, 'ps'
-device, filename='sigma_rad.eps', /encapsul, /color, BITS=8
+device, filename=getenv('prodir')+'/sigma_rad.eps', /encapsul, /color, BITS=8
 display_pixels, xin, yin, sigin, PIXELSIZE=1, RANGE=[min(sigma)/1.1, max(sigma)*1.1];, _EXTRA=POSITION[0.05,0.05,0.8,0.95]sauron_colormap
 color_bar_y, max(xbin)+5, max(xbin)+6, !Y.crange[0],!y.crange[1],0,400,title='Sigma [km/s]'
 
 set_plot, 'ps'
-device, filename='signal_noise_rad.eps', /encapsul, /color, BITS=8
+device, filename=getenv('prodir')+'/signal_noise_rad.eps', /encapsul, /color, BITS=8
 display_pixels, xin, yin, snin, PIXELSIZE=1, RANGE=[0, max(sn)*1.1];, _EXTRA=POSITION[0.05,0.05,0.8,0.95]sauron_colormap
 color_bar_y, max(xbin)+2, max(xbin)+3, !Y.crange[0],!y.crange[1],0,max(sn)*1.1,title='S/N'
 

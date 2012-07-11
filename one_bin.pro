@@ -83,7 +83,7 @@ sn = (total(signal)/total(noise))*sqrt(number_of_elements)
 nPixels = number_of_elements
 total_noise = total(noise)/sqrt(number_of_elements)
 
-astrolib
+;astrolib
 ;forprint, xnew, ynew, xpixnew, ypixnew, binNum, TEXTOUT='/Users/jimmy/Astro/reduced/1050pro/one_bin_output.txt', $
 forprint, xnew, ynew, xpixnew, ypixnew, binNum, TEXTOUT=getenv('outfile1'), $
     COMMENT='#         X"          Y"          Xpix          Ypix          BIN_NUM'

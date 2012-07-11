@@ -102,17 +102,6 @@ for l=0,number_of_files[1]-1 do begin
 			k=k+1
 		endfor
 	endfor
-	;summed_fibers[1466] = 0
-	;summed_fibers[372] = 0
-	;summed_fibers[203] = 0
-	;summed_fibers[1513] = 0
-	;summed_fibers[286] = 0
-	;summed_fibers[845] = 0
-	;summed_fibers[712] = 0
-	;summed_fibers[1395] = 0
-	;summed_fibers[613] = 0
-	;print,summed_fibers[sort(summed_fibers)]
-	;print,sort(summed_fibers)
 	brightest_point = max(summed_fibers)
 	
 	

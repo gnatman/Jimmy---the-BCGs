@@ -530,6 +530,7 @@ EOF
 	if [ $ppxf == y ]; then
 	    #Find Velocities
 	    echo "PPXF Velocities"
+	    export prodir=$PRO_DIR
 	    export infile1=$PRO_DIR/$2/$1$2.fits
 	    export infile2=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
 	    export infile3=$ASTRO_DIR/MILES_library
@@ -546,9 +547,9 @@ idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-	    rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
-	    if [ -d ppxf_fits ]; then
-	    	mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
+	    rm -rf $PRO_DIR/$2/sn$targetsn/ppxf_fit_one
+	    if [ -d $PRO_DIR/ppxf_fits ]; then
+	    	mv $$PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/ppxf_fit_one
 	    fi
     
 	    export infile2=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning_output.txt
@@ -558,9 +559,9 @@ idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    	rm -rf /$PRO_DIR/$2/sn$targetsn/ppxf_fits
-    	if [ -d ppxf_fits ]; then
-	 		mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/
+    	rm -rf $PRO_DIR/$2/sn$targetsn/ppxf_fits
+    	if [ -d $PRO_DIR/ppxf_fits ]; then
+	 		mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/
     	fi
 
     	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
@@ -570,9 +571,9 @@ idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    	rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
-    	if [ -d ppxf_fits ]; then
-	    	mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
+    	rm -rf $PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
+    	if [ -d $PRO_DIR/ppxf_fits ]; then
+	    	mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
     	fi
     
     	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
@@ -583,8 +584,8 @@ idl << EOF
 jimmy_ppxf
 EOF
     	rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
-    	if [ -d ppxf_fits ]; then
-			mv ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
+    	if [ -d $PRO_DIR/ppxf_fits ]; then
+			mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
     	fi
 
 		#export infile2=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
@@ -628,16 +629,16 @@ EOF
 #display_data,'radial','$1'
 #EOF
 
-		mv table_one.txt /$PRO_DIR/$2/sn$targetsn/table_one.txt
-		mv sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/sigma_scale.eps
-		mv velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/velocity_scale.eps
-		mv table.txt /$PRO_DIR/$2/sn$targetsn/table.txt
-		#mv sigma_rad.eps /$PRO_DIR/$2/sn$targetsn/sigma_rad.eps
-		#mv velocity_rad.eps /$PRO_DIR/$2/sn$targetsn/velocity_rad.eps
-		#mv table_rad.txt /$PRO_DIR/$2/sn$targetsn/table_rad.txt
-        mv velocity.eps /$PRO_DIR/$2/sn$targetsn/velocity.eps
-        mv signal_noise.eps /$PRO_DIR/$2/sn$targetsn/signal_noise.eps
-		#mv signal_noise_rad.eps /$PRO_DIR/$2/sn$targetsn/signal_noise_rad.eps
+		mv $PRO_DIR/table_one.txt /$PRO_DIR/$2/sn$targetsn/table_one.txt
+		mv $PRO_DIR/sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/sigma_scale.eps
+		mv $PRO_DIR/velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/velocity_scale.eps
+		mv $PRO_DIR/table.txt /$PRO_DIR/$2/sn$targetsn/table.txt
+		#mv $PRO_DIR/sigma_rad.eps /$PRO_DIR/$2/sn$targetsn/sigma_rad.eps
+		#mv $PRO_DIR/velocity_rad.eps /$PRO_DIR/$2/sn$targetsn/velocity_rad.eps
+		#mv $PRO_DIR/table_rad.txt /$PRO_DIR/$2/sn$targetsn/table_rad.txt
+        mv $PRO_DIR/velocity.eps /$PRO_DIR/$2/sn$targetsn/velocity.eps
+        mv $PRO_DIR/signal_noise.eps /$PRO_DIR/$2/sn$targetsn/signal_noise.eps
+		#mv $PRO_DIR/signal_noise_rad.eps /$PRO_DIR/$2/sn$targetsn/signal_noise_rad.eps
 
 		export infile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
 		export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
@@ -655,12 +656,12 @@ idl << EOF
 display_data,'vbinned','$1'
 EOF
 
-        mv table_one.txt /$PRO_DIR/$2/sn$targetsn/r_e_table_one.txt
-        mv sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_sigma_scale.eps
-        mv velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity_scale.eps
-        mv table.txt /$PRO_DIR/$2/sn$targetsn/r_e_table.txt
-        mv velocity.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity.eps
-        mv signal_noise.eps /$PRO_DIR/$2/sn$targetsn/r_e_signal_noise.eps
+        mv $PRO_DIR/table_one.txt /$PRO_DIR/$2/sn$targetsn/r_e_table_one.txt
+        mv $PRO_DIR/sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_sigma_scale.eps
+        mv $PRO_DIR/velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity_scale.eps
+        mv $PRO_DIR/table.txt /$PRO_DIR/$2/sn$targetsn/r_e_table.txt
+        mv $PRO_DIR/velocity.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity.eps
+        mv $PRO_DIR/signal_noise.eps /$PRO_DIR/$2/sn$targetsn/r_e_signal_noise.eps
 
 	fi
 
@@ -700,23 +701,23 @@ if [ $wiki == y ]; then
 	export infile2=$PRO_DIR/$2/sn10/table_one.txt
 	export infile3=$PRO_DIR/$2/sn5/lambda_re.txt
 	export infile4=$PRO_DIR/$2/sn5/table_one.txt
-	export outfile=output.csv
+	export outfile=$PRO_DIR/output.csv
 	PASSWORD=$(gpg --decrypt $ASTRO_DIR/wiki.gpg)
 idl << EOF
 .comp wiki.pro
 wiki,'$1','$2'
 EOF
 
-	curl -c cookies.txt -d "lgname=Jimmy&lgpassword="$PASSWORD"&action=login&format=xml" https://galaxies.physics.tamu.edu/api.php -o token.txt
-	TOKEN=$(cat token.txt | cut -d \" -f 6)
+	curl -c $PRO_DIR/cookies.txt -d "lgname=Jimmy&lgpassword="$PASSWORD"&action=login&format=xml" https://galaxies.physics.tamu.edu/api.php -o $PRO_DIR/token.txt
+	TOKEN=$(cat $PRO_DIR/token.txt | cut -d \" -f 6)
 
-	curl -b cookies.txt -d "action=login&lgname=Jimmy&lgpassword=IjGN4yrH&format=xml&lgtoken="$TOKEN https://galaxies.physics.tamu.edu/api.php
-	curl -b cookies.txt -d "action=login&lgname=Jimmy&lgpassword=IjGN4yrH&format=xml&lgtoken="$TOKEN https://galaxies.physics.tamu.edu/api.php
-	curl -b cookies.txt -d "action=query&prop=info|revisions&titles="$1"_"$2"&format=xml&intoken=edit" https://galaxies.physics.tamu.edu/api.php > edit.txt
+	curl -b $PRO_DIR/cookies.txt -d "action=login&lgname=Jimmy&lgpassword="$PASSWORD"&format=xml&lgtoken="$TOKEN https://galaxies.physics.tamu.edu/api.php
+	curl -b $PRO_DIR/cookies.txt -d "action=login&lgname=Jimmy&lgpassword="$PASSWORD"&format=xml&lgtoken="$TOKEN https://galaxies.physics.tamu.edu/api.php
+	curl -b $PRO_DIR/cookies.txt -d "action=query&prop=info|revisions&titles="$1"_"$2"&format=xml&intoken=edit" https://galaxies.physics.tamu.edu/api.php > $PRO_DIR/edit.txt
 
-	EDITTOKEN=$(cat edit.txt | awk -F \(edittoken\) '{print $2}')
+	EDITTOKEN=$(cat $PRO_DIR/edit.txt | awk -F \(edittoken\) '{print $2}')
 	EDITTOKEN2=$(echo $EDITTOKEN | cut -c 3-34)
-	TIMESTAMP=$(cat edit.txt | cut -d \" -f 22)
+	TIMESTAMP=$(cat $PRO_DIR/edit.txt | cut -d \" -f 22)
 
 	INPUT=$outfile
 	OLDIFS=$IFS
@@ -728,26 +729,26 @@ EOF
 	done < $INPUT
 	IFS=$OLDIFS
 
-	curl -b cookies.txt -d "format=xml&action=edit&title="$1"_"$2"&recreate&summary=Automatically%20Generated%20Page&text="$TEXT"&token="$EDITTOKEN2"%2B%5C" https://galaxies.physics.tamu.edu/api.php
+	curl -b $PRO_DIR/cookies.txt -d "format=xml&action=edit&title="$1"_"$2"&recreate&summary=Automatically%20Generated%20Page&text="$TEXT"&token="$EDITTOKEN2"%2B%5C" https://galaxies.physics.tamu.edu/api.php
 
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/velocity_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/velocity_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/sigma_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/dispersion_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/signal_noise.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/sn_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/velocity_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/velocity_sn10.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/sigma_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/dispersion_sn10.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/signal_noise.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/sn_sn10.jpg	
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/velocity_sn5.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/dispersion_sn5.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/signal_noise.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/sn_sn5.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/velocity_sn10.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/dispersion_sn10.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/signal_noise.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/sn_sn10.jpg	
 
 	export infile1=$PRO_DIR/$2/sn10/r_e_lambda_re.txt
 	export infile2=$PRO_DIR/$2/sn10/r_e_table_one.txt
 	export infile3=$PRO_DIR/$2/sn5/r_e_lambda_re.txt
 	export infile4=$PRO_DIR/$2/sn5/r_e_table_one.txt
-	export outfile=r_e_output.csv
+	export outfile=$PRO_DIR/r_e_output.csv
 idl << EOF
 .comp wiki.pro
 wiki,'$1','$2'
@@ -764,28 +765,29 @@ EOF
 	done < $INPUT
 	IFS=$OLDIFS
 	
-	curl -b cookies.txt -d "format=xml&action=edit&title="$1"_"$2"_r_e&recreate&summary=Automatically%20Generated%20Page&text="$TEXT"&token="$EDITTOKEN2"%2B%5C" https://galaxies.physics.tamu.edu/api.php
+	curl -b $PRO_DIR/cookies.txt -d "format=xml&action=edit&title="$1"_"$2"_r_e&recreate&summary=Automatically%20Generated%20Page&text="$TEXT"&token="$EDITTOKEN2"%2B%5C" https://galaxies.physics.tamu.edu/api.php
 
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_velocity_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_sigma_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_signal_noise.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn5.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_velocity_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn10.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_sigma_scale.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn10.jpg
-	convert -density 100 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_signal_noise.eps" -flatten temp.jpg
-	scp temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn10.jpg	
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn5.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn5.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_signal_noise.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn5.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn10.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn10.jpg
+	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_signal_noise.eps" -flatten $PRO_DIR/temp.jpg
+	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn10.jpg	
 	
 	ssh jimmy@io.physics.tamu.edu chmod a+r -R /home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/
 
-	rm token.txt
-	rm edit.txt
-	rm output.csv
-	rm temp.jpg
-	rm cookies.txt
+	rm $PRO_DIR/token.txt
+	rm $PRO_DIR/edit.txt
+	rm $PRO_DIR/output.csv
+	rm $PRO_DIR/temp.jpg
+	rm $PRO_DIR/cookies.txt
+	rm $PRO_DIR/r_e_output.csv
 fi
 
 date

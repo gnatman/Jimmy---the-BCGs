@@ -98,20 +98,10 @@ plot, [0,0], [0,0], yrange=[0,1], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 
 for i=0, n_elements(lambda_files)-1 do begin
 	oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
 	xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*]), strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4), CHARSIZE = 0.5, CHARTHICK = 2, COLOR = 180
-	;print, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*])
-	;print,tempradius2[i,*]/r_e[i], templambda2[i,*]
 endfor
 
 
 
-;readcol, '$HOME/Astro/Supporting Documents/fake_sauron_slow', F='F,F', r_sauron_slow, l_sauron_slow, /SILENT
-;readcol, '$HOME/Astro/Supporting Documents/fake_sauron_fast', F='F,F', r_sauron_fast, l_sauron_fast, /SILENT
-;readcol, '$HOME/Astro/Supporting Documents/fake_slow', F='F,F', r_slow, l_slow, /SILENT
-;readcol, '$HOME/Astro/Supporting Documents/fake_fast', F='F,F', r_fast, l_fast, /SILENT
-;oplot, r_fast, l_fast, THICK = 8, COLOR = 180, LINESTYLE = 0
-;oplot, r_slow, l_slow, THICK = 8, COLOR = 180, LINESTYLE = 2
-;oplot, r_sauron_slow, l_sauron_slow, COLOR = 1, LINESTYLE = 2
-;oplot, r_sauron_fast, l_sauron_fast, COLOR = 1
 
 sauron = file_search('$HOME/Astro/Supporting Documents/sauron_lambda_profiles/*',COUNT=nfiles)
 rsauron = findgen(50)
@@ -133,21 +123,30 @@ endfor
 ;LEGEND
 plots, [0.86,0.975], [0.935,0.935], COLOR = 1
 xyouts, 0.665, 0.925, 'SAURON Fast', charthick=2
-
 plots, [0.86,0.975], [0.885,0.885], COLOR = 1, LINESTYLE = 2
 xyouts, 0.665, 0.875, 'SAURON Slow', charthick=2
-
 plots, [0.86,0.975], [0.835,0.835], THICK = 8, COLOR = 180, LINESTYLE = 0
 xyouts, 0.665, 0.825, 'Jimmy Fast', charthick=2
-
 plots, [0.86,0.975], [0.785,0.785], THICK = 8, COLOR = 180, LINESTYLE = 2
 xyouts, 0.665, 0.775, 'Jimmy Slow', charthick=2
-
 plots, [0.65,1],[0.75,0.75], thick=5
 plots, [0.65,0.65],[0.75,1.0], thick=5
 
 
 device,/close
+
+;plot lambda v r, without dividing by r_e
+set_plot, 'ps'
+device, filename='lambda_v_rad_raw.eps', /encapsul, /color, BITS=8
+
+plot, [0,0], [0,0], yrange=[0,1], xrange = [0,6.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
+for i=0, n_elements(lambda_files)-1 do begin
+	oplot, tempradius2[i,*], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
+	xyouts, max(tempradius2[i,*]), max(templambda2[i,*]), strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4), CHARSIZE = 0.5, CHARTHICK = 2, COLOR = 180
+endfor
+
+device,/close
+
 
 ;set_plot, 'ps'
 ;device, filename='lambda_v_rad_prop.eps', /encapsul, /color, BITS=8

@@ -203,7 +203,7 @@ effective_clean=where((sorted_signal ne 0) and (sorted_signal/sorted_noise ge li
 ;I believe spaxel scale should be 0.66 arcseconds and not cdelt, which is like 0.602
 galaxy = getenv('galaxy')
 spaxel_scale = 0.66
-if galaxy eq '1153' then begin
+if (galaxy eq '1067' or galaxy eq '1153') then begin
 	spaxel_scale = 0.33
 endif
 

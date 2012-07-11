@@ -47,11 +47,11 @@ testing=FIX(testing_string)
 
 if (testing ne 1) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
-	lambda_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/lambda_re.txt'
-	table_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/table_one.txt'
-	lambda_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/lambda_re.txt'
-	table_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/table_one.txt'
-	output='output.csv'
+	lambda_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/sn10/lambda_re.txt'
+	table_sn10='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/sn10/table_one.txt'
+	lambda_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/sn5/lambda_re.txt'
+	table_sn5='/Users/jimmy/Astro/reduced/'+bcg+'pro/'+target+'/sn5/table_one.txt'
+	output='/Users/jimmy/Astro/reduced/'+bcg+'pro/output.csv'
 endif
 
 if (testing) then begin
