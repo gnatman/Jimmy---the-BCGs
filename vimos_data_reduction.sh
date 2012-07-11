@@ -604,6 +604,7 @@ EOF
 	if [ $plot == y ]; then
     	#Make Pretty Plots
     	echo "Plot Data"
+    	export prodir=$PRO_DIR
     	export infile1=$PRO_DIR/$2/sn$targetsn/one_bin_bins.txt
     	export infile2=$PRO_DIR/$2/sn$targetsn/ppxf_one_bin_output
     	export infile3=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
