@@ -331,10 +331,38 @@ readcol, lambda_sn10, F='F,F,F,F', dummy1, r_e, epsilon, lambda, /silent
 readcol, table_sn10, F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5;, /silent
 readcol, table_sn10, F='A,A,A,A', dummy6, dummy7, dummy8, dummy9, errors;, /silent
 
+print,'r_e: ',r_e,'epsilon: ',epsilon, 'lambda: ',lambda
+print,'values: ',values
+print,'errors: ',errors
+
+
+if (n_elements(lambda) eq 3) then begin
+	r_e10 = r_e[1]
+	lambda10 = lambda[1]
+	epsilon10 = epsilon[1]
+	half_r_e10 = r_e[0]
+	half_lambda10 = lambda[0]
+	half_epsilon10 = epsilon[0]
+endif else if (n_elements(lambda) eq 2) then begin
+	r_e10 = r_e[1]
+	lambda10 = lambda[1]
+	epsilon10 = epsilon[1]
+	half_r_e10 = r_e[0]
+	half_lambda10 = lambda[0]
+	half_epsilon10 = epsilon[0]
+endif else begin
+	r_e10 = r_e[0]
+	lambda10 = lambda[0]
+	epsilon10 = epsilon[0]
+	half_r_e10 = r_e[0]
+	half_lambda10 = lambda[0]
+	half_epsilon10 = epsilon[0]
+endelse
+
 redshift10 = values[0]
 dispersion10 = values[2]
 dispersion_err10 = errors[1]
-r_e10 = r_e
+;r_e10 = r_e
 radius_rad10 = r_e10*4.84813681E-6
 distance10 = redshift10*1.302773E26
 radius_m10 = distance10*tan(radius_rad10)
@@ -342,18 +370,41 @@ mass10 = (5*radius_m10*((dispersion10*1000)^2))/(1.98892E30*6.673E-11)
 log_mass10 = alog10(mass10)
 m_dyn10 = log_mass10
 mass_err10 = (dispersion_err10*2000)/(dispersion10*1000*alog(10))
-lambda10 = lambda
+;lambda10 = lambda
 lambda_err10 = 0
-epsilon10 = epsilon
+;epsilon10 = epsilon
 
 readcol, lambda_sn5, F='F,F,F,F', dummy1, r_e, epsilon, lambda, /silent
 readcol, table_sn5, F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5;, /silent
 readcol, table_sn5, F='A,A,A,A', dummy6, dummy7, dummy8, dummy9, errors;, /silent
 
+if (n_elements(lambda) eq 3) then begin
+	r_e5 = r_e[1]
+	lambda5 = lambda[1]
+	epsilon5 = epsilon[1]
+	half_r_e5 = r_e[0]
+	half_lambda5 = lambda[0]
+	half_epsilon5 = epsilon[0]
+endif else if (n_elements(lambda) eq 2) then begin
+	r_e5 = r_e[1]
+	lambda5 = lambda[1]
+	epsilon5 = epsilon[1]
+	half_r_e5 = r_e[0]
+	half_lambda5 = lambda[0]
+	half_epsilon5 = epsilon[0]
+endif else begin
+	r_e5 = r_e[0]
+	lambda5 = lambda[0]
+	epsilon5 = epsilon[0]
+	half_r_e5 = r_e[0]
+	half_lambda5 = lambda[0]
+	half_epsilon5 = epsilon[0]
+endelse
+
 redshift5 = values[0]
 dispersion5 = values[2]
 dispersion_err5 = errors[1]
-r_e5 = r_e
+;r_e5 = r_e
 radius_rad5 = r_e5*4.84813681E-6
 distance5 = redshift5*1.302773E26
 radius_m5 = distance5*tan(radius_rad5)
@@ -361,9 +412,9 @@ mass5 = (5*radius_m5*((dispersion5*1000)^2))/(1.98892E30*6.673E-11)
 log_mass5 = alog10(mass5)
 m_dyn5 = log_mass5
 mass_err5 = (dispersion_err5*2000)/(dispersion5*1000*alog(10))
-lambda5 = lambda
+;lambda5 = lambda
 lambda_err5 = 0
-epsilon5 = epsilon
+;epsilon5 = epsilon
 
 redshift_s = sarah_redshift
 dispersion_s = sarah_dispersion
@@ -393,43 +444,8 @@ openw,9,output
 ;printf,9, bcg, ',', target, ',', STRCOMPRESS(redshift10, /REMOVE_ALL), ',', STRCOMPRESS(dispersion10, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err10, /REMOVE_ALL), ',', STRCOMPRESS(STRING(m_dyn10), /REMOVE_ALL), ',', STRCOMPRESS(STRING(mass_err10), /REMOVE_ALL), ',', STRCOMPRESS(lambda10, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err10, /REMOVE_ALL), ',', STRCOMPRESS(r_e10, /REMOVE_ALL), ',', STRCOMPRESS(epsilon10, /REMOVE_ALL), ',', STRCOMPRESS(redshift5, /REMOVE_ALL), ',', STRCOMPRESS(dispersion5, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err5, /REMOVE_ALL), ',', STRCOMPRESS(m_dyn5, /REMOVE_ALL), ',', STRCOMPRESS(mass_err5, /REMOVE_ALL), ',', STRCOMPRESS(lambda5, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err5, /REMOVE_ALL), ',', STRCOMPRESS(r_e5, /REMOVE_ALL), ',', STRCOMPRESS(epsilon5, /REMOVE_ALL), ',', STRCOMPRESS(redshift_s, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_s, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err_s, /REMOVE_ALL), ',', STRCOMPRESS(m_dyn_s, /REMOVE_ALL), ',', STRCOMPRESS(mass_err_s, /REMOVE_ALL), ',', STRCOMPRESS(lambda_s, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err_s, /REMOVE_ALL), ',', STRCOMPRESS(r_e_s, /REMOVE_ALL), ',', STRCOMPRESS(epsilon_s, /REMOVE_ALL), ',', STRCOMPRESS(redshift_sdss, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_sdss, /REMOVE_ALL), ',', STRCOMPRESS(dispersion_err_sdss, /REMOVE_ALL), ',', STRCOMPRESS(m_dyn_sdss, /REMOVE_ALL), ',', STRCOMPRESS(mass_err10, /REMOVE_ALL), ',', STRCOMPRESS(lambda_sdss, /REMOVE_ALL), ',', STRCOMPRESS(lambda_err_sdss, /REMOVE_ALL), ',', STRCOMPRESS(r_e_sdss, /REMOVE_ALL), ',', STRCOMPRESS(epsilon_sdss, /REMOVE_ALL)
 printf,9, FORMAT = '( 38( A, "," ))', bcg, target, STRCOMPRESS(redshift10, /REMOVE_ALL), STRCOMPRESS(dispersion10, /REMOVE_ALL), STRCOMPRESS(dispersion_err10, /REMOVE_ALL), STRCOMPRESS(STRING(m_dyn10), /REMOVE_ALL), STRCOMPRESS(STRING(mass_err10), /REMOVE_ALL), STRCOMPRESS(lambda10, /REMOVE_ALL), STRCOMPRESS(lambda_err10, /REMOVE_ALL), STRCOMPRESS(r_e10, /REMOVE_ALL), STRCOMPRESS(epsilon10, /REMOVE_ALL), STRCOMPRESS(redshift5, /REMOVE_ALL), STRCOMPRESS(dispersion5, /REMOVE_ALL), STRCOMPRESS(dispersion_err5, /REMOVE_ALL), STRCOMPRESS(m_dyn5, /REMOVE_ALL), STRCOMPRESS(mass_err5, /REMOVE_ALL), STRCOMPRESS(lambda5, /REMOVE_ALL), STRCOMPRESS(lambda_err5, /REMOVE_ALL), STRCOMPRESS(r_e5, /REMOVE_ALL), STRCOMPRESS(epsilon5, /REMOVE_ALL), STRCOMPRESS(redshift_s, /REMOVE_ALL), STRCOMPRESS(dispersion_s, /REMOVE_ALL), STRCOMPRESS(dispersion_err_s, /REMOVE_ALL), STRCOMPRESS(m_dyn_s, /REMOVE_ALL), STRCOMPRESS(mass_err_s, /REMOVE_ALL), STRCOMPRESS(lambda_s, /REMOVE_ALL), STRCOMPRESS(lambda_err_s, /REMOVE_ALL), STRCOMPRESS(r_e_s, /REMOVE_ALL), STRCOMPRESS(epsilon_s, /REMOVE_ALL), STRCOMPRESS(redshift_sdss, /REMOVE_ALL), STRCOMPRESS(dispersion_sdss, /REMOVE_ALL), STRCOMPRESS(m_dyn_sdss, /REMOVE_ALL), STRCOMPRESS(lambda_sdss, /REMOVE_ALL), STRCOMPRESS(r_e_sdss, /REMOVE_ALL), STRCOMPRESS(epsilon_sdss, /REMOVE_ALL)
 close,9
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+print,m_dyn10
+print, bcg, target, STRCOMPRESS(redshift10, /REMOVE_ALL), STRCOMPRESS(dispersion10, /REMOVE_ALL), STRCOMPRESS(dispersion_err10, /REMOVE_ALL), STRCOMPRESS(STRING(m_dyn10), /REMOVE_ALL), STRCOMPRESS(STRING(mass_err10), /REMOVE_ALL), STRCOMPRESS(lambda10, /REMOVE_ALL), STRCOMPRESS(lambda_err10, /REMOVE_ALL), STRCOMPRESS(r_e10, /REMOVE_ALL), STRCOMPRESS(epsilon10, /REMOVE_ALL), STRCOMPRESS(redshift5, /REMOVE_ALL), STRCOMPRESS(dispersion5, /REMOVE_ALL), STRCOMPRESS(dispersion_err5, /REMOVE_ALL), STRCOMPRESS(m_dyn5, /REMOVE_ALL), STRCOMPRESS(mass_err5, /REMOVE_ALL), STRCOMPRESS(lambda5, /REMOVE_ALL), STRCOMPRESS(lambda_err5, /REMOVE_ALL), STRCOMPRESS(r_e5, /REMOVE_ALL), STRCOMPRESS(epsilon5, /REMOVE_ALL), STRCOMPRESS(redshift_s, /REMOVE_ALL), STRCOMPRESS(dispersion_s, /REMOVE_ALL), STRCOMPRESS(dispersion_err_s, /REMOVE_ALL), STRCOMPRESS(m_dyn_s, /REMOVE_ALL), STRCOMPRESS(mass_err_s, /REMOVE_ALL), STRCOMPRESS(lambda_s, /REMOVE_ALL), STRCOMPRESS(lambda_err_s, /REMOVE_ALL), STRCOMPRESS(r_e_s, /REMOVE_ALL), STRCOMPRESS(epsilon_s, /REMOVE_ALL), STRCOMPRESS(redshift_sdss, /REMOVE_ALL), STRCOMPRESS(dispersion_sdss, /REMOVE_ALL), STRCOMPRESS(m_dyn_sdss, /REMOVE_ALL), STRCOMPRESS(lambda_sdss, /REMOVE_ALL), STRCOMPRESS(r_e_sdss, /REMOVE_ALL), STRCOMPRESS(epsilon_sdss, /REMOVE_ALL)
 
 
 end
