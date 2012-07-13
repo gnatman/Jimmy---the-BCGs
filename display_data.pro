@@ -146,8 +146,8 @@ if type eq 'vbinned' then begin
 print,'min(xbin)',min(xbin),'max(ybin)',max(ybin)
 
 ;default
-	xmod = 0
-	ymod = 0
+	xmod = 0.5
+	ymod = 0.5
 	bcg_center_x = 0
 	bcg_center_y = 0
 	companion = 'n'
@@ -157,8 +157,8 @@ print,'min(xbin)',min(xbin),'max(ybin)',max(ybin)
 	ymax = 10
 
 if galaxy eq '1050' then begin
-	xmod = -8
-	ymod = 0.5
+	;xmod = -8
+	;ymod = 0.5
 	bcg_center_x = -1.2
 	bcg_center_y = -0.2
 	companion = 'n'
@@ -169,20 +169,20 @@ if galaxy eq '1050' then begin
 endif
 if galaxy eq '1027' then begin
 	xmod = -3
-	ymod = -0.8
+	;ymod = -0.8
 	bcg_center_x = 8.95
 	bcg_center_y = -7.45
 	companion='y'
 	comp_center_x = 1
 	comp_center_y = 1.15
-	xmin = -2
-	xmax = 13
-	ymin = -10
+	xmin = -4
+	xmax = 14
+	ymin = -12
 	ymax = 4
 endif
 if galaxy eq '1066' then begin
-	xmod = -3
-	ymod = -1
+	;xmod = -3
+	;ymod = -1
 	bcg_center_x = -5.05
 	bcg_center_y = 5.55
 	companion='y'
@@ -194,8 +194,8 @@ if galaxy eq '1066' then begin
 	ymax = 9
 endif
 if galaxy eq '1153' then begin
-	xmod = -0.6
-	ymod = 0.75
+	;xmod = -0.6
+	;ymod = 0.75
 	bcg_center_x = 0.15
 	bcg_center_y = 1.5
 	companion = 'n'
@@ -205,8 +205,8 @@ if galaxy eq '1153' then begin
 	ymax = 8
 endif
 if galaxy eq '2001' then begin
-	xmod = -7.2
-	ymod = 0
+	;xmod = -7.2
+	;ymod = 0
 	bcg_center_x = -3.83
 	bcg_center_y = 2.85
 	companion='n'
@@ -216,8 +216,8 @@ if galaxy eq '2001' then begin
 	ymax = 9
 endif
 if galaxy eq '2086' then begin
-	xmod = -2
-	ymod = 0
+	;xmod = -2
+	;ymod = 0
 	bcg_center_x = -4.9
 	bcg_center_y = 3.05
 	companion='y'
@@ -228,18 +228,29 @@ if galaxy eq '2086' then begin
 	ymin = -4
 	ymax = 10
 endif
+if galaxy eq '1048' then begin
+	xmod = 0
+	ymod = 22
+	bcg_center_x = 0
+	bcg_center_y = 0
+	companion = 'y'
+	xmin = -12
+	xmax = 14
+	ymin = -14
+	ymax = 10
+endif
 
 ;print, 'max(sn)',sn,max(sn)
 ;print,'xbin[1],ybin[1]',xbin[1],ybin[1]
 
-title_x_position = max(xbin)+xmod
-title_y_position = max(ybin)+ymod
+title_x_position = xmin+xmod
+title_y_position = ymin+ymod
 
 set_plot, 'ps'
 device, filename=getenv('prodir')+'/velocity.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=5
-xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
+xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
@@ -253,7 +264,7 @@ set_plot, 'ps'
 device, filename=getenv('prodir')+'/velocity_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=5
-xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
+xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
@@ -263,7 +274,7 @@ set_plot, 'ps'
 device, filename=getenv('prodir')+'/sigma_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Dispersion'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s', CHARSIZE=2, CHARTHICK=5
-xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
+xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
@@ -273,7 +284,7 @@ set_plot, 'ps'
 device, filename=getenv('prodir')+'/signal_noise.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, max(sn)*1.1], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Signal/Noise'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N', CHARSIZE=2, CHARTHICK=5
-xyouts, xmin+0.5, ymin+0.5, galaxy, CHARSIZE=2.3, CHARTHICK=7
+xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
 ;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
 if (companion eq 'y') then begin
 	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12

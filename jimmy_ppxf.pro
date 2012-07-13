@@ -313,7 +313,7 @@ for i = 0, max(binNum) do begin
             noisy = (RANDOMU(seed, galaxy_size[1])-0.5)*noise_level ;generate noise for each pixel in the spectra
             noisy_galaxy = galaxy + noisy ;make the galaxy noisy
             ;perform a ppxf fit on the noisy galaxy
-            ;noise = galaxy*0 + 1
+            noise = galaxy*0 + 1
             if CanConnect() then begin
 	            ppxf, templates, noisy_galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=2, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error, RANGE=(new_wavelength_range[1]-new_wavelength_range[0]), MIN=new_wavelength_range[0]
 	        endif else begin
@@ -331,7 +331,7 @@ for i = 0, max(binNum) do begin
     	print,' '
     endif
 
-    ;noise = galaxy*0 + 1
+    noise = galaxy*0 + 1
 
     ;Perform the pPXF fit on the galaxy using the templates and 1 sigma errors on the spectra
     if CanConnect() then begin
