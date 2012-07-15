@@ -163,6 +163,10 @@ xyouts, 0.8, 0.775, 'Companion', charthick=2
 plots, [0.75,1],[0.76,0.76], thick=5
 plots, [0.75,0.75],[0.76,1.0], thick=5
 
+oplot, findgen(101)/100, 0.31*sqrt((findgen(101)/100)), thick = 5, color = 90
+
+
+
 device,/close
 
 set_plot, 'ps'
@@ -194,6 +198,8 @@ plots, 0.775, 0.79, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
 xyouts, 0.8, 0.775, 'Companion', charthick=2
 plots, [0.75,1],[0.76,0.76], thick=5
 plots, [0.75,0.75],[0.76,1.0], thick=5
+
+oplot, findgen(101)/100, 0.31*sqrt((findgen(101)/100)), thick = 5, color = 90
 
 device,/close
 
