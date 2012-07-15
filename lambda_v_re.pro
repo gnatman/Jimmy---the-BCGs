@@ -156,19 +156,19 @@ name_comp = name_comp[where(name_comp ne '')]
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
-plot, r_e, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='R!De', YTITLE='!4k!D!3R!Le'
-oplot, r_e, lambda, PSYM=8, COLOR = 180, symsize = 1.2
-oplot, r_e_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
-xyouts, r_e, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
-xyouts, r_e_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+plot, r_e, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='R!De !N(arcsec)', YTITLE='!4k!D!3R!Le'
+oplot, r_e, lambda, PSYM=8, COLOR = 45, symsize = 1.2
+oplot, r_e_comp, lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+;xyouts, r_e, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+;xyouts, r_e_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
 
 ;USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 ;oplot, sauron_m_dyn, sauron_lambda, PSYM=5, symsize = 1.2, thick=2
 
 ;LEGEND
-plots, 11.5, 0.94, PSYM=8, COLOR = 180, symsize = 1.2
+plots, 11.5, 0.94, PSYM=8, COLOR = 45, symsize = 1.2
 xyouts, 11.75, 0.925, 'BCG', charthick=2
-plots, 11.5, 0.89, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+plots, 11.5, 0.89, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
 xyouts, 11.75, 0.875, 'Companion', charthick=2
 plots, [11.25,14],[0.85,0.85], thick=5
 plots, [11.25,11.25],[0.85,1.0], thick=5
@@ -182,16 +182,16 @@ print,'half_lambda_comp: ',half_lambda_comp
 set_plot, 'ps'
 device, filename='half_lambda_v_r_e.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
 
-plot, r_e, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [0,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='R!De', YTITLE='!4k!D!3R!Le!N!D/2'
-oplot, r_e, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
-oplot, r_e_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
-xyouts, r_e, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
-xyouts, r_e_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+plot, r_e, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [0,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='R!De !N(arcsec)', YTITLE='!4k!D!3R!Le!N!D/2'
+oplot, r_e, half_lambda, PSYM=8, COLOR = 45, symsize = 1.2
+oplot, r_e_comp, half_lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+;xyouts, r_e, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+;xyouts, r_e_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
 
 ;LEGEND
-plots, 11.5, 0.94, PSYM=8, COLOR = 180, symsize = 1.2
+plots, 11.5, 0.94, PSYM=8, COLOR = 45, symsize = 1.2
 xyouts, 11.75, 0.925, 'BCG', charthick=2
-plots, 11.5, 0.89, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+plots, 11.5, 0.89, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
 xyouts, 11.75, 0.875, 'Companion', charthick=2
 plots, [11.25,14],[0.85,0.85], thick=5
 plots, [11.25,11.25],[0.85,1.0], thick=5

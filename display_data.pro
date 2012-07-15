@@ -168,7 +168,7 @@ if galaxy eq '1050' then begin
 	ymax = 6
 endif
 if galaxy eq '1027' then begin
-	xmod = -3
+	;xmod = -3
 	;ymod = -0.8
 	bcg_center_x = 8.95
 	bcg_center_y = -7.45
