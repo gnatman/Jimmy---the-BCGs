@@ -152,14 +152,16 @@ readcol,'$HOME/Astro/Supporting\ Documents/Emsellem2011_Atlas3D_Paper3_TableB1.t
 oplot, atlas3d_epsilon, atlas3d_lambda, PSYM=7, symsize=1.2, thick=2
 
 ;LEGEND
-plots, 0.775, 0.94, PSYM=7, symsize = 1.2, thick=2
-xyouts, 0.8, 0.925, 'ATLAS!A3D!X', charthick=2
-plots, 0.775, 0.89, PSYM=8, COLOR = 45, symsize = 1.2
-xyouts, 0.8, 0.875, 'BCG', charthick=2
-plots, 0.775, 0.84, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-xyouts, 0.8, 0.825, 'Companion', charthick=2
-plots, [0.75,1],[0.8,0.8], thick=5
-plots, [0.75,0.75],[0.8,1.0], thick=5
+plots, 0.775, 0.94, PSYM=5, symsize = 1.2, thick=2
+xyouts, 0.8, 0.925, 'SAURON', charthick=2
+plots, 0.775, 0.89, PSYM=7, symsize = 1.2
+xyouts, 0.8, 0.875, 'ATLAS!A3D!X', charthick=2
+plots, 0.775, 0.84, PSYM=8, COLOR = 45, symsize = 1.2, thick = 10
+xyouts, 0.8, 0.825, 'BCG', charthick=2
+plots, 0.775, 0.79, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+xyouts, 0.8, 0.775, 'Companion', charthick=2
+plots, [0.75,1],[0.76,0.76], thick=5
+plots, [0.75,0.75],[0.76,1.0], thick=5
 
 device,/close
 
@@ -182,14 +184,16 @@ readcol,'$HOME/Astro/Supporting\ Documents/Emsellem2011_Atlas3D_Paper3_TableB1.t
 oplot, atlas3d_epsilon_half, atlas3d_lambda_half, PSYM=7, symsize=1.2, thick=2
 
 ;LEGEND
-plots, 0.775, 0.94, PSYM=7, symsize = 1.2, thick=2
-xyouts, 0.8, 0.925, 'ATLAS!A3D!X', charthick=2
-plots, 0.775, 0.89, PSYM=8, COLOR = 45, symsize = 1.2
-xyouts, 0.8, 0.875, 'BCG', charthick=2
-plots, 0.775, 0.84, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-xyouts, 0.8, 0.825, 'Companion', charthick=2
-plots, [0.75,1],[0.8,0.8], thick=5
-plots, [0.75,0.75],[0.8,1.0], thick=5
+plots, 0.775, 0.94, PSYM=5, symsize = 1.2, thick=2
+xyouts, 0.8, 0.925, 'SAURON', charthick=2
+plots, 0.775, 0.89, PSYM=7, symsize = 1.2
+xyouts, 0.8, 0.875, 'ATLAS!A3D!X', charthick=2
+plots, 0.775, 0.84, PSYM=8, COLOR = 45, symsize = 1.2, thick = 10
+xyouts, 0.8, 0.825, 'BCG', charthick=2
+plots, 0.775, 0.79, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+xyouts, 0.8, 0.775, 'Companion', charthick=2
+plots, [0.75,1],[0.76,0.76], thick=5
+plots, [0.75,0.75],[0.76,1.0], thick=5
 
 device,/close
 
