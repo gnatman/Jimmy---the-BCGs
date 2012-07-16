@@ -175,10 +175,10 @@ usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
 print,m_dyn
 plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le'
-oplot, m_dyn, lambda, PSYM=8, COLOR = 45, symsize = 1.2
-oplot, m_dyn_comp, lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-;xyouts, m_dyn, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
-;xyouts, m_dyn_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+oplot, m_dyn, lambda, PSYM=8, COLOR = 180, symsize = 1.2
+oplot, m_dyn_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, m_dyn, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+xyouts, m_dyn_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 ;oplot, sarah_m_dyn, sarah_lambda, PSYM=6, color=100
 ;xyouts, sarah_m_dyn+0.02, sarah_lambda-0.005, label, color=100, CHARSIZE = 1
@@ -193,9 +193,9 @@ oplot, sauron_m_dyn, sauron_lambda, PSYM=5, symsize = 1.2, thick=2
 ;LEGEND
 plots, 11.95, 0.94, PSYM=5, symsize = 1.2, thick=2
 xyouts, 12, 0.925, 'SAURON', charthick=2
-plots, 11.95, 0.89, PSYM=8, COLOR = 45, symsize = 1.2
+plots, 11.95, 0.89, PSYM=8, COLOR = 180, symsize = 1.2
 xyouts, 12, 0.875, 'BCG', charthick=2
-plots, 11.95, 0.84, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+plots, 11.95, 0.84, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 12, 0.825, 'Companion', charthick=2
 plots, [11.85,12.5],[0.8,0.8], thick=5
 plots, [11.85,11.85],[0.8,1.0], thick=5
@@ -205,10 +205,10 @@ device,/close
 set_plot, 'ps'
 device, filename='half_lambda_v_mass.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
 plot, m_dyn, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le!N!D/2'
-oplot, m_dyn, half_lambda, PSYM=8, COLOR = 45, symsize = 1.2
-oplot, m_dyn_comp, half_lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-;xyouts, m_dyn, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
-;xyouts, m_dyn_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+oplot, m_dyn, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
+oplot, m_dyn_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, m_dyn, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+xyouts, m_dyn_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig7_LR_MB_Mvir_core.txt', F='A,F,F,F,A', name, sauron_lambda, magnitude, sauron_m_dyn, class, /SILENT
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,F', name, sauron_lambda, sauron_half_lambda, sauron_ellipticity, sauron_half_ellipticity, /SILENT
@@ -217,9 +217,9 @@ oplot, sauron_m_dyn, sauron_half_lambda, PSYM=5, symsize = 1.2, thick=2
 ;LEGEND
 plots, 11.95, 0.94, PSYM=5, symsize = 1.2, thick=2
 xyouts, 12, 0.925, 'SAURON', charthick=2
-plots, 11.95, 0.89, PSYM=8, COLOR = 45, symsize = 1.2
+plots, 11.95, 0.89, PSYM=8, COLOR = 180, symsize = 1.2
 xyouts, 12, 0.875, 'BCG', charthick=2
-plots, 11.95, 0.84, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+plots, 11.95, 0.84, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 12, 0.825, 'Companion', charthick=2
 plots, [11.85,12.5],[0.8,0.8], thick=5
 plots, [11.85,11.85],[0.8,1.0], thick=5

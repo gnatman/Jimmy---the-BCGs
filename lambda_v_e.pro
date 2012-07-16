@@ -137,10 +137,10 @@ endfor
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
 plot, epsilon, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!4e!3!De', YTITLE='!4k!D!3R!Le'
-oplot, epsilon, lambda, PSYM=8, COLOR = 45, symsize = 1.2
-oplot, epsilon_comp, lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-;xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
-;xyouts, epsilon_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+oplot, epsilon, lambda, PSYM=8, COLOR = 180, symsize = 1.2
+oplot, epsilon_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+xyouts, epsilon_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 ;Read in and plot the SAURON values
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', sauron_name, sauron_lambda, sauron_lambda_half, sauron_epsilon, sauron_epsilon_half, /SILENT
@@ -156,9 +156,9 @@ plots, 0.775, 0.94, PSYM=5, symsize = 1.2, thick=2
 xyouts, 0.8, 0.925, 'SAURON', charthick=2
 plots, 0.775, 0.89, PSYM=7, symsize = 1.2
 xyouts, 0.8, 0.875, 'ATLAS!A3D!X', charthick=2
-plots, 0.775, 0.84, PSYM=8, COLOR = 45, symsize = 1.2, thick = 10
+plots, 0.775, 0.84, PSYM=8, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 0.8, 0.825, 'BCG', charthick=2
-plots, 0.775, 0.79, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+plots, 0.775, 0.79, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 0.8, 0.775, 'Companion', charthick=2
 plots, [0.75,1],[0.76,0.76], thick=5
 plots, [0.75,0.75],[0.76,1.0], thick=5
@@ -173,10 +173,10 @@ set_plot, 'ps'
 device, filename='half_lambda_v_e.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
 
 plot, half_epsilon, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!4e!3!De!N!D/2', YTITLE='!4k!D!3R!Le!N!D/2'
-oplot, half_epsilon, half_lambda, PSYM=8, COLOR = 45, symsize = 1.2
-oplot, half_epsilon_comp, half_lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-;xyouts, half_epsilon, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
-;xyouts, half_epsilon_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+oplot, half_epsilon, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
+oplot, half_epsilon_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, half_epsilon, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+xyouts, half_epsilon_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 ;Read in and plot the SAURON values
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', sauron_name, sauron_lambda, sauron_lambda_half, sauron_epsilon, sauron_epsilon_half, /SILENT
@@ -192,9 +192,9 @@ plots, 0.775, 0.94, PSYM=5, symsize = 1.2, thick=2
 xyouts, 0.8, 0.925, 'SAURON', charthick=2
 plots, 0.775, 0.89, PSYM=7, symsize = 1.2
 xyouts, 0.8, 0.875, 'ATLAS!A3D!X', charthick=2
-plots, 0.775, 0.84, PSYM=8, COLOR = 45, symsize = 1.2, thick = 10
+plots, 0.775, 0.84, PSYM=8, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 0.8, 0.825, 'BCG', charthick=2
-plots, 0.775, 0.79, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+plots, 0.775, 0.79, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 0.8, 0.775, 'Companion', charthick=2
 plots, [0.75,1],[0.76,0.76], thick=5
 plots, [0.75,0.75],[0.76,1.0], thick=5

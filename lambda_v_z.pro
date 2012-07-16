@@ -157,18 +157,18 @@ name_comp = name_comp[where(name_comp ne '')]
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
 plot, redshift, lambda, PSYM=4, yrange=[0,1.0], xrange = [0.03,0.1], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='Z', YTITLE='!4k!D!3R!Le'
-oplot, redshift, lambda, PSYM=8, COLOR = 45, symsize = 1.2
-oplot, redshift_comp, lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-;xyouts, redshift, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
-;xyouts, redshift_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+oplot, redshift, lambda, PSYM=8, COLOR = 180, symsize = 1.2
+oplot, redshift_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, redshift, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+xyouts, redshift_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 ;USERSYM, [0,1,0,-1],[-1,0,1,0],/FILL
 ;oplot, sauron_m_dyn, sauron_lambda, PSYM=5, symsize = 1.2, thick=2
 
 ;LEGEND
-plots, 0.0825, 0.94, PSYM=8, COLOR = 45, symsize = 1.2
+plots, 0.0825, 0.94, PSYM=8, COLOR = 180, symsize = 1.2
 xyouts, 0.0855, 0.925, 'BCG', charthick=2
-plots, 0.0825, 0.89, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+plots, 0.0825, 0.89, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 0.0855, 0.875, 'Companion', charthick=2
 plots, [0.08,0.1],[0.85,0.85], thick=5
 plots, [0.08,0.08],[0.85,1.0], thick=5
@@ -179,15 +179,15 @@ set_plot, 'ps'
 device, filename='half_lambda_v_z.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
 
 plot, redshift, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [0.03,0.1], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='Z', YTITLE='!4k!D!3R!Le!N!D/2'
-oplot, redshift, half_lambda, PSYM=8, COLOR = 45, symsize = 1.2
-oplot, redshift_comp, half_lambda_comp, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
-;xyouts, redshift, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
-;xyouts, redshift_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 45
+oplot, redshift, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
+oplot, redshift_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+xyouts, redshift, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+xyouts, redshift_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
 ;LEGEND
-plots, 0.0825, 0.94, PSYM=8, COLOR = 45, symsize = 1.2
+plots, 0.0825, 0.94, PSYM=8, COLOR = 180, symsize = 1.2
 xyouts, 0.0855, 0.925, 'BCG', charthick=2
-plots, 0.0825, 0.89, PSYM=1, COLOR = 45, symsize = 1.2, thick = 10
+plots, 0.0825, 0.89, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 0.0855, 0.875, 'Companion', charthick=2
 plots, [0.08,0.1],[0.85,0.85], thick=5
 plots, [0.08,0.08],[0.85,1.0], thick=5
