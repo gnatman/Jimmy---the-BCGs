@@ -541,7 +541,7 @@ EOF
 	    export template_list="/*"
 	    export monte_iterations=0
 	    if [ $monte == y ]; then
-		    export monte_iterations=10
+		    export monte_iterations=100
 	    fi
 idl << EOF
 .comp jimmy_ppxf.pro

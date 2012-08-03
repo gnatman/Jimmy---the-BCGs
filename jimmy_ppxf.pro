@@ -99,14 +99,16 @@ if (testing) then begin
     rdfloat, getenv('infile4'), dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1, /SILENT
     openw, 9, getenv('outfile')
     monte_iterations = getenv('monte_iterations')
+    plot_file = getenv('prodir')+'/ppxf_fit.eps'
 endif
 if (testing ne 1) then begin
-    fits_read, '/Users/jimmy/Astro/reduced/1261pro/temp.fits', datacube, h
-    var=mrdfits('/Users/jimmy/Astro/reduced/1261pro/temp.fits',1,h) ;, /SILENT)
-    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/main/sn10/one_bin_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
-    rdfloat, '/Users/jimmy/Astro/reduced/1261pro/main/sn10/one_bin_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
+    fits_read, '/Users/jimmy/Astro/reduced/1050pro/temp.fits', datacube, h
+    var=mrdfits('/Users/jimmy/Astro/reduced/1050pro/temp.fits',1,h) ;, /SILENT)
+    rdfloat, '/Users/jimmy/Astro/reduced/1050pro/main/sn10/one_bin_output.txt', xarc, yarc, x, y, binNum, SKIPLINE=1
+    rdfloat, '/Users/jimmy/Astro/reduced/1050pro/main/sn10/one_bin_bins.txt', dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1
     openw, 9, '/Users/jimmy/Downloads/ppxf_v_bin_output'
     monte_iterations = 0
+    plot_file = '/Users/jimmy/Downloads/ppxf_fit.eps'
 endif
 
 
@@ -203,7 +205,7 @@ for i = 0, max(binNum) do begin
         z = FLOAT(getenv('redshift'))
     endif
     if (testing ne 1) then begin
-        z = 0.037
+        z = 0.0722
     endif
     
     
@@ -336,7 +338,7 @@ for i = 0, max(binNum) do begin
     ;Perform the pPXF fit on the galaxy using the templates and 1 sigma errors on the spectra
     if CanConnect() then begin
     	set_plot,'PS'
-	    device, filename=getenv('prodir')+'/ppxf_fit.eps', /encapsul, /color, bits=8
+	    device, filename=plot_file, /encapsul, /color, bits=8
 
 	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=2, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error, RANGE=(new_wavelength_range[1]-new_wavelength_range[0]), MIN=new_wavelength_range[0]
 	    device,/close

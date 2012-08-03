@@ -139,8 +139,13 @@ usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 plot, epsilon, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!4e!3!De', YTITLE='!4k!D!3R!Le'
 oplot, epsilon, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, epsilon_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+<<<<<<< HEAD
 xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 xyouts, epsilon_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+=======
+;xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+;xyouts, epsilon_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+>>>>>>> Trying 100 monte carlo iterations
 
 ;Read in and plot the SAURON values
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', sauron_name, sauron_lambda, sauron_lambda_half, sauron_epsilon, sauron_epsilon_half, /SILENT
@@ -175,8 +180,13 @@ device, filename='half_lambda_v_e.eps', /encapsul, /color, BITS=8 ;, SET_CHARACT
 plot, half_epsilon, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!4e!3!De!N!D/2', YTITLE='!4k!D!3R!Le!N!D/2'
 oplot, half_epsilon, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, half_epsilon_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+<<<<<<< HEAD
 xyouts, half_epsilon, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 xyouts, half_epsilon_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+=======
+;xyouts, half_epsilon, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+;xyouts, half_epsilon_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
+>>>>>>> Trying 100 monte carlo iterations
 
 ;Read in and plot the SAURON values
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,A', sauron_name, sauron_lambda, sauron_lambda_half, sauron_epsilon, sauron_epsilon_half, /SILENT
