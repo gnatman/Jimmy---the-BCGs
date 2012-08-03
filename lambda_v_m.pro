@@ -177,14 +177,8 @@ print,m_dyn
 plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le'
 oplot, m_dyn, lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, m_dyn_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
-<<<<<<< HEAD
-xyouts, m_dyn, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
-xyouts, m_dyn_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
-=======
 ;xyouts, m_dyn, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 ;xyouts, m_dyn_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
->>>>>>> Trying 100 monte carlo iterations
-
 ;oplot, sarah_m_dyn, sarah_lambda, PSYM=6, color=100
 ;xyouts, sarah_m_dyn+0.02, sarah_lambda-0.005, label, color=100, CHARSIZE = 1
 
@@ -212,13 +206,8 @@ device, filename='half_lambda_v_mass.eps', /encapsul, /color, BITS=8 ;, SET_CHAR
 plot, m_dyn, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le!N!D/2'
 oplot, m_dyn, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
 oplot, m_dyn_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
-<<<<<<< HEAD
-xyouts, m_dyn, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
-xyouts, m_dyn_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
-=======
 ;xyouts, m_dyn, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 ;xyouts, m_dyn_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
->>>>>>> Trying 100 monte carlo iterations
 
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig7_LR_MB_Mvir_core.txt', F='A,F,F,F,A', name, sauron_lambda, magnitude, sauron_m_dyn, class, /SILENT
 readcol,'$HOME/Astro/Supporting\ Documents/SAURON_Data_Fig5_LR_Ell.txt', F='A,F,F,F,F', name, sauron_lambda, sauron_half_lambda, sauron_ellipticity, sauron_half_ellipticity, /SILENT
