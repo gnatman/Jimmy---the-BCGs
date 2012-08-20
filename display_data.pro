@@ -156,63 +156,127 @@ print,'min(xbin)',min(xbin),'max(ybin)',max(ybin)
 	ymin = -10
 	ymax = 10
 
-if galaxy eq '1050' then begin
-	;xmod = -8
-	;ymod = 0.5
-	bcg_center_x = -1.2
-	bcg_center_y = -0.2
-	companion = 'n'
-	xmin = -6
-	xmax = 6
-	ymin = -6
-	ymax = 6
-endif
+
 if galaxy eq '1027' then begin
 	;xmod = -3
 	;ymod = -0.8
-	bcg_center_x = 8.95
-	bcg_center_y = -7.45
+	bcg_center_x = 8.9
+	bcg_center_y = -7.5
 	companion='y'
-	comp_center_x = 1
-	comp_center_y = 1.15
-	xmin = -4
-	xmax = 14
-	ymin = -12
-	ymax = 4
+	comp_center_x = 1.3
+	comp_center_y = 0.9
+	xmin = -7.5
+	xmax = 17.5
+	ymin = -16.5
+	ymax = 8.5
+endif
+if galaxy eq '1042' then begin
+	;xmod = 0
+	;ymod = 22
+	bcg_center_x = 0
+	bcg_center_y = 0.8
+	companion = 'n'
+	xmin = -12
+	xmax = 13
+	ymin = -14
+	ymax = 11
+endif
+if galaxy eq '1048' then begin
+	xmod = 0
+	ymod = 22
+	bcg_center_x = 3.35
+	bcg_center_y = -1.55
+	companion = 'y'
+	comp_center_x = 9.5
+	comp_center_y = 6.25
+	second_comp_center_x = -9.25
+	second_comp_center_y = -11.5
+	xmin = -11.5
+	xmax = 13.5
+	ymin = -15
+	ymax = 10
+endif
+if galaxy eq '1050' then begin
+	;xmod = -8
+	;ymod = 0.5
+	bcg_center_x = -1.35
+	bcg_center_y = -0.6
+	companion = 'n'
+	xmin = -12.5
+	xmax = 12.5
+	ymin = -12.5
+	ymax = 12.5
 endif
 if galaxy eq '1066' then begin
 	;xmod = -3
 	;ymod = -1
-	bcg_center_x = -5.05
+	bcg_center_x = -5
 	bcg_center_y = 5.55
 	companion='y'
-	comp_center_x = 2.2
+	comp_center_x = 1.75
 	comp_center_y = -3.6
-	xmin = -7
-	xmax = 9
-	ymin = -9
-	ymax = 9
+	second_comp_center_x = 6.4
+	second_comp_center_y = -7.25
+	xmin = -12
+	xmax = 13
+	ymin = -13
+	ymax = 12
+endif
+if galaxy eq '1067' then begin
+	;xmod = -3
+	;ymod = -0.8
+	bcg_center_x = 1.25
+	bcg_center_y = 1.5
+	companion='n'
+	xmin = -8
+	xmax = 17
+	ymin = -17
+	ymax = 8
 endif
 if galaxy eq '1153' then begin
 	;xmod = -0.6
 	;ymod = 0.75
-	bcg_center_x = 0.15
-	bcg_center_y = 1.5
+	bcg_center_x = -0.35
+	bcg_center_y = -0.25
 	companion = 'n'
-	xmin = -4
-	xmax = 8
-	ymin = -4
-	ymax = 8
+	xmin = -10
+	xmax = 15
+	ymin = -10
+	ymax = 15
+endif
+if galaxy eq '1261' then begin
+	;xmod = -3
+	;ymod = -0.8
+	bcg_center_x = 0
+	bcg_center_y = -2
+	companion='n'
+	xmin = -12
+	xmax = 13
+	ymin = -12
+	ymax = 13
 endif
 if galaxy eq '2001' then begin
 	;xmod = -7.2
 	;ymod = 0
-	bcg_center_x = -3.83
-	bcg_center_y = 2.85
+	bcg_center_x = -3.9
+	bcg_center_y = 2.35
 	companion='n'
-	xmin = -10
-	xmax = 2
-	ymin = -3
+	xmin = -16
+	xmax = 9
+	ymin = -10
+	ymax = 15
+endif
+if galaxy eq '2039' then begin
+	;xmod = -3
+	;ymod = -0.8
+	bcg_center_x = 1
+	bcg_center_y = -1.2
+	companion='y'
+	comp_center_x = 8
+	comp_center_y = -5.5
+	xmin = -8
+	xmax = 17
+	ymin = -16
 	ymax = 9
 endif
 if galaxy eq '2086' then begin
@@ -221,23 +285,12 @@ if galaxy eq '2086' then begin
 	bcg_center_x = -4.9
 	bcg_center_y = 3.05
 	companion='y'
-	comp_center_x = 0.4
+	comp_center_x = -0.1
 	comp_center_y = 0.5
-	xmin = -10
-	xmax = 4
-	ymin = -4
-	ymax = 10
-endif
-if galaxy eq '1048' then begin
-	xmod = 0
-	ymod = 22
-	bcg_center_x = 0
-	bcg_center_y = 0
-	companion = 'y'
-	xmin = -12
-	xmax = 14
-	ymin = -14
-	ymax = 10
+	xmin = -15
+	xmax = 10
+	ymin = -10
+	ymax = 15
 endif
 
 ;print, 'max(sn)',sn,max(sn)
@@ -251,9 +304,12 @@ device, filename=getenv('prodir')+'/velocity.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
-;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=1.2, CHARTHICK=8
 if (companion eq 'y') then begin
-	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
+	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	if (galaxy eq '1048' || galaxy eq '1066') then begin
+		xyouts, second_comp_center_x, second_comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	endif
 endif
 
 ;Sarah's graph scales, used to directly compare my results to hers.
@@ -265,9 +321,12 @@ device, filename=getenv('prodir')+'/velocity_scale.eps', /encapsul, /color, BITS
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
-;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=1.2, CHARTHICK=8
 if (companion eq 'y') then begin
-	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
+	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	if (galaxy eq '1048' || galaxy eq '1066') then begin
+		xyouts, second_comp_center_x, second_comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	endif
 endif
 
 set_plot, 'ps'
@@ -275,19 +334,25 @@ device, filename=getenv('prodir')+'/sigma_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Dispersion'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
-;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=1.2, CHARTHICK=8
 if (companion eq 'y') then begin
-	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
+	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	if (galaxy eq '1048' || galaxy eq '1066') then begin
+		xyouts, second_comp_center_x, second_comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	endif
 endif
 
 set_plot, 'ps'
 device, filename=getenv('prodir')+'/signal_noise.eps', /encapsul, /color, BITS=8
-display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, max(sn)*1.1], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Signal/Noise'
-color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,max(sn)*1.1,title='S/N', CHARSIZE=2, CHARTHICK=5
+display_bins, xbin, ybin, sn, x,y, PIXELSIZE=1, RANGE=[3, 40], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Signal/Noise'
+color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],3,40,title='S/N', CHARSIZE=2, CHARTHICK=5
 xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
-;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=2, CHARTHICK=12
+xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=1.2, CHARTHICK=8
 if (companion eq 'y') then begin
-	;xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=2, CHARTHICK=12
+	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	if (galaxy eq '1048' || galaxy eq '1066') then begin
+		xyouts, second_comp_center_x, second_comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+	endif
 endif 
 
 device,/close
@@ -295,7 +360,7 @@ device,/close
 endif
 
 ;spelled wrong to skip it until fixed
-if type eq 'radial' then begin
+if type eq 'radiall' then begin
 xin = fltarr(100)
 yin = fltarr(100)
 sigin = fltarr(100)

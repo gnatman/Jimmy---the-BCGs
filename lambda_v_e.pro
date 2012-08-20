@@ -50,81 +50,98 @@ device, filename='lambda_v_e.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SI
 
 
 
-lambda_files = file_search('$HOME/Astro/reduced/*/{comp,main}/sn10/lambda_re.txt',COUNT=nfiles)
+lambda_files_main = file_search('$HOME/Astro/reduced/*/main/sn10/lambda_re.txt',COUNT=nfiles)
+lambda_files_comp = file_search('$HOME/Astro/reduced/*/comp/sn10/lambda_re.txt',COUNT=nfiles)
 
-r_e = fltarr(n_elements(lambda_files))
-lambda = strarr(n_elements(lambda_files))
-epsilon = fltarr(n_elements(lambda_files))
-name = strarr(n_elements(lambda_files))
-r_e_comp = fltarr(n_elements(lambda_files))
-lambda_comp = strarr(n_elements(lambda_files))
-epsilon_comp = fltarr(n_elements(lambda_files))
-name_comp = strarr(n_elements(lambda_files))
-half_r_e = fltarr(n_elements(lambda_files))
-half_lambda = strarr(n_elements(lambda_files))
-half_epsilon = fltarr(n_elements(lambda_files))
-half_r_e_comp = fltarr(n_elements(lambda_files))
-half_lambda_comp = strarr(n_elements(lambda_files))
-half_epsilon_comp = fltarr(n_elements(lambda_files))
+r_e = fltarr(n_elements(lambda_files_main))
+lambda = strarr(n_elements(lambda_files_main))
+lambda_error = strarr(n_elements(lambda_files_main))
+epsilon = fltarr(n_elements(lambda_files_main))
+name = strarr(n_elements(lambda_files_main))
+r_e_comp = fltarr(n_elements(lambda_files_comp))
+lambda_comp = strarr(n_elements(lambda_files_comp))
+lambda_comp_error = strarr(n_elements(lambda_files_comp))
+epsilon_comp = fltarr(n_elements(lambda_files_comp))
+name_comp = strarr(n_elements(lambda_files_comp))
+half_r_e = fltarr(n_elements(lambda_files_main))
+half_lambda = strarr(n_elements(lambda_files_main))
+half_lambda_error = strarr(n_elements(lambda_files_main))
+half_epsilon = fltarr(n_elements(lambda_files_main))
+half_r_e_comp = fltarr(n_elements(lambda_files_comp))
+half_lambda_comp = strarr(n_elements(lambda_files_comp))
+half_lambda_comp_error = strarr(n_elements(lambda_files_comp))
+half_epsilon_comp = fltarr(n_elements(lambda_files_comp))
 
-for i=0, n_elements(lambda_files)-1 do begin
-	readcol, lambda_files[i], F='F,F,F,F', dummy1, tempr_e, tempepsilon, templambda, /silent
-	if (strmid(lambda_files[i], 35, 4) eq 'main') then begin
+for i=0, n_elements(lambda_files_main)-1 do begin
+	readcol, lambda_files_main[i], F='F,F,F,F,F', radius, tempr_e, tempepsilon, templambda, templambdaerror, /silent
 		if (n_elements(tempr_e) eq 3) then begin
 			r_e[i] = tempr_e[1]
 			lambda[i] = templambda[1]
+			lambda_error[i] = templambdaerror[1]
 			epsilon[i] = tempepsilon[1]
 			half_r_e[i] = tempr_e[0]
 			half_lambda[i] = templambda[0]
+			half_lambda_error[i] = templambdaerror[0]
 			half_epsilon[i] = tempepsilon[0]
 		endif else if (n_elements(tempr_e) eq 2) then begin
 			r_e[i] = tempr_e[1]
 			lambda[i] = templambda[1]
+			lambda_error[i] = templambdaerror[1]
 			epsilon[i] = tempepsilon[1]
 			half_r_e[i] = tempr_e[0]
 			half_lambda[i] = templambda[0]
+			half_lambda_error[i] = templambdaerror[0]
 			half_epsilon[i] = tempepsilon[0]
 		endif else begin
 			r_e[i] = tempr_e[0]
 			lambda[i] = templambda[0]
+			lambda_error[i] = templambdaerror[0]
 			epsilon[i] = tempepsilon[0]
 			half_r_e[i] = tempr_e[0]
 			half_lambda[i] = templambda[0]
+			half_lambda_error[i] = templambdaerror[0]
 			half_epsilon[i] = tempepsilon[0]
 		endelse
-		name[i] = strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4)
-	endif else begin
+		name[i] = strmid(lambda_files_main[i], 27, 4)+strmid(lambda_files_main[i], 35, 4)
+endfor
+for i=0, n_elements(lambda_files_comp)-1 do begin
+	readcol, lambda_files_comp[i], F='F,F,F,F,F', radius, tempr_e, tempepsilon, templambda, templambdaerror, /silent
 		if (n_elements(tempr_e) eq 3) then begin
 			r_e_comp[i] = tempr_e[1]
 			lambda_comp[i] = templambda[1]
+			lambda_comp_error[i] = templambdaerror[1]
 			epsilon_comp[i] = tempepsilon[1]
 			half_r_e_comp[i] = tempr_e[0]
 			half_lambda_comp[i] = templambda[0]
+			half_lambda_comp_error[i] = templambdaerror[0]
 			half_epsilon_comp[i] = tempepsilon[0]
 		endif else if (n_elements(tempr_e) eq 2) then begin
 			r_e_comp[i] = tempr_e[1]
 			lambda_comp[i] = templambda[1]
+			lambda_comp_error[i] = templambdaerror[1]
 			epsilon_comp[i] = tempepsilon[1]
 			half_r_e_comp[i] = tempr_e[0]
 			half_lambda_comp[i] = templambda[0]
+			half_lambda_comp_error[i] = templambdaerror[0]
 			half_epsilon_comp[i] = tempepsilon[0]
 		endif else begin
 			r_e_comp[i] = tempr_e[0]
 			lambda_comp[i] = templambda[0]
+			lambda_comp_error[i] = templambdaerror[0]
 			epsilon_comp[i] = tempepsilon[0]
 			half_r_e_comp[i] = tempr_e[0]
 			half_lambda_comp[i] = templambda[0]
+			half_lambda_comp_error[i] = templambdaerror[0]
 			half_epsilon_comp[i] = tempepsilon[0]
 		endelse
-		name_comp[i] = strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4)
-	endelse
+		name_comp[i] = strmid(lambda_files_comp[i], 27, 4)+strmid(lambda_files_comp[i], 35, 4)
 endfor
 
-;print,'epsilon_comp before: ',epsilon_comp
+print,'lambda before: ',lambda
 
 ;epsilon = epsilon[where(epsilon ne 0)]
 ;lambda = lambda[where(epsilon ne 0)]
-;half_lambda = half_lambda[where(epsilon ne 0)]
+;half_lambda = half_lambda[where(half_lambda ne 0)]
 ;name = name[where(name ne '')]
 ;epsilon_comp = epsilon_comp[where(epsilon_comp ne 0)]
 ;lambda_comp = lambda_comp[where(epsilon_comp ne 0)]
@@ -132,13 +149,16 @@ endfor
 ;name_comp = name_comp[where(name_comp ne '')]
 ;print, epsilon, lambda, epsilon_comp, lambda_comp
 
-;print,'epsilon_comp after: ',epsilon_comp
+print,'lambda after: ',lambda
+print,'size of epsilon: ', n_elements(epsilon), ' size of lambda: ',n_elements(lambda)
 
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
+epsilon_error = fltarr(n_elements(epsilon))
+
 plot, epsilon, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!4e!3!De', YTITLE='!4k!D!3R!Le'
-oplot, epsilon, lambda, PSYM=8, COLOR = 180, symsize = 1.2
-oplot, epsilon_comp, lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+oploterror, epsilon, lambda, lambda_error+0.000000001, PSYM=8, COLOR = 180, symsize = 1.2, errthick  = 2, errcolor = 180
+oploterror, epsilon_comp, lambda_comp, lambda_comp_error+0.000000001, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10, errthick  = 2, errcolor = 180
 ;xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 ;xyouts, epsilon_comp, lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 
@@ -173,8 +193,8 @@ set_plot, 'ps'
 device, filename='half_lambda_v_e.eps', /encapsul, /color, BITS=8 ;, SET_CHARACTER_SIZE=[270,190]
 
 plot, half_epsilon, half_lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!4e!3!De!N!D/2', YTITLE='!4k!D!3R!Le!N!D/2'
-oplot, half_epsilon, half_lambda, PSYM=8, COLOR = 180, symsize = 1.2
-oplot, half_epsilon_comp, half_lambda_comp, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10
+oploterror, half_epsilon, half_lambda, half_lambda_error+0.000000001, PSYM=8, COLOR = 180, symsize = 1.2, errthick  = 2, errcolor = 180
+oploterror, half_epsilon_comp, half_lambda_comp, half_lambda_comp_error+0.000000001, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10, errthick  = 2, errcolor = 180
 ;xyouts, half_epsilon, half_lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 ;xyouts, half_epsilon_comp, half_lambda_comp, name_comp, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
 

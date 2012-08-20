@@ -312,7 +312,7 @@ for i = 0, max(binNum) do begin
     	print,' '
         galaxy_size = size(galaxy) ;size of logarithmically rebinned spectra
         for k=0,monte_iterations-1 do begin
-            noisy = (RANDOMU(seed, galaxy_size[1])-0.5)*noise_level ;generate noise for each pixel in the spectra
+            noisy = ((RANDOMU(seed, galaxy_size[1])-0.5)*noise_level)*2 ;generate noise for each pixel in the spectra
             noisy_galaxy = galaxy + noisy ;make the galaxy noisy
             ;perform a ppxf fit on the noisy galaxy
             noise = galaxy*0 + 1

@@ -59,34 +59,40 @@ dispersion = fltarr(n_elements(lambda_files))
 disp_error = fltarr(n_elements(lambda_files))
 redshift = fltarr(n_elements(lambda_files))
 lambda = fltarr(n_elements(lambda_files))
+lambda_error = fltarr(n_elements(lambda_files))
 half_lambda = fltarr(n_elements(lambda_files))
+half_lambda_error = fltarr(n_elements(lambda_files))
 epsilon = fltarr(n_elements(lambda_files))
 half_epsilon = fltarr(n_elements(lambda_files))
 name = strarr(n_elements(lambda_files))
 for i=0, n_elements(lambda_files)-1 do begin
-	readcol, lambda_files[i], F='F,F,F,F', radius, tempr_e, tempepsilon, templambda, /silent
+	readcol, lambda_files[i], F='F,F,F,F,F', radius, tempr_e, tempepsilon, templambda, templambdaerror, /silent
 	readcol, table_files[i], F='A,A,A,A,F,F', dummy1, dummy2, dummy3, dummy4, values, dummy5, /silent
-	;readcol, table_files[i], F='A,A,A,A,F,F,F', dummy1, dummy2, dummy3, velocity[i], vel_error[i], dispersion[i], disp_error[i], /silent
 	readcol, table_files[i], F='A,A,A,A,F,F,F', dum1, dum2, dum3, dum4, dum5, dum6, dum7, /silent
-	print, dum1, dum2, dum3, dum4, dum5, dum6, dum7
+	;print, dum1, dum2, dum3, dum4, dum5, dum6, dum7
 	;print, 'values: ', dummy1, dummy2, dummy3, velocity[i], vel_error[i], dispersion[i], disp_error[i]
 	if (n_elements(tempr_e) eq 3) then begin
 		r_e[i] = tempr_e[1]
 		lambda[i] = templambda[1]
+		lambda_error[i] = templambdaerror[1]
 		epsilon[i] = tempepsilon[1]
 		half_r_e[i] = tempr_e[0]
 		half_lambda[i] = templambda[0]
+		half_lambda_error[i] = templambdaerror[0]
 		half_epsilon[i] = tempepsilon[0]
 	endif else if (n_elements(tempr_e) eq 2) then begin
 		r_e[i] = tempr_e[1]
 		lambda[i] = templambda[1]
+		lambda_error[i] = templambdaerror[1]
 		epsilon[i] = tempepsilon[1]
 		half_r_e[i] = tempr_e[0]
 		half_lambda[i] = templambda[0]
+		half_lambda_error[i] = templambdaerror[0]
 		half_epsilon[i] = tempepsilon[0]
 	endif else begin
 		r_e[i] = tempr_e[0]
 		lambda[i] = templambda[0]
+		lambda_error[i] = templambdaerror[0]
 		epsilon[i] = tempepsilon[0]
 		half_r_e[i] = tempr_e[0]
 		half_lambda[i] = templambda[0]
@@ -104,7 +110,7 @@ for i=0, n_elements(lambda_files)-1 do begin
 	log_mass = alog10(mass)
 	m_dyn = log_mass
 	mass_error = (disp_error*2000)/(dispersion*1000*alog(10))
-	lambda_error = 0
+	;lambda_error = 0
 	if (temp_string[i,5] eq 'comp') then begin
 		name[i] = strmid(temp_string[i,4], 0, 4)+' Comp' ;causes a bunch of divide by 0 and illegal operand errors
 	endif
@@ -113,12 +119,18 @@ for i=0, n_elements(lambda_files)-1 do begin
 	endif
 endfor
 
+print,'mass_error: ',mass_error
+
+	disp_error=round(disp_error)
+
 for i=0, n_elements(name)-1 do begin
 	if (redshift[i] ne 0) then begin
 		;print,name[i],' & ',r_e[i],' & ',redshift[i],' & ',dispersion[i],' $\pm$',disp_error[i],' & ',m_dyn[i],' $\pm$',mass_error[i],' & ',epsilon[i],' & ',lambda[i], ' $\pm$', lambda_error, ' \\', FORMAT = '(A,A,F6.2,A,F6.4,A,I3,A,I3,A,F6.2,A,F6.2,A,F6.2,A,F6.2,A,F6.2,A)'
-		print,name[i],' & ',r_e[i],' & ',redshift[i],' & ',dispersion[i],' $\pm$',disp_error[i],' & ',m_dyn[i],' & ',epsilon[i],' & ',lambda[i], ' $\pm$', lambda_error, ' \\', FORMAT = '(A,A,F6.2,A,F6.4,A,I3,A,I3,A,F6.2,A,F6.2,A,F6.2,A,F6.2,A)'
+		print,name[i],' & ',r_e[i],' & ',redshift[i],' & ',dispersion[i],' $\pm$',disp_error[i],' & ',m_dyn[i],' & ',epsilon[i],' & ',lambda[i], ' $\pm$', lambda_error[i], ' \\', FORMAT = '(A,A,F6.2,A,F6.4,A,I3,A,I3,A,F6.2,A,F6.2,A,F6.2,A,F6.2,A)'
 
 	endif
 endfor
+
+print, lambda
 
 end

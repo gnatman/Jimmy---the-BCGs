@@ -71,7 +71,7 @@ testing=FIX(testing_string)
 
 !P.Multi = [0, 3, 4, 0, 0]
 
-galaxy_names= [ '1027', '1042', '1048', '1050', '1066', '1067','1153', '1261', '2001', '2039', '2086']
+galaxy_names= [ '1027', '1042', '1048', '1050', '1066','1153', '1261', '2001', '2039', '2086']
 plot_names=[ 'velocity', 'dispersion', 'sn' ]
 
 for j=0, n_elements(plot_names)-1 do begin
