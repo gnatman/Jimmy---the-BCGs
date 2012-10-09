@@ -450,7 +450,7 @@ final_mask,'$1','$2'
 EOF
 fi
 
-for targetsn in 5 10; do
+for targetsn in 3 5 10; do
 	#PERFORM THE SIGNAL TO NOISE CUT
 	if [ $snc == y ]; then
 	    #Perform Signal to Noise Cut
@@ -460,6 +460,9 @@ for targetsn in 5 10; do
 	    export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
 	    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
 	    export galaxy=$1
+	    if [ $targetsn == 3 ]; then
+		    export sncut=1.0
+		fi
 	    if [ $targetsn == 5 ]; then
 		    export sncut=3.0
 		fi
