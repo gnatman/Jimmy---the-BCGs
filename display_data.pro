@@ -83,9 +83,9 @@ testing=FIX(testing_string)
 
 if (testing ne 1) then begin
 	;read in the requisite files, and expected redshift from the environmental variables.
-	rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/voronoi_2d_bins.txt', xbin, ybin,sn,NPix, SKIPLINE=1              ;2d_bins
-	rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/ppxf_v_bin_output', bin,V,v_sig,sigma,sigma_sig,h3,h4,h5,h6,Chi2,z ;bin_output
-	rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/voronoi_2d_binning_output.txt', x, y, xpix, ypix, binNum, SKIPLINE=1        ;2d_binning_output
+	rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/main/sn5/voronoi_2d_bins.txt', xbin, ybin,sn,NPix, SKIPLINE=1              ;2d_bins
+	rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/main/sn5/ppxf_v_bin_output', bin,V,v_sig,sigma,sigma_sig,h3,h4,h5,h6,Chi2,z ;bin_output
+	rdfloat, '/Users/jimmy/Astro/reduced/'+galaxy+'pro/main/sn5/voronoi_2d_binning_output.txt', x, y, xpix, ypix, binNum, SKIPLINE=1        ;2d_binning_output
 endif
 
 if (testing) then begin
@@ -101,6 +101,10 @@ if type eq 'radial' then begin
 endif
 if type eq 'one' then begin
     table_file_name = getenv('prodir')+'/table_one.txt'
+endif
+
+if (testing ne 1) then begin
+	table_file_name = 'table.txt'
 endif
 
 openw,1,table_file_name
@@ -136,6 +140,7 @@ print,'Min & Max Sigma: ',min(sigma),max(sigma)
 
 ;if CanConnect() then begin
 
+;loadct,0
 sauron_colormap
 
 max_scale=(max(V)*1.2)+100
@@ -151,10 +156,10 @@ print,'min(xbin)',min(xbin),'max(ybin)',max(ybin)
 	bcg_center_x = 0
 	bcg_center_y = 0
 	companion = 'n'
-	xmin = -10
-	xmax = 10
-	ymin = -10
-	ymax = 10
+	xmin = -5
+	xmax = 5
+	ymin = -5
+	ymax = 5
 
 
 if galaxy eq '1027' then begin
@@ -165,10 +170,10 @@ if galaxy eq '1027' then begin
 	companion='y'
 	comp_center_x = 1.3
 	comp_center_y = 0.9
-	xmin = -7.5
-	xmax = 17.5
-	ymin = -16.5
-	ymax = 8.5
+	xmin = -1
+	xmax = 13
+	ymin = -10
+	ymax = 4
 endif
 if galaxy eq '1042' then begin
 	;xmod = 0
@@ -176,10 +181,10 @@ if galaxy eq '1042' then begin
 	bcg_center_x = 0
 	bcg_center_y = 0.8
 	companion = 'n'
-	xmin = -12
-	xmax = 13
-	ymin = -14
-	ymax = 11
+	xmin = -7
+	xmax = 7
+	ymin = -7
+	ymax = 7
 endif
 if galaxy eq '1048' then begin
 	xmod = 0
@@ -202,10 +207,10 @@ if galaxy eq '1050' then begin
 	bcg_center_x = -1.35
 	bcg_center_y = -0.6
 	companion = 'n'
-	xmin = -12.5
-	xmax = 12.5
-	ymin = -12.5
-	ymax = 12.5
+	xmin = -7
+	xmax = 7
+	ymin = -7
+	ymax = 7
 endif
 if galaxy eq '1066' then begin
 	;xmod = -3
@@ -217,10 +222,10 @@ if galaxy eq '1066' then begin
 	comp_center_y = -3.6
 	second_comp_center_x = 6.4
 	second_comp_center_y = -7.25
-	xmin = -12
-	xmax = 13
-	ymin = -13
-	ymax = 12
+	xmin = -7
+	xmax = 7
+	ymin = -5
+	ymax = 9
 endif
 if galaxy eq '1067' then begin
 	;xmod = -3
@@ -239,10 +244,10 @@ if galaxy eq '1153' then begin
 	bcg_center_x = -0.35
 	bcg_center_y = -0.25
 	companion = 'n'
-	xmin = -10
-	xmax = 15
-	ymin = -10
-	ymax = 15
+	xmin = -5
+	xmax = 5
+	ymin = -5
+	ymax = 5
 endif
 if galaxy eq '1261' then begin
 	;xmod = -3
@@ -261,10 +266,10 @@ if galaxy eq '2001' then begin
 	bcg_center_x = -3.9
 	bcg_center_y = 2.35
 	companion='n'
-	xmin = -16
-	xmax = 9
-	ymin = -10
-	ymax = 15
+	xmin = -12
+	xmax = 2
+	ymin = -6
+	ymax = 8
 endif
 if galaxy eq '2039' then begin
 	;xmod = -3
@@ -274,10 +279,10 @@ if galaxy eq '2039' then begin
 	companion='y'
 	comp_center_x = 8
 	comp_center_y = -5.5
-	xmin = -8
-	xmax = 17
-	ymin = -16
-	ymax = 9
+	xmin = -4
+	xmax = 10
+	ymin = -8
+	ymax = 6
 endif
 if galaxy eq '2086' then begin
 	;xmod = -2
@@ -287,10 +292,10 @@ if galaxy eq '2086' then begin
 	companion='y'
 	comp_center_x = -0.1
 	comp_center_y = 0.5
-	xmin = -15
-	xmax = 10
-	ymin = -10
-	ymax = 15
+	xmin = -8
+	xmax = 2
+	ymin = -2
+	ymax = 8
 endif
 
 ;print, 'max(sn)',sn,max(sn)
@@ -300,7 +305,12 @@ title_x_position = xmin+xmod
 title_y_position = ymin+ymod
 
 set_plot, 'ps'
-device, filename=getenv('prodir')+'/velocity.eps', /encapsul, /color, BITS=8
+;if (testing ne 1) then begin
+;	device, filename='velocity.eps', /encapsul, /color, BITS=8
+;endif
+;if (testing) then begin
+	device, filename=getenv('prodir')+'/velocity.eps', /encapsul, /color, BITS=8
+;endif
 display_bins, xbin, ybin, V, x,y, PIXELSIZE=1, RANGE=[min_scale, max_scale], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Velocity'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],min_scale,max_scale,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
@@ -334,13 +344,13 @@ device, filename=getenv('prodir')+'/sigma_scale.eps', /encapsul, /color, BITS=8
 display_bins, xbin, ybin, sigma, x,y, PIXELSIZE=1, RANGE=[0, 550], CHARSIZE=2, CHARTHICK=5, XRANGE=[xmin,xmax], YRANGE=[ymin,ymax], TITLE='Dispersion'
 color_bar_y, xmax+1.25, xmax+2.25, !Y.crange[0],!y.crange[1],0,550,title='km/s', CHARSIZE=2, CHARTHICK=5
 xyouts, title_x_position, title_y_position, galaxy, CHARSIZE=2.3, CHARTHICK=7
-xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=1.2, CHARTHICK=8
-if (companion eq 'y') then begin
-	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
-	if (galaxy eq '1048' || galaxy eq '1066') then begin
-		xyouts, second_comp_center_x, second_comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
-	endif
-endif
+;xyouts, bcg_center_x, bcg_center_y, '!9B!3', CHARSIZE=1.2, CHARTHICK=8
+;if (companion eq 'y') then begin
+;	xyouts, comp_center_x, comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+;	if (galaxy eq '1048' || galaxy eq '1066') then begin
+;		xyouts, second_comp_center_x, second_comp_center_y, '+', CHARSIZE=1.2, CHARTHICK=8
+;	endif
+;endif
 
 set_plot, 'ps'
 device, filename=getenv('prodir')+'/signal_noise.eps', /encapsul, /color, BITS=8

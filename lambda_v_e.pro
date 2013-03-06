@@ -156,7 +156,7 @@ usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
 epsilon_error = fltarr(n_elements(epsilon))
 
-plot, epsilon, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!4e!3!De', YTITLE='!4k!D!3R!Le'
+plot, epsilon, lambda, PSYM=4, yrange=[0,1.0], xrange = [0,1.0], CHARSIZE = 1.75, CHARTHICK = 5, ythick = 4, xthick = 4, XTITLE='!4e!3!De', YTITLE='!4k!D!3R!Le'
 oploterror, epsilon, lambda, lambda_error+0.000000001, PSYM=8, COLOR = 180, symsize = 1.2, errthick  = 2, errcolor = 180
 oploterror, epsilon_comp, lambda_comp, lambda_comp_error+0.000000001, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10, errthick  = 2, errcolor = 180
 ;xyouts, epsilon, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180
@@ -173,9 +173,9 @@ oplot, atlas3d_epsilon, atlas3d_lambda, PSYM=7, symsize=1.2, thick=2
 
 ;LEGEND
 plots, 0.775, 0.94, PSYM=5, symsize = 1.2, thick=2
-xyouts, 0.8, 0.925, 'SAURON', charthick=2
+xyouts, 0.8, 0.93, 'SAURON', charthick=2
 plots, 0.775, 0.89, PSYM=7, symsize = 1.2
-xyouts, 0.8, 0.875, 'ATLAS!A3D!X', charthick=2
+xyouts, 0.8, 0.870, 'ATLAS!A3D!X', charthick=2
 plots, 0.775, 0.84, PSYM=8, COLOR = 180, symsize = 1.2, thick = 10
 xyouts, 0.8, 0.825, 'BCG', charthick=2
 plots, 0.775, 0.79, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10

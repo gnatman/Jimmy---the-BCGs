@@ -190,7 +190,7 @@ endfor
 usersym, [ -1, 1, 1, -1, -1 ], [ 1, 1, -1, -1, 1 ], /fill
 
 print,m_dyn
-plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le'
+plot, m_dyn, lambda, PSYM=4, yrange=[0,1.0], xrange = [9.8,12.5], CHARSIZE = 1.75, CHARTHICK = 5, ythick = 4, xthick = 4, XTITLE='!3Log (M!Ddyn!N[M!D!9n!X!N])', YTITLE='!4k!D!3R!Le'
 oploterror, m_dyn, lambda, lambda_error+0.000000001, PSYM=8, COLOR = 180, symsize = 1.2, errthick  = 2, errcolor = 180
 oploterror, m_dyn_comp, lambda_comp, lambda_comp_error+0.000000001, PSYM=1, COLOR = 180, symsize = 1.2, thick = 10, errthick  = 2, errcolor = 180
 ;xyouts, m_dyn, lambda, name, CHARSIZE = 1, CHARTHICK = 1, COLOR = 180

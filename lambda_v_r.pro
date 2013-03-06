@@ -77,10 +77,15 @@ epsilon_re = fltarr(n_elements(lambda_files))
 lambda_re = fltarr(n_elements(lambda_files))
 lambda_re_error = fltarr(n_elements(lambda_files))
 linestyle = fltarr(n_elements(lambda_files))
+
 for i=0, n_elements(lambda_files)-1 do begin
 	print,'Reading in: ',lambda_re_files[i]
 	readcol, lambda_files[i], F='F,F,F,F,F', tempradius, tempr_e, tempepsilon, templambda, templambdaerror, SKIPLINE=1
 	readcol, lambda_re_files[i], F='F,F,F,F,F', dummy1, dummy2, tempepsilon_re, templambda_re, templambda_re_error, SKIPLINE=1
+	print,'n_elements(lambda_files): ',n_elements(lambda_files)
+	print,'i: ',i
+	print, 'size(tempradius2): ',size(tempradius2)
+	print, 'size(tempradius): ',size(tempradius)
 	tempradius2[i,*] = tempradius[*]
 	r_e[i] = tempr_e[0]
 	tempepsilon2[i,*] = tempepsilon[*]
@@ -139,10 +144,10 @@ for i=0, n_elements(lambda_files)-1 do begin
 	print,'sqrt(epsilon_re[i]): ',sqrt(epsilon_re[i])
 endfor
 
-plot, [0,0], [0,0], yrange=[0,1], xrange = [0,1.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R/R!De', ytitle='!4k!D!3R'
+plot, [0,0], [0,0], yrange=[0,1], xrange = [0,1.0], CHARSIZE = 1.75, CHARTHICK = 5, ythick = 4, xthick = 4, xtitle='!3R/R!De', ytitle='!4k!D!3R'
 for i=0, n_elements(lambda_files)-1 do begin
 	oplot, tempradius2[i,*]/r_e[i], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
-	oploterror, tempradius2[i,*]/r_e[i], templambda2[i,*], templambda2_error[i,*]+0.000000001, THICK = 8, COLOR = 180, LINESTYLE = linestyle[i], errthick  = 2, errcolor = 180
+	;oploterror, tempradius2[i,*]/r_e[i], templambda2[i,*], templambda2_error[i,*]+0.000000001, THICK = 8, COLOR = 180, LINESTYLE = linestyle[i], errthick  = 2, errcolor = 180
 	;xyouts, max(tempradius2[i,*]/r_e[i]), max(templambda2[i,*]), strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4), CHARSIZE = 0.5, CHARTHICK = 2, COLOR = 180
 endfor
 
@@ -167,16 +172,20 @@ for j=0,nfiles-1 do begin
 endfor
 
 ;LEGEND
-plots, [0.86,0.975], [0.935,0.935], COLOR = 1
+plots, [0.87,0.975], [0.935,0.935], COLOR = 1
 xyouts, 0.665, 0.925, 'SAURON Fast', charthick=2
-plots, [0.86,0.975], [0.885,0.885], COLOR = 1, LINESTYLE = 2
+plots, [0.87,0.975], [0.885,0.885], COLOR = 1, LINESTYLE = 2
 xyouts, 0.665, 0.875, 'SAURON Slow', charthick=2
-plots, [0.86,0.975], [0.835,0.835], THICK = 8, COLOR = 180, LINESTYLE = 0
+plots, [0.87,0.975], [0.835,0.835], THICK = 8, COLOR = 180, LINESTYLE = 0
 xyouts, 0.665, 0.825, 'Fast Rotator', charthick=2
-plots, [0.86,0.975], [0.785,0.785], THICK = 8, COLOR = 180, LINESTYLE = 2
+plots, [0.87,0.975], [0.785,0.785], THICK = 8, COLOR = 180, LINESTYLE = 2
 xyouts, 0.665, 0.775, 'Slow Rotator', charthick=2
 plots, [0.65,1],[0.75,0.75], thick=5
 plots, [0.65,0.65],[0.75,1.0], thick=5
+;plots, [0.05,0.05], [0.935,0.935], COLOR = 180
+oploterror, 0.05, 0.925, 0, 0.03, THICK = 1, COLOR = 180, LINESTYLE = 0, errthick  = 6, errcolor = 180
+xyouts, 0.07, 0.915, 'Representative Error Bar', charthick=3
+
 
 
 device,/close
@@ -188,7 +197,7 @@ device, filename='lambda_v_rad_raw.eps', /encapsul, /color, BITS=8
 plot, [0,0], [0,0], yrange=[0,1], xrange = [0,6.0], CHARSIZE = 1.5, CHARTHICK = 7, ythick = 5, xthick = 5, xtitle='!3R (arcsec)', ytitle='!4k!D!3R'
 for i=0, n_elements(lambda_files)-1 do begin
 	oplot, tempradius2[i,*], templambda2[i,*], THICK = 8, COLOR = 180, LINESTYLE = linestyle[i]
-	oploterror, tempradius2[i,*], templambda2[i,*], templambda2_error[i,*]+0.000000001, THICK = 8, COLOR = 180, LINESTYLE = linestyle[i], errthick  = 2, errcolor = 180
+	;oploterror, tempradius2[i,*], templambda2[i,*], templambda2_error[i,*]+0.000000001, THICK = 8, COLOR = 180, LINESTYLE = linestyle[i], errthick  = 2, errcolor = 180
 	;xyouts, max(tempradius2[i,*]), max(templambda2[i,*]), strmid(lambda_files[i], 27, 4)+strmid(lambda_files[i], 35, 4), CHARSIZE = 0.5, CHARTHICK = 2, COLOR = 180
 endfor
 

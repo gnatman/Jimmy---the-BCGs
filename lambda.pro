@@ -232,8 +232,8 @@ endif
 ;This is used to plot the isophotes to check for consistency
 plotter = fltarr(number_of_fibers)
 if CanConnect() then begin
-loadct,39
-plot,[0,45],[0,45], color=255, /NODATA, /ISO
+	loadct,39
+	plot,[0,45],[0,45], color=255, /NODATA, /ISO
 endif
 
 ;Used to derive the radius of the circle later.
@@ -251,383 +251,373 @@ print, 'count_pix . . epsillon[j] . . theta[j] . . radius[j] . radius[j]/r_e . l
 		printf, 9, 'radius_sb[j], r_e, epsillon[j], lambda[j], lambda_error[j]'
 ;endif
 
-old_velocity = velocity
-old_dispersion = dispersion
-monte_lambda = fltarr(100)
+;;Begin globbed on monte carlo stuff, uncomment the next 5 lines to manually run a monte carlo
+;old_velocity = velocity
+;old_dispersion = dispersion
+;monte_lambda = fltarr(100)
+;lambda_monte = fltarr(100)
+;for n=0, 99 do begin
 
-;print,'velocity: ',velocity
+	for m=0, n_elements(velocity)-1 do begin
+		velocity[m] = velocity[m] + (((RANDOMU(seed,1)-0.5)*velocity_error[m])*2)
+		;print,'velocity_error: ',(((RANDOMU(seed,1)-0.5)*velocity_error[m])*2)
+		dispersion[m] = dispersion[m] + (((RANDOMU(seed,1)-0.5)*dispersion_error[m])*2)
+	endfor
 
-;Begin globbed on monte carlo stuff
-lambda_monte = fltarr(100)
-for n=0, 99 do begin
+	;print,'velocity_error: ',(((RANDOMU(seed,1)-0.5)*velocity_error)*2)
 
-;print,velocity_error
+	for j=0,photometry_steps-1 do begin   
+    	count_pix = 0 ;the number of pixels being used.
+    	for k=0,number_of_fibers-1 do begin
+    	    if (signal[k] gt isophote[j]) then begin ;signal is signal from signal to noise calculation
+        	    count_pix=count_pix+1 ;incriment count pix in order to determine the number of spaxels being used
+            	;print,'xpix[k]: ',xpix[k],' ypix[k]: ',ypix[k]
+            	for i=0, img_size[1]-1 do begin
+					for l=0, img_size[2]-1 do begin
+						if (i eq xpix[k] and l eq ypix[k]) then begin
+							isophote_img[i,l,j] = img[i,l]
+						endif
+					endfor
+				endfor
+        	endif
+    	endfor
+    	if (testing ne 1) then begin
+	    	mwrfits,isophote_img[*,*,j],'new_img'+string(j)+'.fits',create=1 ;/create=1 creates new file even if old one exists
+		endif
+		tempimg = isophote_img[*,*,j]
+    	find_galaxy, tempimg, tempmajorAxis, tempeps, tempang, tempxc, tempyc, Fraction=1, /QUIET
+		epsillon[j] = tempeps
+		theta[j] = tempang
+	
+	
+		;Find the radius of all the pixels, as if they were one constant radius circle.
+    	area[j]=count_pix*pix_area ;number of pixels times the area per pixel
+    	radius_sb[j]=sqrt(area[j]/!pi)
+ 
+    	;Initially set all variables to zero.
+    	sum_upper_lam=0.0 ;upper lambda is the numerator in the equation
+    	sum_lower_lam=0.0 ;lower lambda is the denominator in the equation
+    	sum_upper_lam_sb=0.0 ;upper lambda is the numerator in the equation
+    	sum_lower_lam_sb=0.0 ;lower lambda is the denominator in the equation
+    	lambda_error_sum = 0.0
+    
+    	for k=0,number_of_fibers-1 do begin
+    	    if (signal[k] gt isophote[j]) then begin
+    	    	plotter[k] = plotter[k]+1
+    	    	if CanConnect() then begin
+    	    		xyouts,xpix[k],ypix[k],'!9B!3',color=(plotter[k]*30)+0
+    	    	endif
+    	    	sum_upper_lam = (abs(velocity[k]) * signal[k] * arc_radius[k]) + sum_upper_lam
+    	        sum_lower_lam = (signal[k] * arc_radius[k] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam
+    	        sum_upper_lam_sb = (abs(velocity[k]) * signal[k] * radius_sb[j]) + sum_upper_lam_sb
+    	        sum_lower_lam_sb = (signal[k] * radius_sb[j] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam_sb
+				lambda_error = sqrt( ((velocity_error[k]^2)*((((arc_radius[k]*velocity[k])/(arc_radius[k]*abs(velocity[k])*sqrt((velocity[k]^2)+(dispersion[k]^2)))) - ((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3)))^2)) + ((dispersion_error[k]^2)*(((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3))^2)) )
+				if (lambda_error gt 0) then begin
+					lambda_error_sum = lambda_error_sum+lambda_error
+				endif
+    	    endif
+    	endfor
+    	
+		lambda[j] = sum_upper_lam / sum_lower_lam
+    	lambda_sb[j] = sum_upper_lam_sb / sum_lower_lam_sb
+    	lambda_error_print[j] = lambda_error_sum/count_pix
+    	
+    	;print,'lambda_error_sum',lambda_error_sum
+   	 
+    	print, count_pix, epsillon[j], theta[j], radius_sb[j], radius_sb[j]/r_e, lambda[j], lambda_error_print[j], isophote[j]
+		printf, 9, radius_sb[j], r_e, epsillon[j], lambda[j], lambda_error_print[j], FORMAT='(5f10.6)'
+		if (j eq 0) then begin
+			max_pix = count_pix
+		endif
+	endfor
 
-for m=0, n_elements(velocity)-1 do begin
-	velocity[m] = velocity[m] + (((RANDOMU(seed,1)-0.5)*velocity_error[m])*2)
-	;print,'velocity_error: ',(((RANDOMU(seed,1)-0.5)*velocity_error[m])*2)
-	dispersion[m] = dispersion[m] + (((RANDOMU(seed,1)-0.5)*dispersion_error[m])*2)
-endfor
+	;This is the average of the radii of all the spaxels that are in one particular isophote,
+	;but not in any of the others.
+	average_radius=fltarr(photometry_steps)
+	
+	current_xpix = fltarr(number_of_fibers+1)
+	current_ypix = fltarr(number_of_fibers+1)
 
-;print,'velocity_error: ',(((RANDOMU(seed,1)-0.5)*velocity_error)*2)
+	for j=0,photometry_steps-1 do begin
+		counter=0
+		for i=0,number_of_fibers-1 do begin
+			if plotter[i] ge j+1 then begin
+				average_radius[j] = average_radius[j] + arc_radius[i]
+				counter=counter+1
+				;print,'xpix[i]: ',xpix[i],' ypix[i]: ',ypix[i]
+				;current_xpix[i] = xpix[i]
+				;current_ypix[i] = ypix[i]
+			endif
+			if plotter[i] ge j+2 then begin
+				average_radius[j] = average_radius[j] - arc_radius[i]
+				counter=counter-1
+			endif
+		endfor
+		average_radius[j] = (average_radius[j]/counter)
+	endfor
+	;print,'average_radius: ',average_radius
+	;print,'radius_sb: ',radius_sb
 
-for j=0,photometry_steps-1 do begin   
-    count_pix = 0 ;the number of pixels being used.
-    for k=0,number_of_fibers-1 do begin
-        if (signal[k] gt isophote[j]) then begin ;signal is signal from signal to noise calculation
-            count_pix=count_pix+1 ;incriment count pix in order to determine the number of spaxels being used
-            ;print,'xpix[k]: ',xpix[k],' ypix[k]: ',ypix[k]
-            for i=0, img_size[1]-1 do begin
-				for l=0, img_size[2]-1 do begin
-					if (i eq xpix[k] and l eq ypix[k]) then begin
-						isophote_img[i,l,j] = img[i,l]
+
+	if radius_sb[0] gt r_e then begin
+		effective_area = !pi*r_e^2
+		effective_pix_area = effective_area/pix_area
+		re_pixels = ROUND(effective_pix_area)
+		print,'effective_area',effective_area
+		print,'re_pixels',re_pixels
+		half_re_pixels = ROUND(effective_pix_area/4)
+
+		;print,'SORT(signal): ',SORT(signal)
+		sorter = REVERSE(SORT(signal))
+		sorted_signal = signal[sorter]
+		sorted_xpix = xpix[sorter]
+		sorted_ypix = ypix[sorter]
+		sorted_xarc=x[sorter]
+		sorted_yarc=y[sorter]
+		sorted_velocity=velocity[sorter] 
+		sorted_velocity_error=velocity_error[sorter] 
+		sorted_dispersion=dispersion[sorter] 
+		sorted_dispersion_error=dispersion_error[sorter] 
+
+
+		xpix_re = fltarr(re_pixels)
+		ypix_re = fltarr(re_pixels)
+		signal_re = fltarr(re_pixels)
+		xarc_re = fltarr(re_pixels)
+		yarc_re = fltarr(re_pixels)
+		velocity_re = fltarr(re_pixels)
+		velocity_error_re = fltarr(re_pixels)
+		dispersion_re = fltarr(re_pixels)	
+		dispersion_error_re = fltarr(re_pixels)
+		plotter_re = fltarr(re_pixels)
+
+		for i=0,re_pixels-1 do begin
+			xpix_re[i] = sorted_xpix[i]
+			ypix_re[i] = sorted_ypix[i]
+			signal_re[i] = sorted_signal[i]
+			xarc_re[i] = sorted_xarc[i]
+			yarc_re[i] = sorted_yarc[i]
+			velocity_re[i] = sorted_velocity[i]
+			velocity_error_re[i] = sorted_velocity_error[i]
+			dispersion_re[i] = sorted_dispersion[i]
+			dispersion_error_re[i] = sorted_dispersion_error[i]
+		endfor
+
+		x_dist_re = xpix_re - xc
+		y_dist_re = ypix_re - yc
+		radius_re = sqrt((x_dist_re^2)+(y_dist_re^2))
+		arc_radius_re = radius_re*0.66	
+		if (gal eq '1067' or gal eq '1153') then begin
+			arc_radius_re = radius_re*0.33
+		endif
+
+
+		re_img = fltarr(img_size[1],img_size[2])
+		for k=0, re_pixels-1 do begin
+			for i=0, img_size[1]-1 do begin
+				for j=0, img_size[2]-1 do begin
+					if (i eq xpix_re[k] and j eq ypix_re[k]) then begin
+						re_img[i,j] = img[i,j]
+					endif	
+				endfor
+			endfor
+		endfor
+		if (testing ne 1) then begin
+			mwrfits,re_img,'re_img.fits',create=1 ;/create=1 creates new file even if old one exists
+		endif
+		find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1; , /PLOT
+
+		half_re_img = fltarr(img_size[1],img_size[2])
+		for k=0, half_re_pixels-1 do begin
+			for i=0, img_size[1]-1 do begin
+				for j=0, img_size[2]-1 do begin
+					if (i eq xpix_re[k] and j eq ypix_re[k]) then begin
+						half_re_img[i,j] = img[i,j]
 					endif
 				endfor
 			endfor
-        endif
-    endfor
-    if (testing ne 1) then begin
-	    mwrfits,isophote_img[*,*,j],'new_img'+string(j)+'.fits',create=1 ;/create=1 creates new file even if old one exists
-	endif
-	tempimg = isophote_img[*,*,j]
-    find_galaxy, tempimg, tempmajorAxis, tempeps, tempang, tempxc, tempyc, Fraction=1, /QUIET
-	epsillon[j] = tempeps
-	theta[j] = tempang
-	
-	
-	;Find the radius of all the pixels, as if they were one constant radius circle.
-    area[j]=count_pix*pix_area ;number of pixels times the area per pixel
-    radius_sb[j]=sqrt(area[j]/!pi)
- 
-    ;Initially set all variables to zero.
-    sum_upper_lam=0.0 ;upper lambda is the numerator in the equation
-    sum_lower_lam=0.0 ;lower lambda is the denominator in the equation
-    sum_upper_lam_sb=0.0 ;upper lambda is the numerator in the equation
-    sum_lower_lam_sb=0.0 ;lower lambda is the denominator in the equation
-    lambda_error_sum = 0.0
-    
-    for k=0,number_of_fibers-1 do begin
-        if (signal[k] gt isophote[j]) then begin
-        	plotter[k] = plotter[k]+1
-        	if CanConnect() then begin
-        		xyouts,xpix[k],ypix[k],'!9B!3',color=(plotter[k]*30)+0
-        	endif
-        	sum_upper_lam = (abs(velocity[k]) * signal[k] * arc_radius[k]) + sum_upper_lam
-            sum_lower_lam = (signal[k] * arc_radius[k] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam
-            sum_upper_lam_sb = (abs(velocity[k]) * signal[k] * radius_sb[j]) + sum_upper_lam_sb
-            sum_lower_lam_sb = (signal[k] * radius_sb[j] * sqrt(velocity[k]^2 + dispersion[k]^2)) + sum_lower_lam_sb
-			lambda_error = sqrt( ((velocity_error[k]^2)*((((arc_radius[k]*velocity[k])/(arc_radius[k]*abs(velocity[k])*sqrt((velocity[k]^2)+(dispersion[k]^2)))) - ((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3)))^2)) + ((dispersion_error[k]^2)*(((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3))^2)) )
-			if (lambda_error gt 0) then begin
-				lambda_error_sum = lambda_error_sum+lambda_error
-			endif
-        endif
-    endfor
-    
-	lambda[j] = sum_upper_lam / sum_lower_lam
-    lambda_sb[j] = sum_upper_lam_sb / sum_lower_lam_sb
-    lambda_error_print[j] = lambda_error_sum/count_pix
-    
-    ;print,'lambda_error_sum',lambda_error_sum
-    
-    print, count_pix, epsillon[j], theta[j], radius_sb[j], radius_sb[j]/r_e, lambda[j], lambda_error_print[j], isophote[j]
-	printf, 9, radius_sb[j], r_e, epsillon[j], lambda[j], lambda_error_print[j], FORMAT='(5f10.6)'
-	if (j eq 0) then begin
-		max_pix = count_pix
-	endif
-endfor
-
-;This is the average of the radii of all the spaxels that are in one particular isophote,
-;but not in any of the others.
-average_radius=fltarr(photometry_steps)
-
-current_xpix = fltarr(number_of_fibers+1)
-current_ypix = fltarr(number_of_fibers+1)
-
-for j=0,photometry_steps-1 do begin
-	counter=0
-	for i=0,number_of_fibers-1 do begin
-		if plotter[i] ge j+1 then begin
-			average_radius[j] = average_radius[j] + arc_radius[i]
-			counter=counter+1
-			;print,'xpix[i]: ',xpix[i],' ypix[i]: ',ypix[i]
-			;current_xpix[i] = xpix[i]
-			;current_ypix[i] = ypix[i]
-		endif
-		if plotter[i] ge j+2 then begin
-			average_radius[j] = average_radius[j] - arc_radius[i]
-			counter=counter-1
-		endif
-	endfor
-	average_radius[j] = (average_radius[j]/counter)
-endfor
-;print,'average_radius: ',average_radius
-;print,'radius_sb: ',radius_sb
-
-
-if radius_sb[0] gt r_e then begin
-	effective_area = !pi*r_e^2
-	effective_pix_area = effective_area/pix_area
-	re_pixels = ROUND(effective_pix_area)
-	print,'effective_area',effective_area
-	print,'re_pixels',re_pixels
-	half_re_pixels = ROUND(effective_pix_area/4)
-
-	;print,'SORT(signal): ',SORT(signal)
-	sorter = REVERSE(SORT(signal))
-	sorted_signal = signal[sorter]
-	sorted_xpix = xpix[sorter]
-	sorted_ypix = ypix[sorter]
-	sorted_xarc=x[sorter]
-	sorted_yarc=y[sorter]
-	sorted_velocity=velocity[sorter] 
-	sorted_velocity_error=velocity_error[sorter] 
-	sorted_dispersion=dispersion[sorter] 
-	sorted_dispersion_error=dispersion_error[sorter] 
-
-
-	xpix_re = fltarr(re_pixels)
-	ypix_re = fltarr(re_pixels)
-	signal_re = fltarr(re_pixels)
-	xarc_re = fltarr(re_pixels)
-	yarc_re = fltarr(re_pixels)
-	velocity_re = fltarr(re_pixels)
-	velocity_error_re = fltarr(re_pixels)
-	dispersion_re = fltarr(re_pixels)
-	dispersion_error_re = fltarr(re_pixels)
-	plotter_re = fltarr(re_pixels)
-
-	for i=0,re_pixels-1 do begin
-		xpix_re[i] = sorted_xpix[i]
-		ypix_re[i] = sorted_ypix[i]
-		signal_re[i] = sorted_signal[i]
-		xarc_re[i] = sorted_xarc[i]
-		yarc_re[i] = sorted_yarc[i]
-		velocity_re[i] = sorted_velocity[i]
-		velocity_error_re[i] = sorted_velocity_error[i]
-		dispersion_re[i] = sorted_dispersion[i]
-		dispersion_error_re[i] = sorted_dispersion_error[i]
-	endfor
-
-	x_dist_re = xpix_re - xc
-	y_dist_re = ypix_re - yc
-	radius_re = sqrt((x_dist_re^2)+(y_dist_re^2))
-	arc_radius_re = radius_re*0.66
-	if (gal eq '1067' or gal eq '1153') then begin
-		arc_radius_re = radius_re*0.33
-	endif
-
-
-	re_img = fltarr(img_size[1],img_size[2])
-	for k=0, re_pixels-1 do begin
-		for i=0, img_size[1]-1 do begin
-			for j=0, img_size[2]-1 do begin
-				if (i eq xpix_re[k] and j eq ypix_re[k]) then begin
-					re_img[i,j] = img[i,j]
-				endif
-			endfor
 		endfor
-	endfor
-	if (testing ne 1) then begin
-		mwrfits,re_img,'re_img.fits',create=1 ;/create=1 creates new file even if old one exists
-	endif
-	find_galaxy, re_img, majorAxis_re, eps_re, ang_re, xc_re, yc_re, LEVEL=1; , /PLOT
+		if (testing ne 1) then begin
+			mwrfits,half_re_img,'half_re_img.fits',create=1 ;/create=1 creates new file even if old one exists
+		endif
+		find_galaxy, half_re_img, majorAxis_half_re, eps_half_re, ang_half_re, xc_half_re, yc_half_re, LEVEL=1; , /PLOT
 
-	half_re_img = fltarr(img_size[1],img_size[2])
-	for k=0, half_re_pixels-1 do begin
-		for i=0, img_size[1]-1 do begin
-			for j=0, img_size[2]-1 do begin
-				if (i eq xpix_re[k] and j eq ypix_re[k]) then begin
-					half_re_img[i,j] = img[i,j]
-				endif
-			endfor
-		endfor
-	endfor
-	if (testing ne 1) then begin
-		mwrfits,half_re_img,'half_re_img.fits',create=1 ;/create=1 creates new file even if old one exists
-	endif
-	find_galaxy, half_re_img, majorAxis_half_re, eps_half_re, ang_half_re, xc_half_re, yc_half_re, LEVEL=1; , /PLOT
-
-	;Find the radius of all the pixels, as if they were one constant radius circle.
-	radius_sb_re=sqrt(effective_area/!pi)
-	radius_sb_half_re=sqrt(effective_area/(!pi*4))
+		;Find the radius of all the pixels, as if they were one constant radius circle.
+		radius_sb_re=sqrt(effective_area/!pi)
+		radius_sb_half_re=sqrt(effective_area/(!pi*4))
  
-	;Initially set all variables to zero.
-	sum_upper_lam_re=0.0 ;upper lambda is the numerator in the equation
-	sum_lower_lam_re=0.0 ;lower lambda is the denominator in the equation
-    lambda_error_sum_re = 0.0
-	lambda_half_error_sum_re = 0.0
+		;Initially set all variables to zero.
+		sum_upper_lam_re=0.0 ;upper lambda is the numerator in the equation
+		sum_lower_lam_re=0.0 ;lower lambda is the denominator in the equation	
+	    lambda_error_sum_re = 0.0
+		lambda_half_error_sum_re = 0.0
     
-    for k=0,re_pixels-1 do begin
-        	plotter_re[k] = plotter_re[k]+1
-			if CanConnect() then begin
-        		xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
-        	endif
-            sum_upper_lam_re = (abs(velocity_re[k]) * signal_re[k] * arc_radius_re[k]) + sum_upper_lam_re
-            sum_lower_lam_re = (signal_re[k] * arc_radius_re[k] * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
-            sum_upper_lam_sb_re = (abs(velocity_re[k]) * signal_re[k] * r_e) + sum_upper_lam_re
-            sum_lower_lam_sb_re = (signal_re[k] * radius_sb_re * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
-            lambda_error_re = sqrt( ((velocity_error[k]^2)*((((arc_radius[k]*velocity[k])/(arc_radius[k]*abs(velocity[k])*sqrt((velocity[k]^2)+(dispersion[k]^2)))) - ((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3)))^2)) + ((dispersion_error[k]^2)*(((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3))^2)) )
-			if (lambda_error_re gt 0) then begin
-				lambda_error_sum_re = lambda_error_sum_re+lambda_error_re
-			endif
+	    for k=0,re_pixels-1 do begin
+	        	plotter_re[k] = plotter_re[k]+1
+				if CanConnect() then begin
+	        		xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
+	        	endif
+	            sum_upper_lam_re = (abs(velocity_re[k]) * signal_re[k] * arc_radius_re[k]) + sum_upper_lam_re
+	            sum_lower_lam_re = (signal_re[k] * arc_radius_re[k] * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
+	            sum_upper_lam_sb_re = (abs(velocity_re[k]) * signal_re[k] * r_e) + sum_upper_lam_re
+	            sum_lower_lam_sb_re = (signal_re[k] * radius_sb_re * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
+	            lambda_error_re = sqrt( ((velocity_error[k]^2)*((((arc_radius[k]*velocity[k])/(arc_radius[k]*abs(velocity[k])*sqrt((velocity[k]^2)+(dispersion[k]^2)))) - ((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3)))^2)) + ((dispersion_error[k]^2)*(((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3))^2)) )
+				if (lambda_error_re gt 0) then begin
+					lambda_error_sum_re = lambda_error_sum_re+lambda_error_re
+				endif
 
-    endfor
-	lambda_re = sum_upper_lam_re / sum_lower_lam_re
-    lambda_sb_re = sum_upper_lam_sb_re / sum_lower_lam_sb_re
-    lambda_error_sum_re = lambda_error_sum_re/k
+	    endfor
+		lambda_re = sum_upper_lam_re / sum_lower_lam_re
+	    lambda_sb_re = sum_upper_lam_sb_re / sum_lower_lam_sb_re
+	    lambda_error_sum_re = lambda_error_sum_re/k
     
-    for k=0,half_re_pixels-1 do begin
-        	plotter_re[k] = plotter_re[k]+1
-			if CanConnect() then begin
-        		xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
-        	endif
-            sum_upper_lam_re = (abs(velocity_re[k]) * signal_re[k] * arc_radius_re[k]) + sum_upper_lam_re
-            sum_lower_lam_re = (signal_re[k] * arc_radius_re[k] * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
-            sum_upper_lam_sb_re = (abs(velocity_re[k]) * signal_re[k] * r_e) + sum_upper_lam_re
-            sum_lower_lam_sb_re = (signal_re[k] * radius_sb_re * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
-            lambda_error_re = sqrt( ((velocity_error[k]^2)*((((arc_radius[k]*velocity[k])/(arc_radius[k]*abs(velocity[k])*sqrt((velocity[k]^2)+(dispersion[k]^2)))) - ((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3)))^2)) + ((dispersion_error[k]^2)*(((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3))^2)) )
-			if (lambda_error_re gt 0) then begin
-				lambda_half_error_sum_re = lambda_half_error_sum_re+lambda_error_re
-			endif
-    endfor
-    lambda_half_re = sum_upper_lam_re / sum_lower_lam_re
-    lambda_sb_half_re = sum_upper_lam_sb_re / sum_lower_lam_sb_re
-    lambda_half_error_sum_re = lambda_half_error_sum_re/k
+	    for k=0,half_re_pixels-1 do begin
+	        	plotter_re[k] = plotter_re[k]+1
+				if CanConnect() then begin
+	        		xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
+	        	endif
+	            sum_upper_lam_re = (abs(velocity_re[k]) * signal_re[k] * arc_radius_re[k]) + sum_upper_lam_re
+	            sum_lower_lam_re = (signal_re[k] * arc_radius_re[k] * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
+	            sum_upper_lam_sb_re = (abs(velocity_re[k]) * signal_re[k] * r_e) + sum_upper_lam_re
+	            sum_lower_lam_sb_re = (signal_re[k] * radius_sb_re * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
+	            lambda_error_re = sqrt( ((velocity_error[k]^2)*((((arc_radius[k]*velocity[k])/(arc_radius[k]*abs(velocity[k])*sqrt((velocity[k]^2)+(dispersion[k]^2)))) - ((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3)))^2)) + ((dispersion_error[k]^2)*(((arc_radius[k]*abs(velocity[k])*velocity[k])/(arc_radius[k]*(sqrt((velocity[k]^2)+(dispersion[k]^2)))^3))^2)) )
+				if (lambda_error_re gt 0) then begin
+					lambda_half_error_sum_re = lambda_half_error_sum_re+lambda_error_re
+				endif
+	    endfor
+	    lambda_half_re = sum_upper_lam_re / sum_lower_lam_re
+	    lambda_sb_half_re = sum_upper_lam_sb_re / sum_lower_lam_sb_re
+	    lambda_half_error_sum_re = lambda_half_error_sum_re/k
     
-    print, 're_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_re'
-    print, half_re_pixels, eps_half_re, ang_half_re, radius_sb_half_re, radius_sb_half_re/r_e, lambda_half_re, lambda_half_error_sum_re
-    print, re_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_error_sum_re
-	print, max_pix, epsillon[0], theta[0], radius_sb[0], radius_sb[0]/r_e, lambda[0], lambda_error_print[0]
+	    print, 're_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_re'
+	    print, half_re_pixels, eps_half_re, ang_half_re, radius_sb_half_re, radius_sb_half_re/r_e, lambda_half_re, lambda_half_error_sum_re
+	    print, re_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_error_sum_re
+		print, max_pix, epsillon[0], theta[0], radius_sb[0], radius_sb[0]/r_e, lambda[0], lambda_error_print[0]
 	
-	printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re, lambda_re_error'
-	printf, 1, radius_sb_half_re, r_e, eps_half_re, lambda_half_re, lambda_half_error_sum_re, FORMAT='(5f10.6)'
-	printf, 1, radius_sb_re, r_e, eps_re, lambda_re, lambda_error_sum_re, FORMAT='(5f10.6)'
-	printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0], lambda_error_print[0], FORMAT='(5f10.6)'
+		printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re, lambda_re_error'
+		printf, 1, radius_sb_half_re, r_e, eps_half_re, lambda_half_re, lambda_half_error_sum_re, FORMAT='(5f10.6)'
+		printf, 1, radius_sb_re, r_e, eps_re, lambda_re, lambda_error_sum_re, FORMAT='(5f10.6)'
+		printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0], lambda_error_print[0], FORMAT='(5f10.6)'
 	   
-endif else if radius_sb[0] gt r_e/2 then begin
-	half_effective_area = !pi*(r_e/2)^2
-	half_effective_pix_area = half_effective_area/pix_area
-	half_re_pixels = ROUND(half_effective_pix_area)
-	print,'half_effective_area',half_effective_area
-	print,'half_re_pixels',half_re_pixels
-
-	;print,'SORT(signal): ',SORT(signal)
-	sorter = REVERSE(SORT(signal))
-	sorted_signal = signal[sorter]
-	sorted_xpix = xpix[sorter]
-	sorted_ypix = ypix[sorter]
-	sorted_xarc=x[sorter]
-	sorted_yarc=y[sorter]
-	sorted_velocity=velocity[sorter]
-	sorted_velocity_error=velocity_error[sorter]
-	sorted_dispersion=dispersion[sorter]
-	sorted_dispersion_error=dispersion_error[sorter]
-
-
-	xpix_re = fltarr(half_re_pixels)
-	ypix_re = fltarr(half_re_pixels)
-	signal_re = fltarr(half_re_pixels)
-	xarc_re = fltarr(half_re_pixels)
-	yarc_re = fltarr(half_re_pixels)
-	velocity_re = fltarr(half_re_pixels)
-	velocity_error_re = fltarr(half_re_pixels)
-	dispersion_re = fltarr(half_re_pixels)
-	dispersion_error_re = fltarr(half_re_pixels)
-	plotter_re = fltarr(half_re_pixels)
-
-	for i=0,half_re_pixels-1 do begin
-		xpix_re[i] = sorted_xpix[i]
-		ypix_re[i] = sorted_ypix[i]
-		signal_re[i] = sorted_signal[i]
-		xarc_re[i] = sorted_xarc[i]
-		yarc_re[i] = sorted_yarc[i]
-		velocity_re[i] = sorted_velocity[i]
-		velocity_error_re[i] = sorted_velocity_error[i]
-		dispersion_re[i] = sorted_dispersion[i]
-		dispersion_error_re[i] = sorted_dispersion_error[i]
-	endfor
-
-	x_dist_re = xpix_re - xc
-	y_dist_re = ypix_re - yc
-	radius_re = sqrt((x_dist_re^2)+(y_dist_re^2))
-	arc_radius_re = radius_re*0.66
-	if (gal eq '1067' or gal eq '1153') then begin
-		arc_radius_re = radius_re*0.33
-	endif
+	endif else if radius_sb[0] gt r_e/2 then begin
+		half_effective_area = !pi*(r_e/2)^2
+		half_effective_pix_area = half_effective_area/pix_area
+		half_re_pixels = ROUND(half_effective_pix_area)
+		print,'half_effective_area',half_effective_area
+		print,'half_re_pixels',half_re_pixels
+	
+		;print,'SORT(signal): ',SORT(signal)
+		sorter = REVERSE(SORT(signal))
+		sorted_signal = signal[sorter]
+		sorted_xpix = xpix[sorter]
+		sorted_ypix = ypix[sorter]
+		sorted_xarc=x[sorter]
+		sorted_yarc=y[sorter]
+		sorted_velocity=velocity[sorter]
+		sorted_velocity_error=velocity_error[sorter]
+		sorted_dispersion=dispersion[sorter]
+		sorted_dispersion_error=dispersion_error[sorter]
 
 
-	half_re_img = fltarr(img_size[1],img_size[2])
-	for k=0, half_re_pixels-1 do begin
-		for i=0, img_size[1]-1 do begin
-			for j=0, img_size[2]-1 do begin
-				if (i eq xpix_re[k] and j eq ypix_re[k]) then begin
-					half_re_img[i,j] = img[i,j]
-				endif
+		xpix_re = fltarr(half_re_pixels)
+		ypix_re = fltarr(half_re_pixels)
+		signal_re = fltarr(half_re_pixels)
+		xarc_re = fltarr(half_re_pixels)
+		yarc_re = fltarr(half_re_pixels)
+		velocity_re = fltarr(half_re_pixels)
+		velocity_error_re = fltarr(half_re_pixels)
+		dispersion_re = fltarr(half_re_pixels)
+		dispersion_error_re = fltarr(half_re_pixels)
+		plotter_re = fltarr(half_re_pixels)
+	
+		for i=0,half_re_pixels-1 do begin
+			xpix_re[i] = sorted_xpix[i]
+			ypix_re[i] = sorted_ypix[i]
+			signal_re[i] = sorted_signal[i]
+			xarc_re[i] = sorted_xarc[i]
+			yarc_re[i] = sorted_yarc[i]
+			velocity_re[i] = sorted_velocity[i]
+			velocity_error_re[i] = sorted_velocity_error[i]
+			dispersion_re[i] = sorted_dispersion[i]
+			dispersion_error_re[i] = sorted_dispersion_error[i]
+		endfor
+
+		x_dist_re = xpix_re - xc
+		y_dist_re = ypix_re - yc
+		radius_re = sqrt((x_dist_re^2)+(y_dist_re^2))	
+		arc_radius_re = radius_re*0.66
+		if (gal eq '1067' or gal eq '1153') then begin
+			arc_radius_re = radius_re*0.33
+		endif
+
+
+		half_re_img = fltarr(img_size[1],img_size[2])
+		for k=0, half_re_pixels-1 do begin
+			for i=0, img_size[1]-1 do begin
+				for j=0, img_size[2]-1 do begin
+					if (i eq xpix_re[k] and j eq ypix_re[k]) then begin
+						half_re_img[i,j] = img[i,j]
+					endif
+				endfor
 			endfor
 		endfor
-	endfor
-	if (testing ne 1) then begin
-		mwrfits,half_re_img,'half_re_img.fits',create=1 ;/create=1 creates new file even if old one exists
-	endif
-	find_galaxy, half_re_img, majorAxis_half_re, eps_half_re, ang_half_re, xc_half_re, yc_half_re, LEVEL=1; , /PLOT
+		if (testing ne 1) then begin
+			mwrfits,half_re_img,'half_re_img.fits',create=1 ;/create=1 creates new file even if old one exists
+		endif
+		find_galaxy, half_re_img, majorAxis_half_re, eps_half_re, ang_half_re, xc_half_re, yc_half_re, LEVEL=1; , /PLOT
 
-	;Find the radius of all the pixels, as if they were one constant radius circle.
-	radius_sb_half_re=sqrt(half_effective_area/!pi)
-	radius_sb_re=sqrt(4*half_effective_area/!pi)
+		;Find the radius of all the pixels, as if they were one constant radius circle.
+		radius_sb_half_re=sqrt(half_effective_area/!pi)
+		radius_sb_re=sqrt(4*half_effective_area/!pi)
  
-	;Initially set all variables to zero.
-	sum_upper_lam_re=0.0 ;upper lambda is the numerator in the equation
-	sum_lower_lam_re=0.0 ;lower lambda is the denominator in the equation
-	lambda_half_error_sum_re = 0.0
+		;Initially set all variables to zero.
+		sum_upper_lam_re=0.0 ;upper lambda is the numerator in the equation
+		sum_lower_lam_re=0.0 ;lower lambda is the denominator in the equation
+		lambda_half_error_sum_re = 0.0
 	
     
-    for k=0,half_re_pixels-1 do begin
-        	plotter_re[k] = plotter_re[k]+1
-			if CanConnect() then begin
-        		xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
-        	endif
-            sum_upper_lam_re = (abs(velocity_re[k]) * signal_re[k] * arc_radius_re[k]) + sum_upper_lam_re
-            sum_lower_lam_re = (signal_re[k] * arc_radius_re[k] * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
-            sum_upper_lam_sb_re = (abs(velocity_re[k]) * signal_re[k] * r_e) + sum_upper_lam_re
-            sum_lower_lam_sb_re = (signal_re[k] * radius_sb_re * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
-            lambda_error = sqrt( ((velocity_error_re[k]^2)*((((arc_radius_re[k]*velocity_re[k])/(arc_radius_re[k]*abs(velocity_re[k])*sqrt((velocity_re[k]^2)+(dispersion_re[k]^2)))) - ((arc_radius_re[k]*abs(velocity_re[k])*velocity_re[k])/(arc_radius_re[k]*(sqrt((velocity_re[k]^2)+(dispersion_re[k]^2)))^3)))^2)) + ((dispersion_error_re[k]^2)*(((arc_radius_re[k]*abs(velocity_re[k])*velocity_re[k])/(arc_radius_re[k]*(sqrt((velocity_re[k]^2)+(dispersion_re[k]^2)))^3))^2)) )
-			if (lambda_error gt 0) then begin
-				lambda_half_error_sum_re = lambda_half_error_sum_re+lambda_error
-			endif
-    endfor
-    lambda_half_re = sum_upper_lam_re / sum_lower_lam_re
-    lambda_sb_half_re = sum_upper_lam_sb_re / sum_lower_lam_sb_re
-    lambda_half_error_sum_re = lambda_half_error_sum_re/k
+	    for k=0,half_re_pixels-1 do begin
+	        	plotter_re[k] = plotter_re[k]+1
+				if CanConnect() then begin
+        			xyouts,xpix_re[k],ypix_re[k],'!9B!3',color=(plotter_re[k]*30)+0
+        		endif
+	            sum_upper_lam_re = (abs(velocity_re[k]) * signal_re[k] * arc_radius_re[k]) + sum_upper_lam_re
+    	        sum_lower_lam_re = (signal_re[k] * arc_radius_re[k] * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
+        	    sum_upper_lam_sb_re = (abs(velocity_re[k]) * signal_re[k] * r_e) + sum_upper_lam_re
+            	sum_lower_lam_sb_re = (signal_re[k] * radius_sb_re * sqrt(velocity_re[k]^2 + dispersion_re[k]^2)) + sum_lower_lam_re
+	            lambda_error = sqrt( ((velocity_error_re[k]^2)*((((arc_radius_re[k]*velocity_re[k])/(arc_radius_re[k]*abs(velocity_re[k])*sqrt((velocity_re[k]^2)+(dispersion_re[k]^2)))) - ((arc_radius_re[k]*abs(velocity_re[k])*velocity_re[k])/(arc_radius_re[k]*(sqrt((velocity_re[k]^2)+(dispersion_re[k]^2)))^3)))^2)) + ((dispersion_error_re[k]^2)*(((arc_radius_re[k]*abs(velocity_re[k])*velocity_re[k])/(arc_radius_re[k]*(sqrt((velocity_re[k]^2)+(dispersion_re[k]^2)))^3))^2)) )
+				if (lambda_error gt 0) then begin
+					lambda_half_error_sum_re = lambda_half_error_sum_re+lambda_error
+				endif
+    	endfor
+    	lambda_half_re = sum_upper_lam_re / sum_lower_lam_re
+    	lambda_sb_half_re = sum_upper_lam_sb_re / sum_lower_lam_sb_re
+    	lambda_half_error_sum_re = lambda_half_error_sum_re/k
     
-    print, 're_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_re_error'
-    print, half_re_pixels, eps_half_re, ang_half_re, radius_sb_half_re, radius_sb_half_re/r_e, lambda_half_re, lambda_half_error_sum_re
-	print, max_pix, epsillon[0], theta[0], radius_sb[0], radius_sb[0]/r_e, lambda[0], lambda_error_print[0]
+    	print, 're_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_re_error'
+    	print, half_re_pixels, eps_half_re, ang_half_re, radius_sb_half_re, radius_sb_half_re/r_e, lambda_half_re, lambda_half_error_sum_re
+		print, max_pix, epsillon[0], theta[0], radius_sb[0], radius_sb[0]/r_e, lambda[0], lambda_error_print[0]
 	
-	printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re, lambda_re_error'
-	printf, 1, radius_sb_half_re, r_e, eps_half_re, lambda_half_re, lambda_half_error_sum_re, FORMAT='(5f10.6)'
-	printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0], lambda_error_print[0], FORMAT='(5f10.6)'
-endif else begin
-    print, 're_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_error'
-	print, max_pix, epsillon[0], theta[0], radius_sb[0], radius_sb[0]/r_e, lambda[0], lambda_error_print[0]
+		printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re, lambda_re_error'
+		printf, 1, radius_sb_half_re, r_e, eps_half_re, lambda_half_re, lambda_half_error_sum_re, FORMAT='(5f10.6)'
+		printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0], lambda_error_print[0], FORMAT='(5f10.6)'
+	endif else begin
+    	print, 're_pixels, eps_re, ang_re, radius_sb_re, radius_sb_re/r_e, lambda_re, lambda_error'
+		print, max_pix, epsillon[0], theta[0], radius_sb[0], radius_sb[0]/r_e, lambda[0], lambda_error_print[0]
+	
+		printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re, lambda_re_error'
+		printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0], lambda_error_print[0], FORMAT='(5f10.6)'
+	endelse
 
-	printf, 1, 'radius_sb_re, r_e, eps_re, lambda_re, lambda_re_error'
-	printf, 1, radius_sb[0], r_e, epsillon[0], lambda[0], lambda_error_print[0], FORMAT='(5f10.6)'
-endelse
-
-velocity = old_velocity
-dispersion = old_dispersion
-
-;print,'lambda[0]: ',lambda[0]
-monte_lambda[n] = lambda[0]
-
-endfor
-
-
-print,'monte_lambda: ',monte_lambda
-peak_lambda = mean(monte_lambda)
-lambda_error = stddev(monte_lambda)
-
-print, 'peak_lambda: ', peak_lambda, ' lambda_error: ',lambda_error
+;;uncomment the next 8 lines to manually run a monte carlo
+	;velocity = old_velocity
+	;dispersion = old_dispersion
+	;monte_lambda[n] = lambda[0]
+;endfor
+;print,'monte_lambda: ',monte_lambda
+;peak_lambda = mean(monte_lambda)
+;lambda_error = stddev(monte_lambda)
+;print, 'peak_lambda: ', peak_lambda, ' lambda_error: ',lambda_error
 
 close, 9
 close, 1
