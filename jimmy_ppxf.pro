@@ -99,7 +99,7 @@ if (testing) then begin
     rdfloat, getenv('infile4'), dummy, dummy, dummy, dummy, total_noise, SKIPLINE=1, /SILENT
     openw, 9, getenv('outfile')
     monte_iterations = getenv('monte_iterations')
-    plot_file = getenv('prodir')+'/ppxf_fit.eps'
+    plot_file = getenv('ppxfimagesdir')+'ppxf_fit.eps'
 endif
 if (testing ne 1) then begin
     fits_read, '/Users/jimmy/Astro/reduced/1050pro/temp.fits', datacube, h
@@ -156,8 +156,8 @@ for i = 0, max(binNum) do begin
         goodpix_safe1[i]=getenv('end_range')
     endif
     if (testing ne 1) then begin
-    	goodpix_safe[i]=300
-    	goodpix_safe1[i]=1600
+    	;goodpix_safe[i]=300
+    	;goodpix_safe1[i]=1600
     endif
     
     new_wavelength_range = fltarr(2)
@@ -336,13 +336,21 @@ for i = 0, max(binNum) do begin
     noise = galaxy*0 + 1
 
     ;Perform the pPXF fit on the galaxy using the templates and 1 sigma errors on the spectra
+    ;make the directory that the plots are saved to, move the printed plot to the directory, and then directory will be moved with bash
+    if (FILE_TEST(getenv('ppxfimagesdir'), /DIRECTORY) ne 1) then begin
+    	print,'Making directory: ',getenv('ppxfimagesdir')
+		file_mkdir,getenv('ppxfimagesdir')
+	endif
     if CanConnect() then begin
     	set_plot,'PS'
 	    device, filename=plot_file, /encapsul, /color, bits=8
 
 	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, /PLOT, MOMENTS=2, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error, RANGE=(new_wavelength_range[1]-new_wavelength_range[0]), MIN=new_wavelength_range[0]
 	    device,/close
+	    set_plot,'x'
+	    print,'Saving plot to: ',plot_file
 	endif else begin
+		print,'Could not connect to X windows server, not using pPXF plotting function.'
 	    ppxf, templates, galaxy, noise, velScale, start, sol, GOODPIXELS=goodPixels, MOMENTS=2, DEGREE=4, VSYST=dv,BIAS=0, ERROR=error, RANGE=(new_wavelength_range[1]-new_wavelength_range[0]), MIN=new_wavelength_range[0]
 
 	endelse
@@ -368,15 +376,13 @@ for i = 0, max(binNum) do begin
 	    printf, 9, i, sol[0], 0, sol[1], 0, sol[2], sol[3], sol[4], sol[5], sol[6],(z + 1)*(1 + sol[0]/c) - 1, FORMAT='(i6,2f10.1,6f10.3,e11.4,f10.6)'
 	endif
 	
-	if CanConnect() then begin ;only do this if we're printing things
-	    ;make the directory that the plots are saved to, move the printed plot to the directory, and then directory will be moved with bash
-    	if (FILE_TEST(getenv('prodir')+'/ppxf_fits/', /DIRECTORY) ne 1) then begin
-			file_mkdir,getenv('prodir')+'/ppxf_fits'
-		endif
-	    file_move,getenv('prodir')+'/ppxf_fit.eps',getenv('prodir')+'/ppxf_fits/'+STRTRIM(ppxf_plot_number,2)+'.eps', /OVERWRITE
-    	ppxf_plot_number = ppxf_plot_number+1 ;up the counter
+	;Rename the ppxf fitting images 
+	if (FILE_TEST(plot_file) eq 1) then begin
+		file_move,plot_file,getenv('ppxfimagesdir')+STRTRIM(ppxf_plot_number,2)+'.eps', /OVERWRITE
+		print,'Moving file: ',plot_file,' to: ',getenv('ppxfimagesdir')+STRTRIM(ppxf_plot_number,2)+'.eps'
 	endif
-
+    ppxf_plot_number = ppxf_plot_number+1 ;up the counter
+	
 endfor
 
 

@@ -21,6 +21,7 @@ SOF_DIR=$REDUCED_DIR/$1pt1sof
 CAL_DIR=$REDUCED_DIR/cal
 #Used to automatically pull the IDL scripts out of testing mode.
 export not_testing=1
+run_r_e="n"
 
 #Take the input from the command line argument.
 if [ $# -ne 2 ]; then
@@ -29,29 +30,33 @@ if [ $# -ne 2 ]; then
 fi
 echo "Input target number: " $1
 echo "Input object of interest: " $2
-export targetsn=5
+
 
 #If the project directory for this galaxy doesn't exist, we will make it.
-if [ ! -d $PRO_DIR/all/sn$targetsn ]; then
+if [ ! -d $PRO_DIR ]; then
     mkdir $PRO_DIR
+fi
+if [ ! -d $PRO_DIR/all ]; then
     mkdir $PRO_DIR/all
+fi
+if [ ! -d $PRO_DIR/main ]; then
     mkdir $PRO_DIR/main
+fi
+if [ ! -d $PRO_DIR/comp ]; then
     mkdir $PRO_DIR/comp
+fi
+if [ ! -d $PRO_DIR/2ndcomp ]; then
     mkdir $PRO_DIR/2ndcomp
+fi
+export targetsn=5
+if [ ! -d $PRO_DIR/all/sn$targetsn ]; then
     mkdir $PRO_DIR/all/sn$targetsn
     mkdir $PRO_DIR/main/sn$targetsn
     mkdir $PRO_DIR/comp/sn$targetsn
     mkdir $PRO_DIR/2ndcomp/sn$targetsn
 fi
 export targetsn=10
-
-#If the project directory for this galaxy doesn't exist, we will make it.
 if [ ! -d $PRO_DIR/all/sn$targetsn ]; then
-    mkdir $PRO_DIR
-    mkdir $PRO_DIR/all
-    mkdir $PRO_DIR/main
-    mkdir $PRO_DIR/comp
-    mkdir $PRO_DIR/2ndcomp
     mkdir $PRO_DIR/all/sn$targetsn
     mkdir $PRO_DIR/main/sn$targetsn
     mkdir $PRO_DIR/comp/sn$targetsn
@@ -432,7 +437,7 @@ EOF
 	    export infile=$SOF_DIR/auto.ifudat
     fi
     
-    idl /Users/jimmy/Astro/coms/mosaic.com
+    idl $ASTRO_DIR/coms/mosaic.com
 
     echo "Moving test file to project directory"
     mv test.fits /$PRO_DIR/temp.fits
@@ -458,7 +463,9 @@ for targetsn in 5 10; do
 	    #only input is the test.fits file   
 	    export infile=$PRO_DIR/$2/$1$2.fits
 	    export outfile1=$PRO_DIR/$2/sn$targetsn/voronoi_2d_binning.txt
-	    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+	    if [ $run_r_e = y ]; then
+	    	export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+	    fi
 	    export galaxy=$1
 	    if [ $targetsn == 5 ]; then
 		    export sncut=3.0
@@ -490,14 +497,15 @@ idl <<EOF
 .comp vbinning.pro
 vbinning
 EOF
-
-	    export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
-	    export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
-	    export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
+		if [ $run_r_e = y ]; then
+		    export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+		    export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+	    	export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
 idl <<EOF
 .comp vbinning.pro
 vbinning
 EOF
+		fi
 
 		#echo "Radial Binning and singular bin"
 		#export radius=$r_e
@@ -518,19 +526,21 @@ idl <<EOF
 one_bin
 EOF
 
-    	export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
-    	export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
-    	export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
+		if [ $run_r_e = y ]; then
+	    	export infile=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+    		export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
+    		export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
 idl <<EOF
 .comp one_bin.pro
 one_bin
 EOF
+		fi
 	fi
 
 	if [ $ppxf == y ]; then
 	    #Find Velocities
 	    echo "PPXF Velocities"
-	    export prodir=$PRO_DIR
+	    export ppxfimagesdir=$PRO_DIR/$2/sn$targetsn/ppxf_fits/
 	    export infile1=$PRO_DIR/$2/$1$2.fits
 	    export infile2=$PRO_DIR/$2/sn$targetsn/one_bin_output.txt
 	    export infile3=$ASTRO_DIR/MILES_library
@@ -563,29 +573,30 @@ EOF
     	if [ -d $PRO_DIR/ppxf_fits ]; then
 	 		mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/
     	fi
-
-    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
-    	export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
-    	export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
+		if [ $run_r_e = y ]; then
+	    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+    		export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
+    		export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    	rm -rf $PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
-    	if [ -d $PRO_DIR/ppxf_fits ]; then
-	    	mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
-    	fi
+	    	rm -rf $PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
+    		if [ -d $PRO_DIR/ppxf_fits ]; then
+	    		mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits
+    		fi
     
-    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
-    	export infile4=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
-    	export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
+	    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
+    		export infile4=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
+    		export outfile=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
 idl << EOF
 .comp jimmy_ppxf.pro
 jimmy_ppxf
 EOF
-    	rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
-    	if [ -d $PRO_DIR/ppxf_fits ]; then
-			mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
+    		rm -rf /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
+    		if [ -d $PRO_DIR/ppxf_fits ]; then
+				mv $PRO_DIR/ppxf_fits /$PRO_DIR/$2/sn$targetsn/r_e_ppxf_fits_one
+    		fi
     	fi
 
 		#export infile2=$PRO_DIR/$2/sn$targetsn/radial_2d_binning_output.txt
@@ -641,29 +652,30 @@ EOF
         mv $PRO_DIR/signal_noise.eps /$PRO_DIR/$2/sn$targetsn/signal_noise.eps
 		#mv $PRO_DIR/signal_noise_rad.eps /$PRO_DIR/$2/sn$targetsn/signal_noise_rad.eps
 
-		export infile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
-		export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
-		export infile3=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
+		if [ $run_r_e = y ]; then
+			export infile1=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_bins.txt
+			export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_one_bin_output
+			export infile3=$PRO_DIR/$2/sn$targetsn/r_e_one_bin_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'one','$1'
 EOF
 
-		export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
-		export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
-		export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+			export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
+			export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
+			export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
 idl << EOF
 .comp display_data.pro
 display_data,'vbinned','$1'
 EOF
 
-        mv $PRO_DIR/table_one.txt /$PRO_DIR/$2/sn$targetsn/r_e_table_one.txt
-        mv $PRO_DIR/sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_sigma_scale.eps
-        mv $PRO_DIR/velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity_scale.eps
-        mv $PRO_DIR/table.txt /$PRO_DIR/$2/sn$targetsn/r_e_table.txt
-        mv $PRO_DIR/velocity.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity.eps
-        mv $PRO_DIR/signal_noise.eps /$PRO_DIR/$2/sn$targetsn/r_e_signal_noise.eps
-
+	        mv $PRO_DIR/table_one.txt /$PRO_DIR/$2/sn$targetsn/r_e_table_one.txt
+    	    mv $PRO_DIR/sigma_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_sigma_scale.eps
+        	mv $PRO_DIR/velocity_scale.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity_scale.eps
+	        mv $PRO_DIR/table.txt /$PRO_DIR/$2/sn$targetsn/r_e_table.txt
+    	    mv $PRO_DIR/velocity.eps /$PRO_DIR/$2/sn$targetsn/r_e_velocity.eps
+        	mv $PRO_DIR/signal_noise.eps /$PRO_DIR/$2/sn$targetsn/r_e_signal_noise.eps
+		fi
 	fi
 
 	if [ $lambda == y ]; then
@@ -680,19 +692,19 @@ idl << EOF
 .comp lambda.pro
 lambda,'$1','$2'
 EOF
-
-		export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
-    	export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
-    	export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
-    	export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
-    	export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_lambda.txt
-    	export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_lambda_re.txt
-		export fitsdir=$PRO_DIR/$2/
+		if [ $run_r_e = y ]; then
+			export infile1=$PRO_DIR/$2/sn$targetsn/r_e_2d_bins.txt
+    		export infile2=$PRO_DIR/$2/sn$targetsn/r_e_ppxf_v_bin_output
+    		export infile3=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning_output.txt
+	    	export infile4=$PRO_DIR/$2/sn$targetsn/r_e_2d_binning.txt
+    		export outfile1=$PRO_DIR/$2/sn$targetsn/r_e_lambda.txt
+    		export outfile2=$PRO_DIR/$2/sn$targetsn/r_e_lambda_re.txt
+			export fitsdir=$PRO_DIR/$2/
 idl << EOF
 .comp lambda.pro
 lambda,'$1','$2'
 EOF
-
+		fi
 	fi
 done
 
@@ -745,50 +757,52 @@ EOF
 	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/signal_noise.eps" -flatten $PRO_DIR/temp.jpg
 	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/sn_sn10.jpg	
 
-	export infile1=$PRO_DIR/$2/sn10/r_e_lambda_re.txt
-	export infile2=$PRO_DIR/$2/sn10/r_e_table_one.txt
-	export infile3=$PRO_DIR/$2/sn5/r_e_lambda_re.txt
-	export infile4=$PRO_DIR/$2/sn5/r_e_table_one.txt
-	export outfile=$PRO_DIR/r_e_output.csv
+	if [ $run_r_e = y ]; then
+		export infile1=$PRO_DIR/$2/sn10/r_e_lambda_re.txt
+		export infile2=$PRO_DIR/$2/sn10/r_e_table_one.txt
+		export infile3=$PRO_DIR/$2/sn5/r_e_lambda_re.txt
+		export infile4=$PRO_DIR/$2/sn5/r_e_table_one.txt
+		export outfile=$PRO_DIR/r_e_output.csv
 idl << EOF
 .comp wiki.pro
 wiki,'$1','$2'
 EOF
 
 	
-	INPUT=$outfile
-	OLDIFS=$IFS
-	IFS=,
-	[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
-	while read BCG target a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19 a20 a21 a22 a23 a24 a25 a26 a27 a28 a29 a30 a31 a32 a33
-	do
-		TEXT="%3d%3d%3dKinematic%20Maps%20S%2fN%205%3d%3d%3d%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_velocity_sn5.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_dispersion_sn5.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_sn_sn5.jpg%3c%2fimg%3e%0d%3d%3d%3dKinematic%20Maps%20S%2fN%2010%3d%3d%3d%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_velocity_sn10.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_dispersion_sn10.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_sn_sn10.jpg%3c%2fimg%3e%0d%3d%3d%3dTable%20Data%3d%3d%3d%0d{{BCG_Table|$a1|$a2|$a3|$a4|$a5|$a6|$a7|$a8|$a9|$a10|$a11|$a12|$a13|$a14|$a15|$a16|$a17|$a18|$a19|$a20|$a21|$a22|$a23|$a24|$a25|$a26|$a27|$a28|$a29|$a30|$a31|$a32|$a33}}"
-	done < $INPUT
-	IFS=$OLDIFS
+		INPUT=$outfile
+		OLDIFS=$IFS
+		IFS=,
+		[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
+		while read BCG target a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19 a20 a21 a22 a23 a24 a25 a26 a27 a28 a29 a30 a31 a32 a33
+		do
+			TEXT="%3d%3d%3dKinematic%20Maps%20S%2fN%205%3d%3d%3d%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_velocity_sn5.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_dispersion_sn5.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_sn_sn5.jpg%3c%2fimg%3e%0d%3d%3d%3dKinematic%20Maps%20S%2fN%2010%3d%3d%3d%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_velocity_sn10.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_dispersion_sn10.jpg%3c%2fimg%3e%0d%3cimg%20size%3d360%3ehttps%3a%2f%2fgalaxies.physics.tamu.edu%2fimages%2fjimmy%2f$BCG%2f$target%2fr_e_sn_sn10.jpg%3c%2fimg%3e%0d%3d%3d%3dTable%20Data%3d%3d%3d%0d{{BCG_Table|$a1|$a2|$a3|$a4|$a5|$a6|$a7|$a8|$a9|$a10|$a11|$a12|$a13|$a14|$a15|$a16|$a17|$a18|$a19|$a20|$a21|$a22|$a23|$a24|$a25|$a26|$a27|$a28|$a29|$a30|$a31|$a32|$a33}}"
+		done < $INPUT
+		IFS=$OLDIFS
+		
+		curl -b $PRO_DIR/cookies.txt -d "format=xml&action=edit&title="$1"_"$2"_r_e&recreate&summary=Automatically%20Generated%20Page&text="$TEXT"&token="$EDITTOKEN2"%2B%5C" https://galaxies.physics.tamu.edu/api.php
 	
-	curl -b $PRO_DIR/cookies.txt -d "format=xml&action=edit&title="$1"_"$2"_r_e&recreate&summary=Automatically%20Generated%20Page&text="$TEXT"&token="$EDITTOKEN2"%2B%5C" https://galaxies.physics.tamu.edu/api.php
+		convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
+		scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn5.jpg
+		convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
+		scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn5.jpg
+		convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_signal_noise.eps" -flatten $PRO_DIR/temp.jpg
+		scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn5.jpg
+		convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
+		scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn10.jpg
+		convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
+		scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn10.jpg
+		convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_signal_noise.eps" -flatten $PRO_DIR/temp.jpg
+		scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn10.jpg	
+		
+		ssh jimmy@io.physics.tamu.edu chmod a+r -R /home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/
 
-	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
-	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn5.jpg
-	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
-	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn5.jpg
-	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn5/r_e_signal_noise.eps" -flatten $PRO_DIR/temp.jpg
-	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn5.jpg
-	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_velocity_scale.eps" -flatten $PRO_DIR/temp.jpg
-	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_velocity_sn10.jpg
-	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_sigma_scale.eps" -flatten $PRO_DIR/temp.jpg
-	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_dispersion_sn10.jpg
-	convert -density 300 "Astro/reduced/"$1"pro/"$2"/sn10/r_e_signal_noise.eps" -flatten $PRO_DIR/temp.jpg
-	scp $PRO_DIR/temp.jpg jimmy@io.physics.tamu.edu:/home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/$1/$2/r_e_sn_sn10.jpg	
-	
-	ssh jimmy@io.physics.tamu.edu chmod a+r -R /home/websites/galaxies.physics.tamu.edu/htdocs/images/jimmy/
-
-	rm $PRO_DIR/token.txt
-	rm $PRO_DIR/edit.txt
-	rm $PRO_DIR/output.csv
-	rm $PRO_DIR/temp.jpg
-	rm $PRO_DIR/cookies.txt
-	rm $PRO_DIR/r_e_output.csv
+		rm $PRO_DIR/token.txt
+		rm $PRO_DIR/edit.txt
+		rm $PRO_DIR/output.csv
+		rm $PRO_DIR/temp.jpg
+		rm $PRO_DIR/cookies.txt
+		rm $PRO_DIR/r_e_output.csv
+	fi
 fi
 
 date
