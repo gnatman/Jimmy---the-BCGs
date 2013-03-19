@@ -156,17 +156,10 @@ print,'min(xbin)',min(xbin),'max(ybin)',max(ybin)
 	bcg_center_x = 0
 	bcg_center_y = 0
 	companion = 'n'
-<<<<<<< HEAD
-	xmin = -5
-	xmax = 5
-	ymin = -5
-	ymax = 5
-=======
 	xmin = -6
 	xmax = 6
 	ymin = -6
 	ymax = 6
->>>>>>> Working Version
 
 
 if galaxy eq '1027' then begin
@@ -177,17 +170,10 @@ if galaxy eq '1027' then begin
 	companion='y'
 	comp_center_x = 1.3
 	comp_center_y = 0.9
-<<<<<<< HEAD
-	xmin = -1
-	xmax = 13
-	ymin = -10
-	ymax = 4
-=======
 	xmin = 3
 	xmax = 15
 	ymin = -13
 	ymax = -1
->>>>>>> Working Version
 endif
 if galaxy eq '1042' then begin
 	;xmod = 0
@@ -195,17 +181,10 @@ if galaxy eq '1042' then begin
 	bcg_center_x = 0
 	bcg_center_y = 0.8
 	companion = 'n'
-<<<<<<< HEAD
-	xmin = -7
-	xmax = 7
-	ymin = -7
-	ymax = 7
-=======
 	xmin = -6
 	xmax = 6
 	ymin = -6
 	ymax = 6
->>>>>>> Working Version
 endif
 if galaxy eq '1048' then begin
 	xmod = 0
@@ -228,17 +207,10 @@ if galaxy eq '1050' then begin
 	bcg_center_x = -1.35
 	bcg_center_y = -0.6
 	companion = 'n'
-<<<<<<< HEAD
-	xmin = -7
-	xmax = 7
-	ymin = -7
-	ymax = 7
-=======
 	xmin = -6
 	xmax = 6
 	ymin = -6
 	ymax = 6
->>>>>>> Working Version
 endif
 if galaxy eq '1066' then begin
 	;xmod = -3
@@ -250,17 +222,10 @@ if galaxy eq '1066' then begin
 	comp_center_y = -3.6
 	second_comp_center_x = 6.4
 	second_comp_center_y = -7.25
-<<<<<<< HEAD
-	xmin = -7
-	xmax = 7
-	ymin = -5
-	ymax = 9
-=======
 	xmin = -6
 	xmax = 6
 	ymin = -4
 	ymax = 8
->>>>>>> Working Version
 endif
 if galaxy eq '1067' then begin
 	;xmod = -3
@@ -279,17 +244,10 @@ if galaxy eq '1153' then begin
 	bcg_center_x = -0.35
 	bcg_center_y = -0.25
 	companion = 'n'
-<<<<<<< HEAD
-	xmin = -5
-	xmax = 5
-	ymin = -5
-	ymax = 5
-=======
 	xmin = -6
 	xmax = 6
 	ymin = -6
 	ymax = 6
->>>>>>> Working Version
 endif
 if galaxy eq '1261' then begin
 	;xmod = -3
@@ -308,17 +266,10 @@ if galaxy eq '2001' then begin
 	bcg_center_x = -3.9
 	bcg_center_y = 2.35
 	companion='n'
-<<<<<<< HEAD
-	xmin = -12
-	xmax = 2
-	ymin = -6
-	ymax = 8
-=======
 	xmin = -11
 	xmax = 1
 	ymin = -5
 	ymax = 7
->>>>>>> Working Version
 endif
 if galaxy eq '2039' then begin
 	;xmod = -3
@@ -328,17 +279,10 @@ if galaxy eq '2039' then begin
 	companion='y'
 	comp_center_x = 8
 	comp_center_y = -5.5
-<<<<<<< HEAD
-	xmin = -4
-	xmax = 10
-	ymin = -8
-	ymax = 6
-=======
 	xmin = -5
 	xmax = 7
 	ymin = -6.5
 	ymax = 5.5
->>>>>>> Working Version
 endif
 if galaxy eq '2086' then begin
 	;xmod = -2
@@ -348,17 +292,10 @@ if galaxy eq '2086' then begin
 	companion='y'
 	comp_center_x = -0.1
 	comp_center_y = 0.5
-<<<<<<< HEAD
-	xmin = -8
-	xmax = 2
-	ymin = -2
-	ymax = 8
-=======
 	xmin = -9
 	xmax = 3
 	ymin = -3
 	ymax = 9
->>>>>>> Working Version
 endif
 
 ;print, 'max(sn)',sn,max(sn)
